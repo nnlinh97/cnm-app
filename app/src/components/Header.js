@@ -1,10 +1,16 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 
 class Header extends Component {
     preventDefault = (e) => {
         e.preventDefault();
     }
     render() {
+        const {profile} = this.props;
+        let avatar = "https://tinyurl.com/yapenv5f";
+        if(profile) {
+            avatar = profile.avatarURL;
+        }
         return (
             <div className="bg-white">
                 <div className="container mx-auto flex flex-col lg:flex-row items-center py-4">
@@ -31,7 +37,7 @@ class Header extends Component {
                         </div>
                         <div className="mr-4">
                             <a onClick={(e) => this.preventDefault(e)} href="">
-                                <img src="https://tinyurl.com/yapenv5f" alt="avatar" className="h-8 w-8 rounded-full" />
+                                <img src={avatar} alt="avatar" className="h-8 w-8 rounded-full" />
                             </a>
                         </div>
                         <div>
@@ -47,4 +53,15 @@ class Header extends Component {
     }
 }
 
-export default Header;
+// export default Header;
+const mapStateToProps = (state) => {
+    return {
+        profile: state.profile
+    }
+}
+
+const mapDispatchToProps = (dispatch, action) => {
+    return {
+    }
+}
+export default connect(mapStateToProps, mapDispatchToProps)(Header);

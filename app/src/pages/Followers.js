@@ -6,7 +6,7 @@ class Followers extends Component {
     render() {
         return (
             <div>
-                {this.props.match.params.username}
+                {this.props.match.params.username} - followers page
             </div>
         );
     }

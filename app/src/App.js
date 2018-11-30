@@ -14,9 +14,9 @@ class App extends Component {
         <div>
           <Switch>
             <Route exact path='/:username' component={Profile} />
-            <Route path='/' component={Login} />
-            <Route path='/:username/followers' component={Followers} />
-            <Route path='/:username/following' component={Following} />
+            <Route exact path='/:username/followers' component={Followers} />
+            <Route exact path='/:username/followings' component={Following} />
+            <Route exact path='/' component={Login} />
             <Route path='' component={NotFoundPage} />
           </Switch>
         </div>
