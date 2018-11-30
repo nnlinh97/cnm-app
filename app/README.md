@@ -42,3 +42,13 @@ You don’t have to ever use `eject`. The curated feature set is suitable for sm
 You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
 
 To learn React, check out the [React documentation](https://reactjs.org/).
+
+
+## URL: 
+https://5c0089020296210013dc804a.mockapi.io
+
+## API
+/users/1 => get user
+/following => get list following
+/follower => get list follower
+
