@@ -7,3 +7,10 @@ export const getProfile = (profile) => {
         profile: profile
     }
 }
+
+export const getListPosts = (posts) => {
+    return {
+        type: Types.GET_LIST_POSTS,
+        posts: posts
+    }
+}

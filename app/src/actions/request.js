@@ -8,3 +8,11 @@ export const getProfile = () => {
         });
     }
 }
+
+export const getListPosts = () => {
+    return (dispatch) => {
+        return callAPI("/tweet", "GET", null).then((res) => {
+            dispatch(Action.getListPosts(res.data));
+        });
+    }
+}

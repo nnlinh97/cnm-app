@@ -8,11 +8,12 @@ import * as Actions from '../actions/request';
 
 class Profile extends Component {
     componentDidMount() {
-        console.log(this.props.match.params.username);
         this.props.getProfile();
+        this.props.getListPosts();
     }
     
     render() {
+        console.log(this.props.posts);
         return (
             <div>
                 <Header/>
@@ -27,13 +28,15 @@ class Profile extends Component {
 // export default Profile;
 const mapStateToProps = (state) => {
     return {
-        profile: state.profile
+        profile: state.profile,
+        posts: state.posts
     }
 }
 
 const mapDispatchToProps = (dispatch, action) => {
     return {
-        getProfile: () => dispatch(Actions.getProfile())
+        getProfile: () => dispatch(Actions.getProfile()),
+        getListPosts: () => dispatch(Actions.getListPosts())
     }
 }
 export default connect(mapStateToProps, mapDispatchToProps)(Profile);

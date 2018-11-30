@@ -1,15 +1,31 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import Post from './Post';
 
 class Posts extends Component {
     render() {
+        console.log(this.props.posts);
+        const {posts} = this.props;
+        let listPosts = '';
+        if(posts.length > 0){
+            listPosts = posts.map((post, index) => {
+                return (
+                    <Post
+                        key={index}
+                        post={post}
+                    />
+                )
+            })
+        }
         return (
             <div className="w-full lg:w-1/2 bg-white mb-4">
                 <div className="p-3 text-lg font-bold border-b border-solid border-grey-light">
                     <a href="#" className="text-black mr-6 no-underline hover-underline">Tweets</a>
-                    <a href="#" className="mr-6 text-teal no-underline hover:underline">Tweets &amp; Replies</a>
-                    <a href="#" className="text-teal no-underline hover:underline">Media</a>
+                    {/* <a href="#" className="mr-6 text-teal no-underline hover:underline">Tweets &amp; Replies</a>
+                    <a href="#" className="text-teal no-underline hover:underline">Media</a> */}
                 </div>
-                <div className="flex border-b border-solid border-grey-light">
+                {listPosts}
+                {/* <div className="flex border-b border-solid border-grey-light">
                     <div className="w-1/8 text-right pl-3 pt-3">
                         <div>
                             <i className="fa fa-thumb-tack text-teal mr-2" />
@@ -274,10 +290,23 @@ class Posts extends Component {
                             </div>
                         </div>
                     </div>
-                </div>
+                </div> */}
             </div>
         );
     }
 }
 
-export default Posts;
+// export default Posts;
+
+const mapStateToProps = (state) => {
+    return {
+        profile: state.profile,
+        posts: state.posts
+    }
+}
+
+const mapDispatchToProps = (dispatch, action) => {
+    return {
+    }
+}
+export default connect(mapStateToProps, mapDispatchToProps)(Posts);
