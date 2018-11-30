@@ -1,6 +1,6 @@
 import * as Types from './../constants/ActionTypes';
 
-let initialState = {};
+let initialState = null;
 const profile = (state = initialState, action) => {
     switch (action.type) {
         case Types.GET_PROFILE:
