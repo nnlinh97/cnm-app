@@ -48,7 +48,20 @@ To learn React, check out the [React documentation](https://reactjs.org/).
 https://5c0089020296210013dc804a.mockapi.io
 
 ## API
-/users/1 => get user
-/following => get list following
-/follower => get list follower
+## users collection
+    GET     /users      => get list users
+    GET     /users/:id  => get user
+    POST    /users      => create user
+    PUT     /users/:id  => edit user
+
+## following collection
+    GET     /following  => get list following
+
+## followers collection
+    GET     /followers   => get list followers
+
+## tweet collection
+    GET     /tweet      => get list tweets (posts)
+    GET     /tweet/:id  => get tweet
+    POST    /tweet      => create tweet
 
