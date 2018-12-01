@@ -88,18 +88,14 @@ class Header extends Component {
                                             </div>
                                         </div>
                                         <div className="modal-footer ">
-                                            
                                             <div className="row">
                                                 <div className="col-sm-2"></div>
                                                 <div className="col-sm-10">
                                                     <button type="button" className="btn btn-primary radius-button" data-dismiss="modal">Tweet</button>
                                                 </div>
-                                                
                                             </div>
-                                            
                                         </div>
                                     </div>
-                                
                                 </div>
                             </div>
                         </div>
