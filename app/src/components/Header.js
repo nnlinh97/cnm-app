@@ -157,6 +157,45 @@ class Header extends Component {
                                     </div>
                                 </div>
                             </div>
+
+                            <div className="modal fade" id="myModal" role="dialog" style={{ display: 'block' }}>
+                                <div className="modal-dialog">
+                                    <div className="modal-content">
+                                        <div className="profile-body">
+                                            <form className="cd-form floating-labels profile-content" id="ajax-contact" method="post" action="mailer.php">
+                                                <fieldset>
+                                                    <legend>Edit Profile</legend>
+                                                    <div className="icon">
+                                                        <label className="cd-label" htmlFor="cd-name">Birthday</label>
+                                                        <input className="user" type="text" name="cd-name" id="cd-name" required />
+                                                    </div>
+                                                    <div className="icon">
+                                                        <label className="cd-label" htmlFor="cd-company">Location</label>
+                                                        <input className="company" type="text" name="cd-company" id="cd-company" />
+                                                    </div>
+                                                    <div className="icon">
+                                                        <label className="cd-label" htmlFor="cd-email">Intro</label>
+                                                        <textarea className="message" name="cd-textarea" id="cd-textarea" required defaultValue={""} />
+                                                    </div>
+                                                    <div className="p-save">
+                                                        <button className="profile-save">Save</button>
+                                                    </div>
+                                                    <div className="p-cancel">
+                                                        <button className="profile-cancel">Cancel</button>
+                                                    </div>
+                                                </fieldset>
+                                            </form>
+                                            {/* Resource jQuery */}
+
+
+
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+
+
                         </div>
                     </div>
                 </div>
