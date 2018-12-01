@@ -1,0 +1,161 @@
+#dropdown-content a:hover {background-color:rgb(59, 174, 219)}
+.icon-user{
+    margin-left: 0px;
+    
+}
+.user-pro{
+    margin-left: 10px;
+   
+}
+/* .arrow{
+    display:block;
+    margin-left:17px;
+    margin-top:2px;
+    margin-bottom:5px;
+} */
+.arrow {
+	width: 0;
+	height: 0;
+	border-left: 25px solid transparent;
+	border-right: 25px solid transparent;
+	border-bottom: 50px solid #555;
+}
+.circle {
+    height: 40px;
+    width: 40px;
+    /* background-color:white; */
+    border-radius: 50%;
+    
+  }
+  .radius-button{
+    border-radius: 25px;
+    padding:10px;
+  }
+  input[type=file]{
+ 
+    visibility:hidden;
+    display: none;
+    
+  }
+  .icon-picture{
+      font-size: 20px;
+      color: #1DA1F2;
+        
+  }
+  .modal-footer{
+      position: relative;
+      float: right;
+     
+  }
+  .footer-image{
+    margin-top: -25px;
+  }
+  .imageRow{
+    margin-top: -25px;
+  }
+  .modal {
+    display: none; 
+    position: fixed; 
+    z-index: 1; 
+    left: 0;
+    top: 0;
+    width: 100%; 
+    height: 100%; 
+    overflow: auto; 
+    background-color: rgb(0,0,0); 
+    background-color: rgba(0,0,0,0.4);
+
+
+}
+.modal-content {
+    border-radius: 10px;
+    background-color: #fefefe;
+    margin: 5% auto; 
+   
+    border: 1px solid #008CBA;
+    width: 45%; 
+}
+.close {
+    margin-top:-5px;
+    margin-right: 2px;
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+.modal-title{
+    font-size: 20px;
+}
+.btn{
+        background-color: #4CAF50; /* Green */
+        border: none;
+        color: white;
+        /* padding: 15px 32px; */
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 14px;
+        margin: 4px 2px;
+        cursor: pointer;
+}
+.btn-primary{
+	background-color: #008CBA;
+}
+.avataImage{
+    padding-right: 1px;
+}
+.col-sm-2{
+    
+        width: 15%;
+        float: left;
+        padding: 15px;
+        margin-top:5px;
+        
+    
+}
+.col-sm-10{
+    width: 80%;
+        float: left;
+        padding: 15px;
+        
+}
+.imageCol{
+    float: right;
+}
+.row::after {
+    content: "";
+    clear: both;
+    display: table;
+}
+* {
+    box-sizing: border-box;
+}
+.form-control{
+    
+        width: 100%;
+        height: 80px;
+        
+        box-sizing: border-box;
+        border: 1px solid #008CBA;
+        border-radius: 10px;
+        background-color:white;
+        resize: auto;
+    
+}
+
+
+.modal-body{
+    background-color: #1DA1F2;
+    background: rgba(29,161,242,0.1);
+}
+.modal-footer{
+    margin-top: -92px;
+}
+
