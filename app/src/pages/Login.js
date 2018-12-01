@@ -25,20 +25,20 @@ class Login extends Component {
                             </div>
                             <div className="text-right p-t-13 p-b-23">
                                 <span className="txt1">
-                                    Forgot
+                                    Forgot &nbsp;
                                 </span>
                                 <a href="#" className="txt2">
-                                    Username / Password?
+                                    Username / Password
                                 </a>
                             </div>
                             <div className="container-login100-form-btn">
-                                <button className="login100-form-btn">
+                                <button onClick={this.clickToTwitter} className="login100-form-btn">
                                     Sign in
                                 </button>
                             </div>
-                            <div className="flex-col-c p-t-170 p-b-40">
+                            <div className="flex-col-c p-t-30 p-b-40">
                                 <span className="txt1 p-b-9">
-                                    Don’t have an account?
+                                    Don’t have an account?&nbsp;
                                 </span>
                                 <a href="#" className="txt3">
                                     Sign up now

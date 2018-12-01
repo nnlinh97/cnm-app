@@ -22,7 +22,7 @@ class Info extends Component {
             location = (
                 <div className="mb-4">
                     &nbsp;<i className="fa fa-map-marker" />
-                    <a href="#" className="text-teal no-underline hover:underline">&nbsp;&nbsp;&nbsp;{ profile.location}</a>
+                    <a href="#" className="text-teal no-underline hover:underline">&nbsp;&nbsp;&nbsp;&nbsp;{ profile.location}</a>
                 </div>
             );
             birthday = (
@@ -34,7 +34,7 @@ class Info extends Component {
             
         }
         return (
-            <div className="w-full lg:w-1/4 pl-4 lg:pl-0 pr-6 mt-8 mb-4">
+            <div style={{'marginTop': '0rem'}} className="w-full lg:w-1/4 pl-4 lg:pl-0 pr-6 mt-8 mb-4">
                 <h1>
                     <a href="#" className="text-black font-bold no-underline hover:underline">{profile ? profile.username : ''}</a>
                 </h1>

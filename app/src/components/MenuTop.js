@@ -32,6 +32,25 @@ class MenuTop extends Component {
         if (profile) {
             avatar = profile.avatarURL;
         }
+        console.log(this.props.tab);
+        const {tab} = this.props;
+        let tab1 = " hover:no-underline";
+        let tab2 = " hover:no-underline";
+        let tab3 = " hover:no-underline";
+
+        let text1 = " hover:text-teal";
+        let text2 = " hover:text-teal";
+        let text3 = " hover:text-teal";
+        if(tab == "tab1"){
+            tab1 = " border-teal";
+            text1 = " text-teal";
+        } else if(tab == "tab2"){
+            tab2 = " border-teal";
+            text2 = " text-teal";
+        } else if(tab == 'tab3'){
+            tab3 = " border-teal";
+            text3 = " text-teal";
+        }
         return (
             <div className="bg-white shadow">
                 <div className="container mx-auto flex flex-col lg:flex-row items-center lg:relative">
@@ -40,22 +59,22 @@ class MenuTop extends Component {
                     </div>
                     <div className="w-full lg:w-1/2">
                         <ul className="list-reset flex">
-                            <li className="text-center py-3 px-4 border-b-2 border-solid border-transparent border-teal">
+                            <li className={`text-center py-3 px-4 border-b-2 border-solid border-transparent${tab1}`}>
                                 <a onClick={(e) => this.getTweets(e)} href="" className="text-grey-darker no-underline hover:no-underline">
                                     <div className="text-sm font-bold tracking-tight mb-1">{profile ? "Tweets" : ""}</div>
-                                    <div className="text-lg tracking-tight font-bold text-teal">{profile ? profile.tweets : ""}</div>
+                                    <div className={`text-lg tracking-tight font-bold${text1}`}>{profile ? profile.tweets : ""}</div>
                                 </a>
                             </li>
-                            <li  className="text-center py-3 px-4 border-b-2 border-solid border-transparent hover:border-teal">
+                            <li className={`text-center py-3 px-4 border-b-2 border-solid border-transparent${tab2}`}>
                                 <a onClick={(e) => this.getFollowings(e)} href="" className="text-grey-darker no-underline hover:no-underline">
                                     <div className="text-sm font-bold tracking-tight mb-1">{profile ? "Following" : ""}</div>
-                                    <div className="text-lg tracking-tight font-bold hover:text-teal">{profile ? profile.following : ""}</div>
+                                    <div className={`text-lg tracking-tight font-bold${text2}`}>{profile ? profile.following : ""}</div>
                                 </a>
                             </li>
-                            <li  className="text-center py-3 px-4 border-b-2 border-solid border-transparent hover:border-teal">
+                            <li  className={`text-center py-3 px-4 border-b-2 border-solid border-transparent${tab3}`}>
                                 <a onClick={(e) => this.getFollowers(e)} href="" className="text-grey-darker no-underline hover:no-underline">
                                     <div className="text-sm font-bold tracking-tight mb-1">{profile ? "Followers" : ""}</div>
-                                    <div className="text-lg tracking-tight font-bold hover:text-teal">{profile ? profile.follower : ""}</div>
+                                    <div className={`text-lg tracking-tight font-bold${text3}`}>{profile ? profile.follower : ""}</div>
                                 </a>
                             </li>
                             {/* <li className="text-center py-3 px-4 border-b-2 border-solid border-transparent hover:border-teal">
