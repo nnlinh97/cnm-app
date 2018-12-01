@@ -61,6 +61,47 @@ class Header extends Component {
                             <button className="bg-teal hover:bg-teal-dark text-white font-medium py-2 px-4 rounded-full">
                                 Tweet
                             </button>
+                            <div className="modal fade" id="myModal" role="dialog">
+                                <div className="modal-dialog">
+                                    <div className="modal-content">
+                                        <div className="modal-header text-center">
+                                            <button type="button" className="close" data-dismiss="modal">&times;</button>
+                                            <h4 className="modal-title">Compose new Tweet</h4>
+                                        </div>
+                                        <hr />
+                                        <div className="modal-body">
+                                            <div className="row colorRow">
+                                                <div className="col-sm-2 avataImage">
+                                                    <img className="imageCol Avatar--size32 user-avatar-img avatar circle" src="https://abs.twimg.com/sticky/default_profile_images/default_profile_normal.png" alt="thanhhue"/>
+
+                                                </div>
+                                                <div className="col-sm-10">
+                                                    <textarea placeholder="Write your tweet here" className="form-control" row="5" name="tweet" ></textarea>
+                                                </div>
+                                            </div>
+                                            <div className="row footer-image " >
+                                                <div className="col-sm-2"></div>
+                                                <div className="col-sm-10 imageRow">
+                                                    <label htmlFor="image" ><i className="icon-picture" title="Add photo"></i></label>
+                                                    <input id="image" type="file"  name="image" /> 
+                                                </div>  
+                                            </div>
+                                        </div>
+                                        <div className="modal-footer ">
+                                            
+                                            <div className="row">
+                                                <div className="col-sm-2"></div>
+                                                <div className="col-sm-10">
+                                                    <button type="button" className="btn btn-primary radius-button" data-dismiss="modal">Tweet</button>
+                                                </div>
+                                                
+                                            </div>
+                                            
+                                        </div>
+                                    </div>
+                                
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
