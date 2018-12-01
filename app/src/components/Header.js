@@ -24,7 +24,7 @@ class Header extends Component {
                     <nav className="w-full lg:w-2/5">
                         <a onClick={(e) => this.preventDefault(e)} href="" className="text-grey-darker text-sm mr-4 font-semibold pb-6 border-b-2 border-solid border-transparent no-underline hover:text-teal hover:border-teal hover:no-underline">
                             <i className="fa fa-home fa-lg" /> Home</a>
-                        <a onClick={(e) => this.preventDefault(e)} href="" className="text-grey-darker text-sm mr-4 font-semibold pb-6 border-b-2 border-solid border-transparent no-underline hover:text-teal hover:border-teal hover:no-underline">
+                        <a onClick={(e) => this.preventDefault(e)} style={{marginLeft: '2rem'}} href="" className="text-grey-darker text-sm mr-4 font-semibold pb-6 border-b-2 border-solid border-transparent no-underline hover:text-teal hover:border-teal hover:no-underline">
                             <i className="fa fa-bell fa-lg" /> Notifications</a>
                         {/* <a href="#" className="text-grey-darker text-sm mr-4 font-semibold pb-6 border-b-2 border-solid border-transparent no-underline hover:text-teal hover:border-teal hover:no-underline">
                             <i className="fa fa-envelope fa-lg" /> Messages
@@ -38,7 +38,7 @@ class Header extends Component {
                     <div className="w-full lg:w-2/5 flex lg:justify-end">
                         <div className="mr-4 relative">
                             <input type="text" className="bg-grey-lighter h-8 px-4 py-2 text-xs w-48 rounded-full" placeholder="Search Twitter" />
-                            <span className="flex items-center absolute pin-r pin-y mr-3">
+                            <span style={{bottom: '6px'}} className="flex items-center absolute pin-r pin-y mr-3">
                                 <i className="fa fa-search text-grey" />
                             </span>
                         </div>
