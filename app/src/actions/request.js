@@ -16,3 +16,14 @@ export const getListPosts = () => {
         });
     }
 }
+
+export const updateLikePost = (post) => {
+    console.log(post);
+    return (dispatch) => {
+        dispatch(Action.updateLikePost(post))
+        return callAPI(`/tweet/${post.id}`, "PUT", post).then((res) => {
+            // console.log(res.data);
+            dispatch(Action.updateLikePost(res.data));
+        });
+    }
+}

@@ -14,3 +14,10 @@ export const getListPosts = (posts) => {
         posts: posts
     }
 }
+
+export const updateLikePost = (post) => {
+    return {
+        type: Types.UPDATE_LIKE_POST,
+        post: post
+    }
+}

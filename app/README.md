@@ -64,4 +64,5 @@ https://5c0089020296210013dc804a.mockapi.io
     GET     /tweet      => get list tweets (posts)
     GET     /tweet/:id  => get tweet
     POST    /tweet      => create tweet
+    PUT     /tweet/:id  => edit tweet
 

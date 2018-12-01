@@ -1,13 +1,23 @@
 import React, { Component } from 'react';
+import moment from 'moment';
+import { connect } from 'react-redux';
+import * as Actions from '../actions/request';
+
 
 class Post extends Component {
     getPost = (post, e) => {
         e.preventDefault();
-        console.log(post);
+    }
+
+    updateLikePost = (post, e) => {
+        e.preventDefault();
+        post.likes = post.liked ? (post.likes - 1) : (post.likes + 1);
+        post.liked = !post.liked;
+        this.props.updateLikePost(post);
     }
     render() {
         const { post } = this.props;
-        
+
         return (
             <div className="flex border-b border-solid border-grey-light">
                 <div className="w-1/8 text-right pl-3 pt-3">
@@ -25,7 +35,7 @@ class Post extends Component {
                             </span>
                             <span className="text-grey-dark">&nbsp;@{post.username}</span>
                             <span className="text-grey-dark">·</span>
-                            <span className="text-grey-dark">1 Dec 2017</span>
+                            <span className="text-grey-dark">&nbsp;{moment(post.createAt).startOf('hour').fromNow()} </span>
                         </div>
                         <div>
                             <a href="#" className="text-grey-dark hover:text-teal">
@@ -36,13 +46,13 @@ class Post extends Component {
                     <div>
                         <div className="mb-4">
                             <p className="mb-6">🎉 {post.username} is here!</p>
-                            <p style={{cursor: 'pointer'}} onClick={(e) => this.getPost(post, e)} className="mb-4">{post.content}</p>
+                            <p style={{ cursor: 'pointer' }} onClick={(e) => this.getPost(post, e)} className="mb-4">{post.content}</p>
                             {/* <p className="mb-4">Learn more in our upgrade guide:</p> */}
                             {/* <p className="mb-6">
                                 <a href="#" className="text-teal">github.com/tailwind/ta...</a>
                             </p> */}
                             <p>
-                                { post.image == "" ? "" :
+                                {post.image == "" ? "" :
                                     <a onClick={(e) => this.getPost(post, e)} href="#">
                                         <img src={post.image} alt="tweet image" className="border border-solid border-grey-light rounded-sm" />
                                     </a>
@@ -51,16 +61,23 @@ class Post extends Component {
                         </div>
                         <div className="pb-2">
                             <span className="mr-8">
-                                <a  onClick={(e) => this.getPost(post, e)} href="" className="text-grey-dark hover:no-underline hover:text-blue-light">
-                                    <i className="fa fa-comment fa-lg mr-2" /> {post.comments.length}</a>
+                                <a onClick={(e) => this.getPost(post, e)} href="" className="text-grey-dark hover:no-underline hover:text-blue-light">
+                                    {post.comments.length > 0 ? <i className="fa fa-comment fa-lg mr-2" /> : <i className="fa fa-comment-o fa-lg mr-2" />}
+                                    {post.comments.length}
+                                </a>
                             </span>
                             <span className="mr-8">
                                 <a href="#" className="text-grey-dark hover:no-underline hover:text-green">
                                     <i className="fa fa-retweet fa-lg mr-2" /> {post.retweets}</a>
                             </span>
                             <span className="mr-8">
-                                <a href="#" className="text-grey-dark hover:no-underline hover:text-red">
-                                    <i className="fa fa-heart fa-lg mr-2" /> {post.likes}</a>
+                                <a onClick={(e) => this.updateLikePost(post, e)} href="" className="text-grey-dark hover:no-underline hover:text-red">
+                                    {post.liked ? <i className="fa fa-heart fa-lg mr-2" /> : <i className="fa fa-heart-o fa-lg mr-2" /> }
+                                    {/* <i className="fa fa-heart-o fa-lg mr-2" /> */}
+                                    {/* <i className="fa fa-heart fa-lg mr-2" /> */}
+                                    {post.likes}
+                                </a>
+
                             </span>
                             {/* <span className="mr-8">
                                 <a href="#" className="text-grey-dark hover:no-underline hover:text-teal">
@@ -75,4 +92,16 @@ class Post extends Component {
     }
 }
 
-export default Post;
+// export default Post;
+const mapStateToProps = (state) => {
+    return {
+        profile: state.profile
+    }
+}
+
+const mapDispatchToProps = (dispatch, action) => {
+    return {
+        updateLikePost: (post) => dispatch(Actions.updateLikePost(post))
+    }
+}
+export default connect(mapStateToProps, mapDispatchToProps)(Post);
