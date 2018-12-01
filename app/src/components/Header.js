@@ -19,7 +19,7 @@ class Header extends Component {
             avatar = profile.avatarURL;
         }
         return (
-            <div className="bg-white">
+            <div className="bg-white" style={{position: 'fixed', width: '100%', zIndex: 1}}>
                 <div className="container mx-auto flex flex-col lg:flex-row items-center py-4">
                     <nav className="w-full lg:w-2/5">
                         <a onClick={(e) => this.preventDefault(e)} href="" className="text-grey-darker text-sm mr-4 font-semibold pb-6 border-b-2 border-solid border-transparent no-underline hover:text-teal hover:border-teal hover:no-underline">
