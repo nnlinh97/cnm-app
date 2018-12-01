@@ -21,3 +21,10 @@ export const updateLikePost = (post) => {
         post: post
     }
 }
+
+export const createNewPost = (post) => {
+    return {
+        type: Types.CREATE_NEW_POST,
+        post: post
+    }
+}

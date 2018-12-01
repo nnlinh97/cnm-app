@@ -12,18 +12,23 @@ export const getProfile = () => {
 export const getListPosts = () => {
     return (dispatch) => {
         return callAPI("/tweet", "GET", null).then((res) => {
-            dispatch(Action.getListPosts(res.data));
+            dispatch(Action.getListPosts(res.data.reverse()));
         });
     }
 }
 
 export const updateLikePost = (post) => {
-    console.log(post);
     return (dispatch) => {
-        dispatch(Action.updateLikePost(post))
         return callAPI(`/tweet/${post.id}`, "PUT", post).then((res) => {
-            // console.log(res.data);
             dispatch(Action.updateLikePost(res.data));
+        });
+    }
+}
+
+export const createNewPost = (post) => {
+    return (dispatch) => {
+        return callAPI("/tweet", "POST", post).then((res) => {
+            dispatch(Action.createNewPost(res.data));
         });
     }
 }

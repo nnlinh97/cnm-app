@@ -10,9 +10,12 @@ const posts = (state = initialState, action) => {
 
         case Types.UPDATE_LIKE_POST:
             let index = _.findIndex(state, { 'id': action.post.id });
-            if(index !== -1){
+            if (index !== -1) {
                 state[index] = action.post;
             }
+            return [...state];
+        case Types.CREATE_NEW_POST:
+            state = [action.post, ...state];
             return [...state];
 
         default: return [...state];

@@ -35,7 +35,7 @@ class Post extends Component {
                             </span>
                             <span className="text-grey-dark">&nbsp;@{post.username}&nbsp;</span>
                             <span className="text-grey-dark">·</span>
-                            <span className="text-grey-dark">&nbsp;{moment(post.createAt).format('ll')} </span>
+                            <span className="text-grey-dark">&nbsp;{moment(post.creatAt).format('ll')} </span>
                         </div>
                         <div>
                             <a href="#" className="text-grey-dark hover:text-teal">

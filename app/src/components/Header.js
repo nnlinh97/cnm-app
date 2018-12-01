@@ -1,13 +1,16 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
-// import './../styles/Header.css'
+import * as Actions from './../actions/request';
+var randomString = require('random-string');
+
 
 class Header extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            modal: 'none'
+            modal: 'none',
+            content: ''
         }
     }
 
@@ -30,6 +33,32 @@ class Header extends Component {
     signOut = (e) => {
         e.preventDefault();
         this.props.history.push('/');
+    }
+
+    onHandleChange = (e) => {
+        let target = e.target;
+        let name = target.name;
+        let value = target.value;
+        this.setState({
+            [name]: value
+        });
+    }
+
+    onHandleSubmit = () => {
+        const item = {
+            id: randomString(),
+            username: 'nnlinh97',
+            creatAt: Date.now(),
+            content: this.state.content,
+            comments: [],
+            retweets: 0,
+            likes: 0,
+            avatarURL: 'https://tinyurl.com/yavpgl4g',
+            liked: false,
+            image: ''
+        }
+        this.removeModal();
+        this.props.createNewPost(item);
     }
 
     render() {
@@ -85,7 +114,9 @@ class Header extends Component {
                                 <div className="modal-dialog">
                                     <div className="modal-content">
                                         <div className="modal-header text-center" style={{ height: '50px' }}>
-                                            <button onClick={this.removeModal} type="button" className="close" data-dismiss="modal">&times;</button>
+                                            <button onClick={this.removeModal} type="button" className="close" data-dismiss="modal">
+                                                <i className="fa fa-times-circle"></i>
+                                            </button>
                                             <h4 className="modal-title" style={{ paddingTop: '11px' }}>Compose new Tweet</h4>
                                         </div>
                                         <hr />
@@ -93,11 +124,17 @@ class Header extends Component {
                                             <div className="row colorRow">
                                                 <div className="col-sm-2 avataImage">
                                                     <img className="imageCol Avatar--size32 user-avatar-img avatar circle" src={avatar} alt="thanhhue" />
+                                                </div>
 
-                                                </div>
+
+
                                                 <div className="col-sm-10">
-                                                    <textarea placeholder="Write your tweet here" className="form-control" row="5" name="tweet" ></textarea>
+                                                    <textarea onChange={this.onHandleChange} name="content" value={this.state.content} placeholder="Write your tweet here" className="form-control" row="5" ></textarea>
                                                 </div>
+
+
+
+
                                             </div>
                                             <div className="row footer-image " >
                                                 <div className="col-sm-2"></div>
@@ -111,7 +148,9 @@ class Header extends Component {
                                             <div className="row">
                                                 <div className="col-sm-2"></div>
                                                 <div className="col-sm-10">
-                                                    <button type="button" className="btn btn-primary radius-button" data-dismiss="modal">Tweet</button>
+                                                    <button onClick={this.onHandleSubmit} type="button" className="btn btn-primary radius-button" data-dismiss="modal">
+                                                        Tweet
+                                                    </button>
                                                 </div>
                                             </div>
                                         </div>
@@ -136,6 +175,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch, action) => {
     return {
+        createNewPost: (post) => dispatch(Actions.createNewPost(post))
     }
 }
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Header));
