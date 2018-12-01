@@ -1,14 +1,21 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
 
 class Header extends Component {
+
     preventDefault = (e) => {
         e.preventDefault();
     }
+
+    signOut = (e) => {
+        e.preventDefault();
+        this.props.history.push('/');
+    }
     render() {
-        const {profile} = this.props;
+        const { profile } = this.props;
         let avatar = "https://tinyurl.com/yapenv5f";
-        if(profile) {
+        if (profile) {
             avatar = profile.avatarURL;
         }
         return (
@@ -35,10 +42,20 @@ class Header extends Component {
                                 <i className="fa fa-search text-grey" />
                             </span>
                         </div>
-                        <div className="mr-4">
-                            <a onClick={(e) => this.preventDefault(e)} href="">
+                        <div className="mr-4 linh-dropdown">
+                            <a onClick={(e) => this.preventDefault(e)} href="" className="linh-dropbtn">
                                 <img src={avatar} alt="avatar" className="h-8 w-8 rounded-full" />
                             </a>
+                            <div className="linh-dropdown-content">
+                                <a className="linh-a" href="#">
+                                    <i className="fa fa-user"></i>
+                                    &nbsp;&nbsp;&nbsp;Edit Profile
+                                </a>
+                                <a onClick={(e) => this.signOut(e)} className="linh-a" href="">
+                                    <i className="fa fa-sign-out"></i>
+                                    &nbsp;&nbsp;Sign Out
+                                </a>
+                            </div>
                         </div>
                         <div>
                             <button className="bg-teal hover:bg-teal-dark text-white font-medium py-2 px-4 rounded-full">
@@ -64,4 +81,4 @@ const mapDispatchToProps = (dispatch, action) => {
     return {
     }
 }
-export default connect(mapStateToProps, mapDispatchToProps)(Header);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Header));
