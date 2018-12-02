@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {connect} from 'react-redux';
+import { connect } from 'react-redux';
 
 import * as Actions from '../actions/request';
 
@@ -9,8 +9,10 @@ import MenuTop from '../components/MenuTop';
 import Info from '../components/Info';
 import Posts from '../components/Posts';
 import RightSidebar from '../components/RightSidebar';
+import Following from '../components/Following'
 
-class Following extends Component {
+
+class Followings extends Component {
 
     componentDidMount() {
         this.props.getProfile();
@@ -19,16 +21,32 @@ class Following extends Component {
     }
 
     render() {
-        console.log('followings page');
-        console.log(this.props.followings);
+        const {followings} = this.props;
+        let listFollowing ='';
+        if(followings.length > 0){
+            listFollowing = followings.map((following, index) => {
+                return (
+                    <Following
+                        key={index}
+                        following={following}
+                    />
+                )
+            })
+        }
         return (
             <div>
                 <Header />
                 <CoverImage />
-                <MenuTop tab="tab2" />
+                <MenuTop tab="tab3" />
                 <div className="container mx-auto flex flex-col lg:flex-row mt-3 text-sm leading-normal">
                     <Info />
-                    list following
+                    <div class="w-full lg:w-3/4 bg-white mb-4">
+                        <div class="grid border-b border-solid border-grey-light">
+                            {listFollowing}
+                            
+                        </div>
+                    </div>
+                    
                 </div>
             </div>
         );
@@ -50,4 +68,4 @@ const mapDispatchToProps = (dispatch, action) => {
         getListFollowings: () => dispatch(Actions.getListFollowings())
     }
 }
-export default connect(mapStateToProps, mapDispatchToProps)(Following);
+export default connect(mapStateToProps, mapDispatchToProps)(Followings);
