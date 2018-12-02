@@ -15,9 +15,12 @@ class Following extends Component {
     componentDidMount() {
         this.props.getProfile();
         this.props.getListPosts();
+        this.props.getListFollowings();
     }
 
     render() {
+        console.log('followings page');
+        console.log(this.props.followings);
         return (
             <div>
                 <Header />
@@ -36,13 +39,15 @@ class Following extends Component {
 
 const mapStateToProps = (state) => {
     return {
+        followings: state.followings
     }
 }
 
 const mapDispatchToProps = (dispatch, action) => {
     return {
         getProfile: () => dispatch(Actions.getProfile()),
-        getListPosts: () => dispatch(Actions.getListPosts())
+        getListPosts: () => dispatch(Actions.getListPosts()),
+        getListFollowings: () => dispatch(Actions.getListFollowings())
     }
 }
 export default connect(mapStateToProps, mapDispatchToProps)(Following);

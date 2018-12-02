@@ -158,7 +158,7 @@ class Header extends Component {
                                 </div>
                             </div>
 
-                            <div className="modal fade" id="myModal" role="dialog" style={{ display: 'block' }}>
+                            <div className="modal fade" id="myModal" role="dialog" style={{ display: 'none' }}>
                                 <div className="modal-dialog">
                                     <div className="modal-content">
                                         <div className="profile-body">

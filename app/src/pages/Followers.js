@@ -17,6 +17,7 @@ class Followers extends Component {
     componentDidMount() {
         this.props.getProfile();
         this.props.getListPosts();
+        this.props.getListFollowers();
     }
 
     render() {
@@ -38,13 +39,15 @@ class Followers extends Component {
 
 const mapStateToProps = (state) => {
     return {
+        followers: state.followers
     }
 }
 
 const mapDispatchToProps = (dispatch, action) => {
     return {
         getProfile: () => dispatch(Actions.getProfile()),
-        getListPosts: () => dispatch(Actions.getListPosts())
+        getListPosts: () => dispatch(Actions.getListPosts()),
+        getListFollowers: () => dispatch(Actions.getListFollowers())
     }
 }
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Followers));
