@@ -1,0 +1,62 @@
+.headerPost{
+    grid-area: header;
+    background-color: #f1f1f1;
+    height: 100px;
+    font-size: 35px;
+}
+.modal4{
+    display: none; 
+    position: fixed; 
+    z-index: 1; 
+    left: 0;
+    top: 0;
+    width: 100%; 
+    height: 100%; 
+    overflow: auto; 
+    background-color: rgb(0,0,0); 
+    background-color: rgba(0,0,0,0.4);
+}
+.modal4-content {
+    border-radius: 10px;
+    background-color: #fefefe;
+    margin: 5% auto; 
+    /* height:auto; */
+    border: 1px solid #008CBA;
+    width: 45%; 
+}
+.btn-follow{
+    margin-right:-300px;
+    float:right;
+}
+.profile-save{
+    border-radius: 20px;
+}
+.line-hr{
+    border-top: 1px solid #8c8b8b;
+}
+.line-hr-full{
+    width:100%;
+    border-top: 1px solid #8c8b8b;
+}
+.circlePost {
+    height: 40px;
+    width: 40px;
+    /* background-color:white; */
+    border-radius: 50%;
+    
+  }
+  /* .p-save{
+      vertical-align: text-bottom
+  } */
+  .rightbtn{
+      float:right;
+  }
+  .imageLeft{
+      float: left;
+  }
+  .backgr{
+      background-color: #f5f8fa
+  }
+  body{
+      overflow: hidden
+  }
