@@ -11,29 +11,29 @@ class MenuTop extends Component {
     getTweets = (e) => {
         e.preventDefault();
         const user = this.props.match.params.username;
-        this.props.history.push(`/${user}`);      
+        this.props.history.push(`/${user}`);
     }
 
     getFollowings = (e) => {
         e.preventDefault();
         const user = this.props.match.params.username;
-        this.props.history.push(`/${user}/followings`);      
+        this.props.history.push(`/${user}/followings`);
     }
 
     getFollowers = (e) => {
         e.preventDefault();
         const user = this.props.match.params.username;
-        this.props.history.push(`/${user}/followers`);      
+        this.props.history.push(`/${user}/followers`);
     }
 
     render() {
-        const { profile } = this.props;
+        const { profile, posts } = this.props;
         let avatar = "https://tinyurl.com/yapenv5f";
         if (profile) {
             avatar = profile.avatarURL;
         }
         console.log(this.props.tab);
-        const {tab} = this.props;
+        const { tab } = this.props;
         let tab1 = " hover:no-underline";
         let tab2 = " hover:no-underline";
         let tab3 = " hover:no-underline";
@@ -41,13 +41,13 @@ class MenuTop extends Component {
         let text1 = " hover:text-teal";
         let text2 = " hover:text-teal";
         let text3 = " hover:text-teal";
-        if(tab == "tab1"){
+        if (tab == "tab1") {
             tab1 = " border-teal";
             text1 = " text-teal";
-        } else if(tab == "tab2"){
+        } else if (tab == "tab2") {
             tab2 = " border-teal";
             text2 = " text-teal";
-        } else if(tab == 'tab3'){
+        } else if (tab == 'tab3') {
             tab3 = " border-teal";
             text3 = " text-teal";
         }
@@ -62,7 +62,7 @@ class MenuTop extends Component {
                             <li className={`text-center py-3 px-4 border-b-2 border-solid border-transparent${tab1}`}>
                                 <a onClick={(e) => this.getTweets(e)} href="" className="text-grey-darker no-underline hover:no-underline">
                                     <div className="text-sm font-bold tracking-tight mb-1">{profile ? "Tweets" : ""}</div>
-                                    <div className={`text-lg tracking-tight font-bold${text1}`}>{profile ? profile.tweets : ""}</div>
+                                    <div className={`text-lg tracking-tight font-bold${text1}`}>{posts.length > 0 ? posts.length : ""}</div>
                                 </a>
                             </li>
                             <li className={`text-center py-3 px-4 border-b-2 border-solid border-transparent${tab2}`}>
@@ -71,7 +71,7 @@ class MenuTop extends Component {
                                     <div className={`text-lg tracking-tight font-bold${text2}`}>{profile ? profile.following : ""}</div>
                                 </a>
                             </li>
-                            <li  className={`text-center py-3 px-4 border-b-2 border-solid border-transparent${tab3}`}>
+                            <li className={`text-center py-3 px-4 border-b-2 border-solid border-transparent${tab3}`}>
                                 <a onClick={(e) => this.getFollowers(e)} href="" className="text-grey-darker no-underline hover:no-underline">
                                     <div className="text-sm font-bold tracking-tight mb-1">{profile ? "Followers" : ""}</div>
                                     <div className={`text-lg tracking-tight font-bold${text3}`}>{profile ? profile.follower : ""}</div>
@@ -114,7 +114,8 @@ class MenuTop extends Component {
 // export default MenuTop;
 const mapStateToProps = (state) => {
     return {
-        profile: state.profile
+        profile: state.profile,
+        posts: state.posts
     }
 }
 

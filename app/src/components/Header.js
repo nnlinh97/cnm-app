@@ -142,7 +142,7 @@ class Header extends Component {
                                     <div  ref={this.state.isModal ? this.setWrapperRef : ""} className="modal-content">
                                         <div className="modal-header text-center" style={{ height: '50px' }}>
                                             <button onClick={this.removeModal} type="button" className="close" data-dismiss="modal">
-                                                <i className="fa fa-times-circle"></i>
+                                                <i className="fa fa-times-circle" style={{marginTop: '5px'}}></i>
                                             </button>
                                             <h4 className="modal-title" style={{ paddingTop: '11px' }}>Compose new Tweet</h4>
                                         </div>
