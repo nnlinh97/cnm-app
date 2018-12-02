@@ -14,6 +14,8 @@ class Profile extends Component {
     componentDidMount() {
         this.props.getProfile();
         this.props.getListPosts();
+        this.props.getListFollowings();
+        this.props.getListFollowers();
     }
 
     render() {
@@ -41,7 +43,9 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch, action) => {
     return {
         getProfile: () => dispatch(Actions.getProfile()),
-        getListPosts: () => dispatch(Actions.getListPosts())
+        getListPosts: () => dispatch(Actions.getListPosts()),
+        getListFollowings: () => dispatch(Actions.getListFollowings()),
+        getListFollowers: () => dispatch(Actions.getListFollowers())
     }
 }
 export default connect(mapStateToProps, mapDispatchToProps)(Profile);

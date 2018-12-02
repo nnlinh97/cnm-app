@@ -32,3 +32,19 @@ export const createNewPost = (post) => {
         });
     }
 }
+
+export const getListFollowers = () => {
+    return (dispatch) => {
+        return callAPI("/followers", "GET", null).then((res) => {
+            dispatch(Action.getListFollowers(res.data));
+        });
+    }
+}
+
+export const getListFollowings = () => {
+    return (dispatch) => {
+        return callAPI("/following", "GET", null).then((res) => {
+            dispatch(Action.getListFollowings(res.data));
+        });
+    }
+}

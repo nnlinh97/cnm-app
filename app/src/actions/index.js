@@ -28,3 +28,17 @@ export const createNewPost = (post) => {
         post: post
     }
 }
+
+export const getListFollowers = (followers) => {
+    return {
+        type: Types.GET_LIST_FOLLOWERS,
+        followers: followers
+    }
+}
+
+export const getListFollowings = (followings) => {
+    return {
+        type: Types.GET_LIST_FOLLOWINGS,
+        followings: followings
+    }
+}

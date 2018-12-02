@@ -10,19 +10,22 @@ class Header extends Component {
         super(props);
         this.state = {
             modal: 'none',
-            content: ''
+            content: '',
+            isModal: false
         }
     }
 
     toggleModal = () => {
         this.setState({
-            modal: 'block'
+            modal: 'block',
+            isModal: true
         })
     }
 
     removeModal = () => {
         this.setState({
-            modal: 'none'
+            modal: 'none',
+            isModal: false
         })
     }
 
@@ -59,7 +62,31 @@ class Header extends Component {
         }
         this.removeModal();
         this.props.createNewPost(item);
+        this.setState({
+            content: ''
+        })
     }
+
+    componentDidMount() {
+        document.addEventListener('mousedown', this.handleClickOutside);
+    }
+
+    componentWillUnmount() {
+        document.removeEventListener('mousedown', this.handleClickOutside);
+    }
+
+    setWrapperRef = (node) => {
+        this.wrapperRef = node;
+    }
+
+    handleClickOutside = (event) => {
+        if (this.wrapperRef && !this.wrapperRef.contains(event.target)) {
+            this.removeModal();
+        }
+    }
+
+
+
 
     render() {
         const { profile } = this.props;
@@ -112,10 +139,10 @@ class Header extends Component {
                             </button>
                             <div className="modal fade" id="myModal" role="dialog" style={{ display: this.state.modal }}>
                                 <div className="modal-dialog">
-                                    <div className="modal-content">
+                                    <div  ref={this.state.isModal ? this.setWrapperRef : ""} className="modal-content">
                                         <div className="modal-header text-center" style={{ height: '50px' }}>
                                             <button onClick={this.removeModal} type="button" className="close" data-dismiss="modal">
-                                                <i className="fa fa-times-circle"></i>
+                                                <i className="fa fa-times-circle" style={{marginTop: '5px'}}></i>
                                             </button>
                                             <h4 className="modal-title" style={{ paddingTop: '11px' }}>Compose new Tweet</h4>
                                         </div>
@@ -159,6 +186,7 @@ class Header extends Component {
                             </div>
 
                             {/* <div className="modal fade" id="myModal" role="dialog" style={{ display: 'block' }}>
+                            <div className="modal fade" id="myModal" role="dialog" style={{ display: 'none' }}>
                                 <div className="modal-dialog">
                                     <div className="modal-content">
                                         <div className="profile-body">
