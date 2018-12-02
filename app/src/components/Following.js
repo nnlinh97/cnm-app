@@ -2,15 +2,17 @@ import React, { Component } from 'react';
 
 
 class Following extends Component {
-   
+
     render() {
-        const {following} = this.props;
-        let btnClass = "btn1 bg-white hover:bg-blue-lightest text-blue font-medium py-2 px-4 rounded-full";
-        let descBtn = "Follow";
-        if(following.following){
-            btnClass = "btn1 bg-blue-light hover:bg-yellow-darker text-white font-medium py-2 px-4 rounded-full";
-            descBtn = "Following";
-        }
+        const { following } = this.props;
+        let btnClass = "btn1 bg-blue-light hover:bg-yellow-darker text-white font-medium py-2 px-4 rounded-full";
+        let descBtn = "Following";
+
+        // chỗ này bị sai sai
+        // if (following.following) {
+        //     btnClass = "btn1 bg-white hover:bg-blue-lightest text-blue font-medium py-2 px-4 rounded-full";
+        //     descBtn = "Follow";
+        // }
         return (
             <div class="w-full mb-4">
                 <div class="ProfileCard">
@@ -36,7 +38,7 @@ class Following extends Component {
                                                     </span>
                                                 </span>
                                             </button> */}
-                                            <button type = "button" class={btnClass}>{descBtn}</button>
+                                            <button type="button" class={btnClass}>{descBtn}</button>
                                             {/* <button type="button" class="EdgeButton EdgeButton--primary EdgeButton--small button-text following-text">
                                                 <span aria-hidden="true">Following</span>
                                                 <span class="u-hiddenVisually">Following
