@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="./follow1.css">
+    <title>Document</title>
+</head>
+
+<body class="bg-grey-light font-sans" style="position: relative;">
+    <div class="bg-white">
+        <div class="container mx-auto flex flex-col lg:flex-row items-center py-4">
+            <nav class="w-full lg:w-2/5">
+                <a href="#" class="text-grey-darker text-sm mr-4 font-semibold pb-6 border-b-2 border-solid border-transparent no-underline hover:text-teal hover:border-teal hover:no-underline">
+                    <i class="fa fa-home fa-lg"></i> Home</a>
+                <a href="#" class="text-grey-darker text-sm mr-4 font-semibold pb-6 border-b-2 border-solid border-transparent no-underline hover:text-teal hover:border-teal hover:no-underline">
+                    <i class="fa fa-bolt fa-lg"></i> Moments</a>
+                <a href="#" class="text-grey-darker text-sm mr-4 font-semibold pb-6 border-b-2 border-solid border-transparent no-underline hover:text-teal hover:border-teal hover:no-underline">
+                    <i class="fa fa-bell fa-lg"></i> Notifications</a>
+                <a href="#" class="text-grey-darker text-sm mr-4 font-semibold pb-6 border-b-2 border-solid border-transparent no-underline hover:text-teal hover:border-teal hover:no-underline">
+                    <i class="fa fa-envelope fa-lg"></i> Messages</a>
+
+            </nav>
+            <div class="w-full lg:w-1/5 text-center my-4 lg:my-0">
+                <a href="#">
+                    <i class="fa fa-twitter fa-lg text-blue"></i>
+                </a>
+            </div>
+            <div class="w-full lg:w-2/5 flex lg:justify-end">
+                <div class="mr-4 relative">
+                    <input type="text" class="bg-grey-lighter h-8 px-4 py-2 text-xs w-48 rounded-full" placeholder="Search Twitter">
+                    <span class="flex items-center absolute pin-r pin-y mr-3">
+                        <i class="fa fa-search text-grey"></i>
+                    </span>
+                </div>
+                <div class="mr-4">
+                    <a href="#">
+                        <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/195612/tt_avatar.jpg" alt="avatar" class="h-8 w-8 rounded-full">
+                    </a>
+                </div>
+                <div>
+                    <button class="bg-teal hover:bg-teal-dark text-white font-medium py-2 px-4 rounded-full">Tweet</button>
+                </div>
+            </div>
+        </div>
+        <!-- end container -->
+    </div>
+
+    <div class="hero h-64 bg-cover h-112"></div>
+
+    <div class="bg-white shadow">
+        <div class="container mx-auto flex flex-col lg:flex-row items-center lg:relative">
+            <div class="w-full lg:w-1/4">
+                <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/195612/tt_tailwind_logo.jpg" alt="logo" class="rounded-full h-48 w-48 lg:absolute lg:pin-l lg:pin-t lg:-mt-24">
+            </div>
+            <div class="w-full lg:w-1/2">
+                <ul class="list-reset flex">
+                    <li class="text-center py-3 px-4 border-b-2 border-solid border-transparent border-teal">
+                        <a href="#" class="text-grey-darker no-underline hover:no-underline">
+                            <div class="text-sm font-bold tracking-tight mb-1">Tweets</div>
+                            <div class="text-lg tracking-tight font-bold text-teal">60</div>
+                        </a>
+                    </li>
+                    <li class="text-center py-3 px-4 border-b-2 border-solid border-transparent hover:border-teal">
+                        <a href="#" class="text-grey-darker no-underline hover:no-underline">
+                            <div class="text-sm font-bold tracking-tight mb-1">Following</div>
+                            <div class="text-lg tracking-tight font-bold hover:text-teal">4</div>
+                        </a>
+                    </li>
+                    <li class="text-center py-3 px-4 border-b-2 border-solid border-transparent hover:border-teal">
+                        <a href="#" class="text-grey-darker no-underline hover:no-underline">
+                            <div class="text-sm font-bold tracking-tight mb-1">Followers</div>
+                            <div class="text-lg tracking-tight font-bold hover:text-teal">3,810</div>
+                        </a>
+                    </li>
+                    <li class="text-center py-3 px-4 border-b-2 border-solid border-transparent hover:border-teal">
+                        <a href="#" class="text-grey-darker no-underline hover:no-underline">
+                            <div class="text-sm font-bold tracking-tight mb-1">Likes</div>
+                            <div class="text-lg tracking-tight font-bold hover:text-teal">9</div>
+                        </a>
+                    </li>
+                    <li class="text-center py-3 px-4 border-b-2 border-solid border-transparent hover:border-teal">
+                        <a href="#" class="text-grey-darker no-underline hover:no-underline">
+                            <div class="text-sm font-bold tracking-tight mb-1">Moments</div>
+                            <div class="text-lg tracking-tight font-bold hover:text-teal">1</div>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            <div class="w-full lg:w-1/4 flex my-4 lg:my-0 lg:justify-end items-center">
+                <div class="mr-6">
+                    <button class="bg-teal hover:bg-teal-dark text-white font-medium py-2 px-4 rounded-full">Following</button>
+                </div>
+                <div>
+                    <a href="#" class="text-grey-dark">
+                        <i class="fa fa-ellipsis-v fa-lg"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <!-- end container -->
+
+    </div>
+
+    <div class="container mx-auto flex flex-col lg:flex-row mt-3 text-sm leading-normal">
+        <div class="w-full lg:w-1/4 pl-4 lg:pl-0 pr-6 mt-8 mb-4">
+            <h1>
+                <a href="#" class="text-black font-bold no-underline hover:underline">Tailwind CSS</a>
+            </h1>
+            <div class="mb-4">
+                <a href="#" class="text-grey-darker no-underline hover:underline">@tailwindcss</a>
+            </div>
+
+            <div class="mb-4">
+                A utility-first CSS framework for rapid UI development. By
+                <a href="#" class="text-teal no-underline hover:underline">@adamwathan</a>,
+                <a href="#" class="text-teal no-underline hover:underline">@reinink</a>,
+                <a href="#" class="text-teal no-underline hover:underline">@davidhemphill</a>, and
+                <a href="#" class="text-teal no-underline hover:underline">@steveschoger</a>.
+            </div>
+
+            <div class="mb-2">
+                <i class="fa fa-link fa-lg text-grey-darker mr-1"></i>
+                <a href="#" class="text-teal no-underline hover:underline">tailwindcss.com</a>
+            </div>
+            <div class="mb-4">
+                <i class="fa fa-calendar fa-lg text-grey-darker mr-1"></i>
+                <a href="#" class="text-teal no-underline hover:underline">Joined August 2017</a>
+            </div>
+
+            <div class="mb-4">
+                <button class="bg-teal hover:bg-teal-dark text-white font-medium py-2 px-4 rounded-full w-full h-10">Tweet to Tailwind CSS</button>
+            </div>
+
+            <div class="mb-4">
+                <i class="fa fa-user fa-lg text-grey-dark mr-1"></i>
+                <a href="#" class="text-teal no-underline hover:underline">27 Followers you know</a>
+            </div>
+
+            <div class="mb-4">
+                <a href="#">
+                    <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/195612/tt_follower01.jpg" alt="avatar" class="rounded-full h-12 w-12">
+                </a>
+                <a href="#">
+                    <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/195612/tt_follower02.jpg" alt="avatar" class="rounded-full h-12 w-12">
+                </a>
+                <a href="#">
+                    <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/195612/tt_follower03.jpg" alt="avatar" class="rounded-full h-12 w-12">
+                </a>
+                <a href="#">
+                    <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/195612/tt_follower04.jpg" alt="avatar" class="rounded-full h-12 w-12">
+                </a>
+                <a href="#">
+                    <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/195612/tt_follower05.jpg" alt="avatar" class="rounded-full h-12 w-12">
+                </a>
+                <a href="#">
+                    <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/195612/tt_follower06.jpg" alt="avatar" class="rounded-full h-12 w-12">
+                </a>
+                <a href="#">
+                    <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/195612/tt_follower07.jpg" alt="avatar" class="rounded-full h-12 w-12">
+                </a>
+                <a href="#">
+                    <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/195612/tt_follower08.jpg" alt="avatar" class="rounded-full h-12 w-12">
+                </a>
+                <a href="#">
+                    <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/195612/tt_follower09.jpg" alt="avatar" class="rounded-full h-12 w-12">
+                </a>
+                <a href="#">
+                    <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/195612/tt_follower10.jpg" alt="avatar" class="rounded-full h-12 w-12">
+                </a>
+            </div>
+
+            <div class="mb-4">
+                <i class="fa fa-picture-o fa-lg text-grey-dark mr-1"></i>
+                <a href="#" class="text-teal">Photos and videos</a>
+            </div>
+
+            <div class="mb-4">
+                <a href="#">
+                    <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/195612/tt_photo1.jpg" alt="photo" class="h-20 w-20 mr-1 mb-1">
+                </a>
+                <a href="#">
+                    <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/195612/tt_photo2.jpg" alt="photo" class="h-20 w-20 mr-1 mb-1">
+                </a>
+                <a href="#">
+                    <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/195612/tt_photo3.jpg" alt="photo" class="h-20 w-20 mr-1 mb-1">
+                </a>
+                <a href="#">
+                    <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/195612/tt_photo4.jpg" alt="photo" class="h-20 w-20 mr-1 mb-1">
+                </a>
+                <a href="#">
+                    <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/195612/tt_photo5.jpg" alt="photo" class="h-20 w-20 mr-1 mb-1">
+                </a>
+            </div>
+        </div>
+
+        <div class="w-full lg:w-3/4 bg-white mb-4" >
+            <div class="grid border-b border-solid border-grey-light">
+                <div class="w-full mb-4" >
+                    <div class="ProfileCard">
+                        <a class="ProfileCard-bg js-nav" href="#" tabindex="-1" aria-hidden="true" style="
+                            background-color: #0000CC;
+                            background-image: url(https://pbs.twimg.com/profile_banners/813286/1502508746/600x200);">
+                        </a>
+                        <div class="ProfileCard-content">
+                            <a class="ProfileCard-avatarLink js-nav js-tooltip" href="/nnlinh971" title="nnlinh97" tabindex="-1" aria-hidden="true">
+                                <img class="ProfileCard-avatarImage js-action-profile-avatar" src="https://abs.twimg.com/sticky/default_profile_images/default_profile_bigger.png"
+                                    alt="">
+                            </a>
+                            <div class="ProfileCard-actions">
+                                <div class="ProfileCard-userActions with-rightCaret js-userActions">
+                                    <div class="UserActions   UserActions--small u-textLeft">
+                                        <div class="user-actions btn-group not-following not-muting can-dm " data-user-id="18438022" data-screen-name="ShinobiNinja"
+                                            data-name="Shinobi Ninja" data-protected="false">
+                                            <span class="user-actions-follow-button js-follow-btn follow-button">
+                                                <button type="button" class="
+                                                      EdgeButton
+                                                      EdgeButton--secondary
+                                                      EdgeButton--small 
+                                                      
+                                                      button-text
+                                                      follow-text">
+                                                    <span aria-hidden="true">Follow</span>
+                                                    <span class="u-hiddenVisually">Follow
+                                                        <span class="username u-dir u-textTruncate" dir="ltr">@
+                                                            <b>ShinobiNinja</b>
+                                                        </span>
+                                                    </span>
+                                                </button>
+                                                <button type="button" class="
+                                                      EdgeButton
+                                                      EdgeButton--primary
+                                                      EdgeButton--small 
+                                                      
+                                                      button-text
+                                                      following-text">
+                                                    <span aria-hidden="true">Following</span>
+                                                    <span class="u-hiddenVisually">Following
+                                                        <span class="username u-dir u-textTruncate" dir="ltr">@
+                                                            <b>ShinobiNinja</b>
+                                                        </span>
+                                                    </span>
+                                                </button>
+                                                <button type="button" class="
+                                                      EdgeButton
+                                                      EdgeButton--danger
+                                                      EdgeButton--small 
+                                                      
+                                                      button-text
+                                                      unfollow-text">
+                                                    <span aria-hidden="true">Unfollow</span>
+                                                    <span class="u-hiddenVisually">Unfollow
+                                                        <span class="username u-dir u-textTruncate" dir="ltr">@
+                                                            <b>ShinobiNinja</b>
+                                                        </span>
+                                                    </span>
+                                                </button>
+
+                                            </span>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div class="ProfileCard-userFields">
+                                <div class="ProfileNameTruncated account-group">
+                                    <div class="u-textTruncate u-inlineBlock">
+                                        <a class="fullname ProfileNameTruncated-link u-textInheritColor js-nav" href="/nnlinh971" data-aria-label-part="">
+                                            nnlinh97</a>
+                                    </div>
+                                    <span class="UserBadges"></span>
+                                </div>
+
+                                <span class="ProfileCard-screenname">
+                                    <a href="/nnlinh971" class="ProfileCard-screennameLink u-linkComplex js-nav" data-aria-label-part="">
+                                        <span class="username u-dir" dir="ltr">@
+                                            <b class="u-linkComplex-target">nnlinh971</b>
+                                        </span>
+                                    </a>
+                                    <span>‏</span>
+                                    <span class="FollowStatus">Follows you</span>
+                                </span>
+
+                                <p class="ProfileCard-bio u-dir" dir="ltr" data-aria-label-part="">Sharing things I'm learning through my foundation work and other interests.</p>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="w-full mb-4" style="position: relative;">
+                    <div class="ProfileCard">
+                        <a class="ProfileCard-bg js-nav" href="#" tabindex="-1" aria-hidden="true" style="
+                                background-color: #0000CC;
+                                background-image: url(https://pbs.twimg.com/profile_banners/813286/1502508746/600x200);">
+                        </a>
+                        <div class="ProfileCard-content">
+                            <a class="ProfileCard-avatarLink js-nav js-tooltip" href="/nnlinh971" title="nnlinh97" tabindex="-1" aria-hidden="true">
+                                <img class="ProfileCard-avatarImage js-action-profile-avatar" src="https://abs.twimg.com/sticky/default_profile_images/default_profile_bigger.png"
+                                    alt="">
+                            </a>
+                            <div class="ProfileCard-actions">
+                                <div class="ProfileCard-userActions with-rightCaret js-userActions">
+                                    <div class="UserActions   UserActions--small u-textLeft">
+                                        <div class="user-actions btn-group not-following not-muting can-dm " data-user-id="18438022" data-screen-name="ShinobiNinja"
+                                            data-name="Shinobi Ninja" data-protected="false">
+                                            <span class="user-actions-follow-button js-follow-btn follow-button">
+                                                <button type="button" class="
+                                                          EdgeButton
+                                                          EdgeButton--secondary
+                                                          EdgeButton--small 
+                                                          
+                                                          button-text
+                                                          follow-text">
+                                                    <span aria-hidden="true">Follow</span>
+                                                    <span class="u-hiddenVisually">Follow
+                                                        <span class="username u-dir u-textTruncate" dir="ltr">@
+                                                            <b>ShinobiNinja</b>
+                                                        </span>
+                                                    </span>
+                                                </button>
+                                                <button type="button" class="
+                                                          EdgeButton
+                                                          EdgeButton--primary
+                                                          EdgeButton--small 
+                                                          
+                                                          button-text
+                                                          following-text">
+                                                    <span aria-hidden="true">Following</span>
+                                                    <span class="u-hiddenVisually">Following
+                                                        <span class="username u-dir u-textTruncate" dir="ltr">@
+                                                            <b>ShinobiNinja</b>
+                                                        </span>
+                                                    </span>
+                                                </button>
+                                                <button type="button" class="
+                                                          EdgeButton
+                                                          EdgeButton--danger
+                                                          EdgeButton--small 
+                                                          
+                                                          button-text
+                                                          unfollow-text">
+                                                    <span aria-hidden="true">Unfollow</span>
+                                                    <span class="u-hiddenVisually">Unfollow
+                                                        <span class="username u-dir u-textTruncate" dir="ltr">@
+                                                            <b>ShinobiNinja</b>
+                                                        </span>
+                                                    </span>
+                                                </button>
+
+                                            </span>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div class="ProfileCard-userFields">
+                                <div class="ProfileNameTruncated account-group">
+                                    <div class="u-textTruncate u-inlineBlock">
+                                        <a class="fullname ProfileNameTruncated-link u-textInheritColor js-nav" href="/nnlinh971" data-aria-label-part="">
+                                            nnlinh97</a>
+                                    </div>
+                                    <span class="UserBadges"></span>
+                                </div>
+
+                                <span class="ProfileCard-screenname">
+                                    <a href="/nnlinh971" class="ProfileCard-screennameLink u-linkComplex js-nav" data-aria-label-part="">
+                                        <span class="username u-dir" dir="ltr">@
+                                            <b class="u-linkComplex-target">nnlinh971</b>
+                                        </span>
+                                    </a>
+                                    <span>‏</span>
+                                    <span class="FollowStatus">Follows you</span>
+                                </span>
+
+                                <p class="ProfileCard-bio u-dir" dir="ltr" data-aria-label-part=""></p>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="w-full mb-4" style="position: relative;">
+                    <div class="ProfileCard">
+                        <a class="ProfileCard-bg js-nav" href="#" tabindex="-1" aria-hidden="true" style="
+                                    background-color: #0000CC;
+                                    background-image: url(https://pbs.twimg.com/profile_banners/813286/1502508746/600x200);">
+                        </a>
+                        <div class="ProfileCard-content">
+                            <a class="ProfileCard-avatarLink js-nav js-tooltip" href="/nnlinh971" title="nnlinh97" tabindex="-1" aria-hidden="true">
+                                <img class="ProfileCard-avatarImage js-action-profile-avatar" src="https://abs.twimg.com/sticky/default_profile_images/default_profile_bigger.png"
+                                    alt="">
+                            </a>
+                            <div class="ProfileCard-actions">
+                                <div class="ProfileCard-userActions with-rightCaret js-userActions">
+                                    <div class="UserActions   UserActions--small u-textLeft">
+                                        <div class="user-actions btn-group not-following not-muting can-dm " data-user-id="18438022" data-screen-name="ShinobiNinja"
+                                            data-name="Shinobi Ninja" data-protected="false">
+                                            <span class="user-actions-follow-button js-follow-btn follow-button">
+                                                <button type="button" class="
+                                                              EdgeButton
+                                                              EdgeButton--secondary
+                                                              EdgeButton--small 
+                                                              
+                                                              button-text
+                                                              follow-text">
+                                                    <span aria-hidden="true">Follow</span>
+                                                    <span class="u-hiddenVisually">Follow
+                                                        <span class="username u-dir u-textTruncate" dir="ltr">@
+                                                            <b>ShinobiNinja</b>
+                                                        </span>
+                                                    </span>
+                                                </button>
+                                                <button type="button" class="
+                                                              EdgeButton
+                                                              EdgeButton--primary
+                                                              EdgeButton--small 
+                                                              
+                                                              button-text
+                                                              following-text">
+                                                    <span aria-hidden="true">Following</span>
+                                                    <span class="u-hiddenVisually">Following
+                                                        <span class="username u-dir u-textTruncate" dir="ltr">@
+                                                            <b>ShinobiNinja</b>
+                                                        </span>
+                                                    </span>
+                                                </button>
+                                                <button type="button" class="
+                                                              EdgeButton
+                                                              EdgeButton--danger
+                                                              EdgeButton--small 
+                                                              
+                                                              button-text
+                                                              unfollow-text">
+                                                    <span aria-hidden="true">Unfollow</span>
+                                                    <span class="u-hiddenVisually">Unfollow
+                                                        <span class="username u-dir u-textTruncate" dir="ltr">@
+                                                            <b>ShinobiNinja</b>
+                                                        </span>
+                                                    </span>
+                                                </button>
+
+                                            </span>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div class="ProfileCard-userFields">
+                                <div class="ProfileNameTruncated account-group">
+                                    <div class="u-textTruncate u-inlineBlock">
+                                        <a class="fullname ProfileNameTruncated-link u-textInheritColor js-nav" href="/nnlinh971" data-aria-label-part="">
+                                            nnlinh97</a>
+                                    </div>
+                                    <span class="UserBadges"></span>
+                                </div>
+
+                                <span class="ProfileCard-screenname">
+                                    <a href="/nnlinh971" class="ProfileCard-screennameLink u-linkComplex js-nav" data-aria-label-part="">
+                                        <span class="username u-dir" dir="ltr">@
+                                            <b class="u-linkComplex-target">nnlinh971</b>
+                                        </span>
+                                    </a>
+                                    <span>‏</span>
+                                    <span class="FollowStatus">Follows you</span>
+                                </span>
+
+                                <p class="ProfileCard-bio u-dir" dir="ltr" data-aria-label-part=""></p>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="w-full mb-4" style="position: relative;">
+                    <div class="ProfileCard">
+                        <a class="ProfileCard-bg js-nav" href="#" tabindex="-1" aria-hidden="true" style="
+                                        background-color: #0000CC;
+                                        background-image: url(https://pbs.twimg.com/profile_banners/813286/1502508746/600x200);">
+                        </a>
+                        <div class="ProfileCard-content">
+                            <a class="ProfileCard-avatarLink js-nav js-tooltip" href="/nnlinh971" title="nnlinh97" tabindex="-1" aria-hidden="true">
+                                <img class="ProfileCard-avatarImage js-action-profile-avatar" src="https://abs.twimg.com/sticky/default_profile_images/default_profile_bigger.png"
+                                    alt="">
+                            </a>
+                            <div class="ProfileCard-actions">
+                                <div class="ProfileCard-userActions with-rightCaret js-userActions">
+                                    <div class="UserActions   UserActions--small u-textLeft">
+                                        <div class="user-actions btn-group not-following not-muting can-dm " data-user-id="18438022" data-screen-name="ShinobiNinja"
+                                            data-name="Shinobi Ninja" data-protected="false">
+                                            <span class="user-actions-follow-button js-follow-btn follow-button">
+                                                <button type="button" class="
+                                                                  EdgeButton
+                                                                  EdgeButton--secondary
+                                                                  EdgeButton--small 
+                                                                  
+                                                                  button-text
+                                                                  follow-text">
+                                                    <span aria-hidden="true">Follow</span>
+                                                    <span class="u-hiddenVisually">Follow
+                                                        <span class="username u-dir u-textTruncate" dir="ltr">@
+                                                            <b>ShinobiNinja</b>
+                                                        </span>
+                                                    </span>
+                                                </button>
+                                                <button type="button" class="
+                                                                  EdgeButton
+                                                                  EdgeButton--primary
+                                                                  EdgeButton--small 
+                                                                  
+                                                                  button-text
+                                                                  following-text">
+                                                    <span aria-hidden="true">Following</span>
+                                                    <span class="u-hiddenVisually">Following
+                                                        <span class="username u-dir u-textTruncate" dir="ltr">@
+                                                            <b>ShinobiNinja</b>
+                                                        </span>
+                                                    </span>
+                                                </button>
+                                                <button type="button" class="
+                                                                  EdgeButton
+                                                                  EdgeButton--danger
+                                                                  EdgeButton--small 
+                                                                  
+                                                                  button-text
+                                                                  unfollow-text">
+                                                    <span aria-hidden="true">Unfollow</span>
+                                                    <span class="u-hiddenVisually">Unfollow
+                                                        <span class="username u-dir u-textTruncate" dir="ltr">@
+                                                            <b>ShinobiNinja</b>
+                                                        </span>
+                                                    </span>
+                                                </button>
+
+                                            </span>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div class="ProfileCard-userFields">
+                                <div class="ProfileNameTruncated account-group">
+                                    <div class="u-textTruncate u-inlineBlock">
+                                        <a class="fullname ProfileNameTruncated-link u-textInheritColor js-nav" href="/nnlinh971" data-aria-label-part="">
+                                            nnlinh97</a>
+                                    </div>
+                                    <span class="UserBadges"></span>
+                                </div>
+
+                                <span class="ProfileCard-screenname">
+                                    <a href="/nnlinh971" class="ProfileCard-screennameLink u-linkComplex js-nav" data-aria-label-part="">
+                                        <span class="username u-dir" dir="ltr">@
+                                            <b class="u-linkComplex-target">nnlinh971</b>
+                                        </span>
+                                    </a>
+                                    <span>‏</span>
+                                    <span class="FollowStatus">Follows you</span>
+                                </span>
+
+                                <p class="ProfileCard-bio u-dir" dir="ltr" data-aria-label-part=""></p>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+
+    </div>
+
+</body>
+
+</html>
