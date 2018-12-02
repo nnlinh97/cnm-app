@@ -37,7 +37,7 @@ class Followings extends Component {
             <div>
                 <Header />
                 <CoverImage />
-                <MenuTop tab="tab3" />
+                <MenuTop tab="tab2" />
                 <div className="container mx-auto flex flex-col lg:flex-row mt-3 text-sm leading-normal">
                     <Info />
                     <div class="w-full lg:w-3/4 bg-white mb-4">
