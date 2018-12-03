@@ -4,7 +4,9 @@ import * as Action from './index';
 export const getProfile = () => {
     return (dispatch) => {
         return callAPI("/users/1", "GET", null).then((res) => {
-            dispatch(Action.getProfile(res.data));
+            if (res) {
+                dispatch(Action.getProfile(res.data));
+            }
         });
     }
 }
@@ -12,7 +14,9 @@ export const getProfile = () => {
 export const getListPosts = () => {
     return (dispatch) => {
         return callAPI("/tweet", "GET", null).then((res) => {
-            dispatch(Action.getListPosts(res.data.reverse()));
+            if (res) {
+                dispatch(Action.getListPosts(res.data.reverse()));
+            }
         });
     }
 }
@@ -20,7 +24,9 @@ export const getListPosts = () => {
 export const updateLikePost = (post) => {
     return (dispatch) => {
         return callAPI(`/tweet/${post.id}`, "PUT", post).then((res) => {
-            dispatch(Action.updateLikePost(res.data));
+            if (res) {
+                dispatch(Action.updateLikePost(res.data));
+            }
         });
     }
 }
@@ -28,7 +34,9 @@ export const updateLikePost = (post) => {
 export const createNewPost = (post) => {
     return (dispatch) => {
         return callAPI("/tweet", "POST", post).then((res) => {
-            dispatch(Action.createNewPost(res.data));
+            if (res) {
+                dispatch(Action.createNewPost(res.data));
+            }
         });
     }
 }
@@ -36,7 +44,9 @@ export const createNewPost = (post) => {
 export const getListFollowers = () => {
     return (dispatch) => {
         return callAPI("/followers", "GET", null).then((res) => {
-            dispatch(Action.getListFollowers(res.data));
+            if (res) {
+                dispatch(Action.getListFollowers(res.data));
+            }
         });
     }
 }
@@ -44,7 +54,9 @@ export const getListFollowers = () => {
 export const getListFollowings = () => {
     return (dispatch) => {
         return callAPI("/following", "GET", null).then((res) => {
-            dispatch(Action.getListFollowings(res.data));
+            if (res) {
+                dispatch(Action.getListFollowings(res.data));
+            }
         });
     }
 }
