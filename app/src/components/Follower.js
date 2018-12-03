@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 
-
 class Follower extends Component {
    
     render() {
@@ -19,7 +18,7 @@ class Follower extends Component {
                     </a>
                     <div class="ProfileCard-content">
                         <a class="ProfileCard-avatarLink js-nav js-tooltip" href="/nnlinh971" title="nnlinh97" tabindex="-1" aria-hidden="true">
-                            <img class="ProfileCard-avatarImage js-action-profile-avatar" src={follower.avatarURL}
+                            <img class="ProfileCard-avatarImage js-action-profile-avatar " src={follower.avatarURL}
                                 alt="" />
                         </a>
                         <div class="ProfileCard-actions">

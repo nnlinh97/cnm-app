@@ -2966,7 +2966,7 @@ table{border-collapse:collapse}
     padding: 3px;
     position: relative;
     vertical-align: bottom;
-    z-index: 1;
+    z-index: 0;
 }
 .ProfileCard-avatarImage {
     border-radius: 50%;

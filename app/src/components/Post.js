@@ -18,6 +18,7 @@ class Post extends Component {
         this.setState({
             detail: true
         })
+        document.getElementById('body').style.overflow='hidden';
     }
 
     updateLikePost = (post, e) => {
@@ -31,6 +32,7 @@ class Post extends Component {
         this.setState({
             detail: false
         })
+        document.getElementById('body').style.overflow='auto';
     }
 
     componentDidMount() {
