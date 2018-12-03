@@ -152,9 +152,9 @@ class Post extends Component {
                                                         </span><br />
                                                         <span className="text-grey-dark">@{post.username}&nbsp;</span>
                                                     </div>
-                                                    <div className="p-save btn-follow">
+                                                    {/* <div className="p-save btn-follow">
                                                         <button className="profile-save ">Follow</button>
-                                                    </div>
+                                                    </div> */}
                                                     <div>
                                                         <a href="#" className="text-grey-dark hover:text-teal">
                                                             <i className="fa fa-chevron-down" />
@@ -206,13 +206,13 @@ class Post extends Component {
                                                 </a>
                                             </div>
                                             <div className="w-7/8 p-3 pl-0">
-                                                <textarea name="reply" placeholder="Tweet your replay" className="form-control user" row="2" ></textarea>
+                                                <textarea name="reply" placeholder="Tweet your reply" className="form-control user" row="2" ></textarea>
                                                 <div className="mb-4 ">
                                                     <div className="imageLeft">
                                                         <label htmlFor="image" style={{ fontSize: '25px', color: '#1DA1F2' }}><i className="fa fa-image" title="Add photo"></i></label>
                                                         <input id="image" type="file" name="image" />
                                                     </div>
-                                                    <button className="profile-save rightbtn">Follow</button>
+                                                    <button className="profile-save rightbtn">Reply</button>
                                                 </div>
                                             </div>
                                         </div>

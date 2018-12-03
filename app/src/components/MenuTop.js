@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
-import './../styles/modal2.css';
 class MenuTop extends Component {
 
     preventDefault = (e) => {
@@ -25,24 +24,23 @@ class MenuTop extends Component {
         const user = this.props.match.params.username;
         this.props.history.push(`/${user}/followers`);
     }
-   loadFile = (e)=>{
-    e.preventDefault();
-    var reader = new FileReader();
-    console.log('haha');
-    reader.onload = function(){
-      var output = document.getElementById('headerImage');
-      output.src = reader.result;
-    };
-    reader.readAsDataURL(e.target.files[0]);
-    
-   }
+    loadFile = (e) => {
+        e.preventDefault();
+        var reader = new FileReader();
+        console.log('haha');
+        reader.onload = function () {
+            var output = document.getElementById('headerImage');
+            output.src = reader.result;
+        };
+        reader.readAsDataURL(e.target.files[0]);
+
+    }
     render() {
         const { profile, posts } = this.props;
         let avatar = "https://tinyurl.com/yapenv5f";
         if (profile) {
             avatar = profile.avatarURL;
         }
-        console.log(this.props.tab);
         const { tab } = this.props;
         let tab1 = " hover:no-underline";
         let tab2 = " hover:no-underline";
@@ -61,6 +59,7 @@ class MenuTop extends Component {
             tab3 = " border-teal";
             text3 = " text-teal";
         }
+
         return (
             <div className="bg-white shadow">
                 <div className="container mx-auto flex flex-col lg:flex-row items-center lg:relative">
@@ -87,81 +86,72 @@ class MenuTop extends Component {
                                     <div className={`text-lg tracking-tight font-bold${text3}`}>{profile ? profile.follower : ""}</div>
                                 </a>
                             </li>
-                            {/* <li className="text-center py-3 px-4 border-b-2 border-solid border-transparent hover:border-teal">
-                                <a href="#" className="text-grey-darker no-underline hover:no-underline">
-                                    <div className="text-sm font-bold tracking-tight mb-1">Likes</div>
-                                    <div className="text-lg tracking-tight font-bold hover:text-teal">9</div>
-                                </a>
-                            </li>
-                            <li className="text-center py-3 px-4 border-b-2 border-solid border-transparent hover:border-teal">
-                                <a href="#" className="text-grey-darker no-underline hover:no-underline">
-                                    <div className="text-sm font-bold tracking-tight mb-1">Moments</div>
-                                    <div className="text-lg tracking-tight font-bold hover:text-teal">1</div>
-                                </a>
-                            </li> */}
                         </ul>
                     </div>
                     <div className="w-full lg:w-1/4 flex my-4 lg:my-0 lg:justify-end items-center">
                         <div className="mr-6">
-                            <button className="bg-teal hover:bg-teal-dark text-white font-medium py-2 px-4 rounded-full" data-toggle="modal2" data-target="#myModal2">
+                            {/* <button className="bg-teal hover:bg-teal-dark text-white font-medium py-2 px-4 rounded-full" data-toggle="modal2" data-target="#myModal2">
                                 Edit Profile
-                            </button>
-                            <div className="modal2 " id="myModal2" role="dialog" style={{ display: 'none'}} >
-                            <div className="modal-dialog">
-                                <div className="modal2-content ">
-                                    <div className="grid-container">
-                                    <img id="headerImage" className="headerModal"/>
-                                        {/* <div className="headerModal" >
+                            </button> */}
+
+                            {/* start modal edit profile */}
+                            <div className="modal2 " id="myModal2" role="dialog" style={{ display: 'none' }} >
+                                <div className="modal-dialog">
+                                    <div className="modal2-content ">
+                                        <div className="grid-container">
+                                            <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/195612/tt_tailwind_bg.jpg" id="headerImage" className="headerModal" />
+                                            {/* <div className="headerModal" >
                                             
                                         </div> */}
-                                        <div className="footerModal">
-                                            <div className="picture">
-                                            <div className="lg:justify-end items-center">
+                                            <div className="footerModal">
+                                                <div className="picture">
+                                                    <div className="lg:justify-end items-center">
                                                         <label htmlFor="image2" style={{ fontSize: '50px' }}><i className="fa fa-camera" title="Add photo"></i></label>
-                                                        <input id="image2" type="file" name="image2" onChange={(event) => this.loadFile(event)}/>
-                                            </div>
-                                                <div className="w-full lg:w-1/4 pictureAva">
-                                                        
+                                                        <input id="image2" type="file" name="image2" onChange={(event) => this.loadFile(event)} />
+                                                    </div>
+                                                    <div className="w-full lg:w-1/4 pictureAva">
+
                                                         {/* <label htmlFor="image3" className="circle2" style={{fontSize:'80px', background:"#008CBA"}}><i className="fa fa-camera" title="Add photo"></i></label>
                                                         <input id="image3" type="file" name="image3" onChange={(event) => this.loadFile(event)}/> */}
                                                         <img src={avatar} id="avatar" alt="logo" className="circle2" />
                                                         <form className="form2-control">
-                                                            <input type="text" className='input-edit' placeholder="Ten" name="user"/><br />
-                                                            <input type="text" className='input-edit' placeholder="Vi trí" name="birth"/>
-                                                            
-
+                                                            <input type="text" className='input-edit' placeholder="Ten" name="user" /><br />
+                                                            <input type="text" className='input-edit' placeholder="Vi trí" name="birth" />
+                                                            <input type="text" className='input-edit' placeholder="Ten" name="user" /><br />
+                                                            <textarea name="reply" placeholder="Tweet your reply" className="input-edit" row="4" ></textarea>
                                                         </form>
                                                     </div>
                                                     <div className="locationBtn w-full lg:w-1/4 flex my-4 lg:my-0 lg:justify-end items-center">
                                                         <div className="mr-6">
-                                                            <button  type="button" className="btn btn-primary radius-button " data-dismiss="modal">
+                                                            <button style={{ backgroundColor: '#bbb' }} type="button" className="btn btn-primary radius-button " data-dismiss="modal">
                                                                 Cancel
                                                             </button>
-                                                            <button  type="button" className="btn btn-primary radius-button " data-dismiss="modal">
-                                                                Tweet
+                                                            <button type="button" className="btn btn-primary radius-button " data-dismiss="modal">
+                                                                Save Changes
                                                             </button>
-                                                            
+
                                                         </div>
                                                     </div>
 
-                                               
-                                                <div className="col-sm-10">
-                                                    
+
+                                                    <div className="col-sm-10">
+
+                                                    </div>
+
                                                 </div>
-                                            
-                                        </div> 
+                                            </div>
+                                        </div>
+
                                     </div>
                                 </div>
-                                    
-                                </div>
                             </div>
+                            {/* end modal edit profile */}
                         </div>
-                    </div>
-                        <div>
+                        {/* <div>
                             <a onClick={(e) => this.preventDefault(e)} href="" className="text-grey-dark">
                                 <i className="fa fa-ellipsis-v fa-lg" />
                             </a>
-                        </div>
+                        </div> */}
                     </div>
                 </div>
                 {/* end container */}

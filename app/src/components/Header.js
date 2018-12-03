@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import * as Actions from './../actions/request';
+import './../styles/modal2.css';
 var randomString = require('random-string');
 
 
@@ -11,7 +12,11 @@ class Header extends Component {
         this.state = {
             modal: 'none',
             content: '',
-            isModal: false
+            isModal: false,
+            editModal: 'none',
+            isEditModal: false,
+            location:  this.props.profile ? this.props.profile.location : "",
+            desc: this.props.profile ? this.props.profile.desc : ""
         }
     }
 
@@ -85,6 +90,23 @@ class Header extends Component {
         }
     }
 
+    toggleEditModal = (profile, e) => {
+        e.preventDefault();
+        this.setState({
+            editModal: 'block',
+            isEditModal: true
+        })
+    }
+
+    removeEditModal = () => {
+        this.setState({
+            editModal: 'none'
+        })
+    }
+
+    saveChanges = () => {
+        this.removeEditModal()
+    }
 
 
 
@@ -94,6 +116,7 @@ class Header extends Component {
         if (profile) {
             avatar = profile.avatarURL;
         }
+
         return (
             <div className="bg-white" style={{ position: 'fixed', width: '100%', zIndex: 1 }}>
                 <div className="container mx-auto flex flex-col lg:flex-row items-center py-4">
@@ -123,7 +146,7 @@ class Header extends Component {
                                 <img src={avatar} alt="avatar" className="h-8 w-8 rounded-full" />
                             </a>
                             <div className="linh-dropdown-content">
-                                <a className="linh-a" href="#">
+                                <a onClick={(e) => this.toggleEditModal(profile, e)} className="linh-a" href="#">
                                     <i className="fa fa-user"></i>
                                     &nbsp;&nbsp;&nbsp;Edit Profile
                                 </a>
@@ -139,10 +162,10 @@ class Header extends Component {
                             </button>
                             <div className="modal fade" id="myModal" role="dialog" style={{ display: this.state.modal }}>
                                 <div className="modal-dialog">
-                                    <div  ref={this.state.isModal ? this.setWrapperRef : ""} className="modal-content">
+                                    <div ref={this.state.isModal ? this.setWrapperRef : ""} className="modal-content">
                                         <div className="modal-header text-center" style={{ height: '50px' }}>
                                             <button onClick={this.removeModal} type="button" className="close" data-dismiss="modal">
-                                                <i className="fa fa-times-circle" style={{marginTop: '5px'}}></i>
+                                                <i className="fa fa-times-circle" style={{ marginTop: '5px' }}></i>
                                             </button>
                                             <h4 className="modal-title" style={{ paddingTop: '11px' }}>Compose new Tweet</h4>
                                         </div>
@@ -185,43 +208,63 @@ class Header extends Component {
                                 </div>
                             </div>
 
-                            {/* <div className="modal fade" id="myModal" role="dialog" style={{ display: 'block' }}>
-                            <div className="modal fade" id="myModal" role="dialog" style={{ display: 'none' }}>
+
+                            <div className="modal2 " id="myModal2" role="dialog" style={{ display: this.state.editModal }} >
                                 <div className="modal-dialog">
-                                    <div className="modal-content">
-                                        <div className="profile-body">
-                                            <form className="cd-form floating-labels profile-content" id="ajax-contact" method="post" action="mailer.php">
-                                                <fieldset>
-                                                    <legend>Edit Profile</legend>
-                                                    <div className="icon">
-                                                        <label className="cd-label" htmlFor="cd-name">Birthday</label>
-                                                        <input className="user" type="text" name="cd-name" id="cd-name" required />
+                                    <div className="modal2-content ">
+                                        <div className="grid-container">
+                                            <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/195612/tt_tailwind_bg.jpg" id="headerImage" className="headerModal" />
+
+                                            <div className="footerModal">
+                                                <div className="picture">
+                                                    <div className="lg:justify-end items-center">
+                                                        <label htmlFor="image2" style={{ fontSize: '50px' }}><i className="fa fa-camera" title="Add photo"></i></label>
+                                                        <input id="image2" type="file" name="image2" />
+                                                        {/* <input id="image2" type="file" name="image2" onChange={(event) => this.loadFile(event)} /> */}
                                                     </div>
-                                                    <div className="icon">
-                                                        <label className="cd-label" htmlFor="cd-company">Location</label>
-                                                        <input className="company" type="text" name="cd-company" id="cd-company" />
+                                                    <div style={{marginTop: '-36px'}} className="locationBtn w-full lg:w-1/4 flex my-4 lg:my-0 lg:justify-end items-center">
+                                                        <div className="mr-6">
+                                                            <button onClick={this.removeEditModal} style={{ backgroundColor: '#bbb' }} type="button" className="btn btn-primary radius-button " data-dismiss="modal">
+                                                                Cancel
+                                                            </button>
+                                                            <button onClick={this.saveChanges} type="button" className="btn btn-primary radius-button " data-dismiss="modal">
+                                                                Save Changes
+                                                            </button>
+
+                                                        </div>
                                                     </div>
-                                                    <div className="icon">
-                                                        <label className="cd-label" htmlFor="cd-email">Intro</label>
-                                                        <textarea className="message" name="cd-textarea" id="cd-textarea" required defaultValue={""} />
+                                                    <div style={{marginTop: '-150px'}} className="w-full lg:w-1/4 pictureAva">
+
+                                                        {/* <label htmlFor="image3" className="circle2" style={{fontSize:'80px', background:"#008CBA"}}><i className="fa fa-camera" title="Add photo"></i></label>
+                                                        <input id="image3" type="file" name="image3" onChange={(event) => this.loadFile(event)}/> */}
+                                                        <img src={avatar} id="avatar" alt="logo" className="circle2" />
+                                                        <form className="form2-control">
+                                                            <input onChange={this.onHandleChange} value={this.state.location} type="text" className='input-edit' placeholder="Intro" name="location"  /><br />
+                                                            {/* <input type="text" className='input-edit' placeholder="Vi trí" name="birth" /> */}
+                                                            {/* <input type="text" className='input-edit' placeholder="Ten" name="user" /><br /> */}
+                                                            <textarea onChange={this.onHandleChange} value={this.state.desc} name="desc" placeholder="Tweet your reply" className="input-edit" row="4"></textarea>
+                                                        </form>
                                                     </div>
-                                                    <div className="p-save">
-                                                        <button className="profile-save">Save</button>
-                                                    </div>
-                                                    <div className="p-cancel">
-                                                        <button className="profile-cancel">Cancel</button>
-                                                    </div>
-                                                </fieldset>
-                                            </form>
-                                            {/* Resource jQuery */}
+                                                    {/* <div className="locationBtn w-full lg:w-1/4 flex my-4 lg:my-0 lg:justify-end items-center">
+                                                        <div className="mr-6">
+                                                            <button onClick={this.removeEditModal} style={{ backgroundColor: '#bbb' }} type="button" className="btn btn-primary radius-button " data-dismiss="modal">
+                                                                Cancel
+                                                            </button>
+                                                            <button onClick={this.saveChanges} type="button" className="btn btn-primary radius-button " data-dismiss="modal">
+                                                                Save Changes
+                                                            </button>
+
+                                                        </div>
+                                                    </div> */}
 
 
-
-                                        {/* </div>
+                                                </div>
+                                            </div>
+                                        </div>
 
                                     </div>
                                 </div>
-                            </div> */}
+                            </div>
 
 
                         </div>
