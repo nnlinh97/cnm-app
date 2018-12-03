@@ -25,6 +25,7 @@ class Header extends Component {
             modal: 'block',
             isModal: true
         })
+        document.getElementById('body').style.overflow='auto';
     }
 
     removeModal = () => {
@@ -32,6 +33,7 @@ class Header extends Component {
             modal: 'none',
             isModal: false
         })
+        document.getElementById('body').style.overflow='auto';
     }
 
     preventDefault = (e) => {
@@ -96,12 +98,14 @@ class Header extends Component {
             editModal: 'block',
             isEditModal: true
         })
+        document.getElementById('body').style.overflow='hidden';
     }
 
     removeEditModal = () => {
         this.setState({
             editModal: 'none'
         })
+        document.getElementById('body').style.overflow='auto';
     }
 
     saveChanges = () => {
