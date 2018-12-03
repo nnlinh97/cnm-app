@@ -25,7 +25,7 @@ class Header extends Component {
             modal: 'block',
             isModal: true
         })
-        document.getElementById('body').style.overflow='auto';
+        document.getElementById('body').style.overflow='hidden';
     }
 
     removeModal = () => {
