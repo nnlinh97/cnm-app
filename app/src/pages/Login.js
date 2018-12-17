@@ -15,14 +15,21 @@ class Login extends Component {
                             <span className="login100-form-title">
                                 Sign In
                             </span>
-                            <div className="wrap-input100 validate-input m-b-16" data-validate="Please enter username">
-                                <input className="input100" type="text" name="username" placeholder="Username" />
-                                <span className="focus-input100" />
+                            <div className="form-group">
+                                <div className="label">
+                                    <label htmlFor="" className="text-uppercase">Private key</label>
+
+                                </div>
+                                <div className="wrap-input100 validate-input m-b-16" data-validate="Please enter username">
+                                    <input className="input100" type="text" name="username" placeholder="Private key" />
+                                    <span className="focus-input100" />
+                                </div>
                             </div>
-                            <div className="wrap-input100 validate-input" data-validate="Please enter password">
+
+                            {/* <div className="wrap-input100 validate-input" data-validate="Please enter password">
                                 <input className="input100" type="password" name="pass" placeholder="Password" />
                                 <span className="focus-input100" />
-                            </div>
+                            </div> */}
                             <div className="text-right p-t-13 p-b-23">
                                 <span className="txt1">
                                     Forgot &nbsp;
