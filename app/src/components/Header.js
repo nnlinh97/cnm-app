@@ -16,7 +16,8 @@ class Header extends Component {
             editModal: 'none',
             isEditModal: false,
             location:  this.props.profile ? this.props.profile.location : "",
-            desc: this.props.profile ? this.props.profile.desc : ""
+            desc: this.props.profile ? this.props.profile.desc : "",
+            name: this.props.profile? this.props.profile.username :  ""
         }
     }
 
@@ -243,10 +244,11 @@ class Header extends Component {
                                                         <input id="image3" type="file" name="image3" onChange={(event) => this.loadFile(event)}/> */}
                                                         <img src={avatar} id="avatar" alt="logo" className="circle2" />
                                                         <form className="form2-control">
-                                                            <input onChange={this.onHandleChange} value={this.state.location} type="text" className='input-edit' placeholder="Intro" name="location"  /><br />
+                                                            <input onChange={this.onHandleChange} value={this.state.name} type="text" className='input-edit' placeholder="Intro" name="name"  /><br />
+                                                            {/* <input onChange={this.onHandleChange} value={this.state.location} type="text" className='input-edit' placeholder="Intro" name="location"  /><br /> */}
                                                             {/* <input type="text" className='input-edit' placeholder="Vi trí" name="birth" /> */}
                                                             {/* <input type="text" className='input-edit' placeholder="Ten" name="user" /><br /> */}
-                                                            <textarea onChange={this.onHandleChange} value={this.state.desc} name="desc" placeholder="Tweet your reply" className="input-edit" row="4"></textarea>
+                                                            {/* <textarea onChange={this.onHandleChange} value={this.state.desc} name="desc" placeholder="Tweet your reply" className="input-edit" row="4"></textarea> */}
                                                         </form>
                                                     </div>
                                                     {/* <div className="locationBtn w-full lg:w-1/4 flex my-4 lg:my-0 lg:justify-end items-center">
