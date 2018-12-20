@@ -14,4 +14,5 @@ export const CREATE_FAIL="CREATE_FAIL";
 export const OPEN_ACCOUNT="OPEN_ACCOUNT";
 export const CLOSE_ACCOUNT="CLOSE_ACCOUNT";
 export const CREATE_ACCOUNT = "CREATE_ACCOUNT";
+export const SAVE_PROFILE = "SAVE_PROFILE";
 

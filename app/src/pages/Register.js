@@ -1,7 +1,7 @@
 
 import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
-import { getAccount } from './../actions/request'
+// import { getAccount } from './../actions/request'
 import { connect } from 'react-redux'
 const { Keypair } = require('stellar-base');
 const vstruct = require('varstruct');
@@ -84,7 +84,7 @@ const mapStateToProp = (state) => {
 }
 const mapDispathToProp = (dispath) => {
     return {
-        getAccount: (address, publicKey, privateKey) => dispath(getAccount(address, publicKey, privateKey))
+        // getAccount: (address, publicKey, privateKey) => dispath(getAccount(address, publicKey, privateKey))
     }
 }
 

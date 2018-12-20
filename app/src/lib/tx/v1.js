@@ -1,6 +1,6 @@
-const vstruct = require('varstruct');
-const base32 = require('base32.js');
-const { Keypair } = require('stellar-base');
+import vstruct from 'varstruct';
+import { Keypair } from 'stellar-base';
+import base32 from 'base32.js';
 
 const Transaction = vstruct([
   { name: 'version', type: vstruct.UInt8 },
@@ -21,10 +21,6 @@ const PaymentParams = vstruct([
   { name: 'amount', type: vstruct.UInt64BE },
 ]);
 
-const PlainTextContent = vstruct([
-  { name: 'type', type: vstruct.UInt8 },
-  { name: 'text', type: vstruct.VarString(vstruct.UInt16BE) },
-]);
 const PostParams = vstruct([
   // Maximum length 65536 in bytes
   { name: 'content', type: vstruct.VarBuffer(vstruct.UInt16BE) },
@@ -48,21 +44,21 @@ const InteractParams = vstruct([
   // React if '', like, love, haha, anrgy, sad, wow
 ]);
 
-function decodePost(tx) {
-  return PlainTextContent.decode(tx);
-}
-
-function encodePost(tx) {
-  return PlainTextContent.encode(tx);
-}
+const PlainTextContent = vstruct([
+  { name: 'type', type: vstruct.UInt8 },
+  { name: 'text', type: vstruct.VarString(vstruct.UInt16BE) },
+]);
 
 const Followings = vstruct([
   { name: 'addresses', type: vstruct.VarArray(vstruct.UInt16BE, vstruct.Buffer(35)) },
 ]);
 
-function decodeFollow(value) {
-  return Followings.decode(value);
+function decodePost(tx) {
+  return PlainTextContent.decode(tx);
+}
 
+function decodeFollowing(tx){
+  return Followings.decode(tx);
 }
 
 function encode(tx) {
@@ -88,12 +84,25 @@ function encode(tx) {
       break;
 
     case 'post':
-      params = PostParams.encode(tx.params);
+      params = PostParams.encode(
+      {
+        ...tx.params,
+        content: PlainTextContent.encode(tx.params.content)
+      });
       operation = 3;
       break;
 
     case 'update_account':
-      params = UpdateAccountParams.encode(tx.params);
+      if(tx.params.key === 'followings'){
+        console.log("OK");
+        params = UpdateAccountParams.encode({
+          ...tx.params,
+          value: Followings.encode(tx.params.value)
+        });
+      }
+      else{
+        params = UpdateAccountParams.encode(tx.params);
+      }
       operation = 4;
       break;
 
@@ -120,7 +129,6 @@ function encode(tx) {
   });
 }
 
-
 function decode(data) {
   const tx = Transaction.decode(data);
   if (tx.version !== 1) {
@@ -144,22 +152,20 @@ function decode(data) {
 
     case 3:
       operation = 'post';
-      params = PostParams.decode(
-        tx.params
-        // content: PlainTextContent.decode(tx.params.content)
-      );
-
+      params = PostParams.decode(tx.params);
       break;
 
     case 4:
       operation = 'update_account';
       params = UpdateAccountParams.decode(tx.params);
       break;
+
     case 5:
       operation = 'interact';
       params = InteractParams.decode(tx.params);
       params.object = params.object.toString('hex').toUpperCase();
       break;
+
     default:
       throw Error('Unspport operation');
   }
@@ -173,10 +179,10 @@ function decode(data) {
     signature: tx.signature,
   };
 }
-module.exports = {
+
+export default {
   encode,
   decode,
   decodePost,
-  decodeFollow,
-  encodePost
-};
+  decodeFollowing
+}

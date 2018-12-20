@@ -2,53 +2,83 @@ import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
 import { Keypair } from 'stellar-base';
 import { login } from './../actions/request';
-import { connect } from 'react-redux'
+import { connect } from 'react-redux';
 import * as Types from './../constants/ActionTypes';
+import * as actions from './../actions/index';
+import axios from 'axios';
+
 class Login extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            privateKey: ''
+            privateKey: '',
+            error: ''
         }
     }
-    onChange = (event) => {
+    componentDidMount() {
+        if(localStorage.getItem('token') == 'true'){
+            // console.log('logged');
+            this.props.history.push('/nnlinh97');
+        }
+    }
+    
+    onChangeKey = (e) => {
+        let target = e.target;
+        let name = target.name;
+        let value = target.value;
         this.setState({
-            privateKey: event.target.value
-        })
+            [name]: value,
+            error: ''
+        });
     }
-    onSubmit = async (event) => {
-        event.preventDefault();
-
+    
+    onSubmit = (e) => {
+        e.preventDefault();
+        // console.log(this.state.privateKey);
+        const { privateKey } = this.state;
+        if (privateKey === '') {
+            this.setState({
+                error: 'Private key is empty!!!'
+            });
+            return;
+        }
+        let key = null;
         try {
-            let keypair = Keypair.fromSecret(this.state.privateKey);
-            let publicKey = keypair.publicKey()
-                await this.props.signIn(publicKey, this.state.privateKey)
-                let status = await this.props.status
-                if (status === -1 || status !== 1) {
-                    document.getElementById("error").innerHTML = Types.MESS_ERR;
-                    document.getElementById('error').style.display = 'block'
-                } else if (status === 1) {
-                    this.props.history.push('/nnlinh97')
-                }
+            key = Keypair.fromSecret(privateKey)
+        } catch (error) {
+            this.setState({
+                error: 'Keypair fail'
+            });
+            return;
         }
-        catch (err) {
-            console.log(err)
-            document.getElementById("error").innerHTML = Types.MESS_ERR;
-            document.getElementById('error').style.display = 'block';
-        }
-
-
-
-
+        const publicKey = key.publicKey();
+        // console.log(publicKey);
+        // const LINH = "SA3CRYDZO732G7FSMSSQOJ5FAJRWZELGLEKFBO6XQ4TJQWASMFK4SSM3";
+        // const publicTest = 'GBIDPG4BFSTJSR3TYPJG4S4R2MEZX6U6FK5YJVIGD4ZJ3LTM4B5IS4R1';
+        axios.get(`http://localhost:4200/users/get-user?idKey=${publicKey}`).then(res => {
+            if(res.data.status === 200){
+                // console.log(res.data);
+                localStorage.setItem('token', true);
+                localStorage.setItem('PRIVATE_KEY', privateKey);
+                // console.log(res.data.result);
+                this.props.saveProfile(res.data.result);
+                this.props.history.push('/nnlinh97');
+            }else {
+                this.setState({
+                    error: 'Your private key is not registed!!!'
+                });
+            }
+        });
+        
     }
-    clickToTwitter = () => {
-        this.props.history.push('/nnlinh97');
-    }
-    clickToRegister = (event) => {
-        event.preventDefault();
-        this.props.history.push('account/register')
+    
+    onGenerateKey = (e) => {
+        e.preventDefault();
     }
     render() {
+        if (this.state.error !== '') {
+            alert(this.state.error);
+        }
         return (
             <div className="limiter">
                 <div className="container-login100">
@@ -66,7 +96,7 @@ class Login extends Component {
                                 </div>
 
                                 <div className="wrap-input100 validate-input m-b-16" data-validate="Please enter username">
-                                    <input className="input100" type="text" value={this.state.privateKey} onChange={(e) => this.onChange(e)} name="privateKey" placeholder="Private key" />
+                                    <input onChange={this.onChangeKey} name="privateKey" className="input100" type="text" placeholder="Private key" />
                                     <span className="focus-input100" />
                                 </div>
                             </div>
@@ -77,7 +107,7 @@ class Login extends Component {
                             </div> */}
 
                             <div className="container-login100-form-btn">
-                                <button onClick={(event) => this.onSubmit(event)} className="login100-form-btn">
+                                <button onClick={this.onSubmit} className="login100-form-btn">
                                     Sign in
                                 </button>
                             </div>
@@ -85,8 +115,8 @@ class Login extends Component {
                                 <span className="txt1 p-b-9">
                                     Don’t have an account?&nbsp;
                                 </span>
-                                <a onClick={this.clickToRegister} href="" className="txt3">
-                                    Sign up now
+                                <a onClick={this.onGenerateKey} href="" className="txt3">
+                                    generate key now
                                 </a>
                             </div>
                         </form>
@@ -97,14 +127,12 @@ class Login extends Component {
     }
 }
 const mapStateToProp = (state) => {
-    // console.log(state)
     return {
-        status: state.login.status
     }
 }
-const mapDispathToProp = (dispath) => {
+const mapDispathToProp = (dispatch) => {
     return {
-        signIn: (keyPublic, privateKey) => dispath(login(keyPublic, privateKey))
+        saveProfile: (profile) => dispatch(actions.saveProfile(profile))
     }
 }
 export default connect(mapStateToProp, mapDispathToProp)(withRouter(Login));

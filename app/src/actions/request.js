@@ -2,21 +2,10 @@ import callAPI from '../utils/ConnectAPI';
 import * as Action from './index';
 import { checkAccount, createAccount } from './../utils/test'
 import { createBrowserHistory } from 'history';
-const transaction = require('./../lib/tx');
-const vstruct = require('varstruct');
-const base32 = require('base32.js');
-const Transaction = vstruct([
-    { name: 'version', type: vstruct.UInt8 },
-    { name: 'account', type: vstruct.Buffer(35) },
-    { name: 'sequence', type: vstruct.UInt64BE },
-    { name: 'memo', type: vstruct.VarBuffer(vstruct.UInt8) },
-    { name: 'operation', type: vstruct.UInt8 },
-    { name: 'params', type: vstruct.VarBuffer(vstruct.UInt16BE) },
-    { name: 'signature', type: vstruct.Buffer(64) },
-]);
-export const history = createBrowserHistory();
+// export const history = createBrowserHistory();
 import connectapi from '../utils/api';
 import axios from 'axios';
+
 
 export const getProfile = () => {
     return (dispatch) => {
@@ -99,63 +88,63 @@ export const logout = () => {
         dispatch(Action.logOut())
     }
 }
-export const getAccount = (address, publicKey, privateKey) => {
-    return (dispatch) => {
-        return checkAccount(address).then(async (res) => {
-            if (res.data.result.txs) {
-                const tx = {
-                    version: 1,
-                    sequence: 2,
-                    memo: Buffer.alloc(0),
-                    account: address,
-                    operation: "create_account",
-                    params: {
-                        address: publicKey,
-                    },
-                }
-                try {
-                    await transaction.sign(tx, privateKey);
-                    const txEncode = '0x' + await transaction.encode(tx).toString('hex');
-                    createAccount(txEncode).then((res) => {
-                        try {
-                            dispatch(Action.register_Success())
-                        } catch (err) {
-                            dispatch(Action.register_Fail())
-                        }
+// export const getAccount = (address, publicKey, privateKey) => {
+//     return (dispatch) => {
+//         return checkAccount(address).then(async (res) => {
+//             if (res.data.result.txs) {
+//                 const tx = {
+//                     version: 1,
+//                     sequence: 2,
+//                     memo: Buffer.alloc(0),
+//                     account: address,
+//                     operation: "create_account",
+//                     params: {
+//                         address: publicKey,
+//                     },
+//                 }
+//                 try {
+//                     await transaction.sign(tx, privateKey);
+//                     const txEncode = '0x' + await transaction.encode(tx).toString('hex');
+//                     createAccount(txEncode).then((res) => {
+//                         try {
+//                             dispatch(Action.register_Success())
+//                         } catch (err) {
+//                             dispatch(Action.register_Fail())
+//                         }
 
 
 
 
-                    }
-                    )
-                } catch (err) {
-                    dispatch(Action.register_Fail())
-                }
+//                     }
+//                     )
+//                 } catch (err) {
+//                     dispatch(Action.register_Fail())
+//                 }
 
-                // if(res.data.result.height !== 0){//còn mismatch sequence
-                //     dispatch(Action.register_Success())
-                // }else{
-                //     dispatch(Action.register_Fail())
-                // }
+//                 // if(res.data.result.height !== 0){//còn mismatch sequence
+//                 //     dispatch(Action.register_Success())
+//                 // }else{
+//                 //     dispatch(Action.register_Fail())
+//                 // }
 
 
-            }
-            else {
-                dispatch(Action.register_Fail())
-            }
+//             }
+//             else {
+//                 dispatch(Action.register_Fail())
+//             }
                
-        })
-    }
-}
-export const createAccount = (params) =>{
-    return (dispatch) => {
-        console.log(params);
-        axios.get(`http://localhost:4200/users/get-user?idKey=${params.yPrivateKey}`).then((res) => {
-            console.log(res);
-        })
-    }
+//         })
+//     }
+// }
+// export const createAccount = (params) =>{
+//     // return (dispatch) => {
+//     //     console.log(params);
+//     //     axios.get(`http://localhost:4200/users/get-user?idKey=${params.yPrivateKey}`).then((res) => {
+//     //         console.log(res);
+//     //     })
+//     // }
     
-}
+// }
 
 export const payment = (params) => {
     console.log(params);

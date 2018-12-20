@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import Header from '../components/Header';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
-import * as Actions from './../actions/request'
+// import * as Actions from './../actions/request'
 class Payment extends Component {
     constructor(props) {
         super(props);
@@ -23,12 +23,12 @@ class Payment extends Component {
         e.preventDefault();
         // console.log(this.state);
         if (this.state.address !== '' && this.state.amount !== '') {
-            this.props.payment(
-                {
-                    address: this.state.address,
-                    amount: this.state.amount,
-                }
-            )
+            // this.props.payment(
+            //     {
+            //         address: this.state.address,
+            //         amount: this.state.amount,
+            //     }
+            // )
         }
 
     }
@@ -86,7 +86,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch, action) => {
     return {
-        payment: (params) => dispatch(Actions.createAccount(params))
+        // payment: (params) => dispatch(Actions.createAccount(params))
     }
 }
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Payment));

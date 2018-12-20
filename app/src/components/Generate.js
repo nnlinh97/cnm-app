@@ -2,7 +2,7 @@
 import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
 import { closeAccount } from './../actions';
-import { getAccount } from './../actions/request'
+// import { getAccount } from './../actions/request'
 import { connect } from 'react-redux';
 import './../styles/AccModal.css'
 class Generate extends Component {
@@ -121,7 +121,7 @@ const mapStateToProp = (state) => {
 }
 const mapDispathToProp = (dispath) => {
     return {
-        getAccount: (address, publicKey, privateKey) => dispath(getAccount(address, publicKey, privateKey)),
+        // getAccount: (address, publicKey, privateKey) => dispath(getAccount(address, publicKey, privateKey)),
         removeModal: () => dispath(closeAccount())
     }
 }

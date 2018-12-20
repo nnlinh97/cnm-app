@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-
+import { withRouter } from 'react-router-dom';
 import * as Actions from '../actions/request';
 
 import Header from '../components/Header';
@@ -12,6 +12,10 @@ import RightSidebar from '../components/RightSidebar';
 
 class Profile extends Component {
     componentDidMount() {
+        if(localStorage.getItem('token') == 'false'){
+            this.props.history.push('/');
+            return;
+        }
         this.props.getProfile();
         this.props.getListPosts();
         this.props.getListFollowings();
@@ -48,4 +52,4 @@ const mapDispatchToProps = (dispatch, action) => {
         getListFollowers: () => dispatch(Actions.getListFollowers())
     }
 }
-export default connect(mapStateToProps, mapDispatchToProps)(Profile);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Profile));

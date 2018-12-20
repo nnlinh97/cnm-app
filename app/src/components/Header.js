@@ -58,6 +58,8 @@ class Header extends Component {
 
     signOut = (e) => {
         e.preventDefault();
+        localStorage.setItem('token', false);
+        localStorage.setItem('PRIVATE_KEY', '');
         this.props.logout();
         this.props.history.push('/');
     }
