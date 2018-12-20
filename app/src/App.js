@@ -7,6 +7,7 @@ import Following from './pages/Following';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import CreateAccount from './pages/CreateAccount';
+import Payment from './pages/Payment';
 
 
 class App extends Component {
@@ -20,6 +21,7 @@ class App extends Component {
             <Route exact path='/:username/followings' component={Following} />
             <Route exact path='/' component={Login} />
             <Route exact path='/account/register' component={Register} />
+            <Route exact path='/account/payment' component={Payment} />
             <Route exact path='/account/createaccount' component={CreateAccount} />
             <Route path='' component={NotFoundPage} />
           </Switch>

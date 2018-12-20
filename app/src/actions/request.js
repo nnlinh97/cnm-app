@@ -156,3 +156,8 @@ export const createAccount = (params) =>{
     }
     
 }
+
+export const payment = (params) => {
+    console.log(params);
+}
+

@@ -134,6 +134,10 @@ class Header extends Component {
         this.props.history.push('/account/createaccount')
     }
 
+    onPayment = (e) => {
+        e.preventDefault();
+        this.props.history.push('account/payment');
+    }
     onClickToTwitter = () => {
         this.props.history.push('/nnlinh97')
     }
@@ -178,6 +182,10 @@ class Header extends Component {
                                 <a onClick={this.onCreateAccout} className="linh-a" href="">
                                     <i className="fa fa-plus"></i>
                                     &nbsp;&nbsp;&nbsp;Create account
+                                </a>
+                                <a onClick={this.onPayment} className="linh-a" href="">
+                                    <i className="fa fa-money"></i>
+                                    &nbsp;&nbsp;&nbsp;Payment
                                 </a>
                                 <a onClick={(e) => this.toggleEditModal(profile, e)} className="linh-a" href="#">
                                     <i className="fa fa-user"></i>
