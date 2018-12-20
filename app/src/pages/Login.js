@@ -6,8 +6,9 @@ class Login extends Component {
     clickToTwitter = () => {
         this.props.history.push('/nnlinh97');
     } 
-    clickToRegister = () => {
-        this.props.history.push('account/register')
+    clickToRegister = (e) => {
+        e.preventDefault();
+        this.props.history.push('/account/register')
     }  
     render() {
         return (

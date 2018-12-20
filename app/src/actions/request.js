@@ -1,5 +1,7 @@
 import callAPI from '../utils/ConnectAPI';
 import * as Action from './index';
+import connectapi from '../utils/api';
+import axios from 'axios';
 
 export const getProfile = () => {
     return (dispatch) => {
@@ -59,4 +61,14 @@ export const getListFollowings = () => {
             }
         });
     }
+}
+
+export const createAccount = (params) =>{
+    return (dispatch) => {
+        console.log(params);
+        return connectapi("/users/get-user", "GET", {idKey: params.fPublicKey}).then((res) => {
+            console.log(res);
+        });
+    }
+    
 }

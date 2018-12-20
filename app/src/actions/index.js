@@ -42,3 +42,4 @@ export const getListFollowings = (followings) => {
         followings: followings
     }
 }
+

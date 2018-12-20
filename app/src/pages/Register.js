@@ -3,7 +3,8 @@ import React, { Component } from 'react';
 import {withRouter} from 'react-router-dom'
 
 class Register extends Component {
-    clickToSignIn = () => {
+    clickToSignIn = (e) => {
+        e.preventDefault();
         this.props.history.push('/');
     }
     render() {

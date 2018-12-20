@@ -113,7 +113,8 @@ class Header extends Component {
         this.removeEditModal()
     }
 
-    onCreateAccout = () => {
+    onCreateAccout = (e) => {
+        e.preventDefault();
         this.props.history.push('/account/createaccount')
     }
 

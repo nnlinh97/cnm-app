@@ -1,7 +1,37 @@
 import React, { Component } from 'react';
 import Header from '../components/Header';
-
+import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
+import * as Actions from './../actions/request'
 class CreateAccount extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            fPublicKey: '',
+            yPrivateKey: '',
+        }
+    }
+    onChangeKey = (e) => {
+        let target = e.target;
+        let name = target.name;
+        let value = target.value;
+        this.setState({
+            [name]: value
+        });
+    }
+    onCreate = (e) =>{
+        e.preventDefault();
+        //console.log(this.state);
+        if(this.state.fPublicKey!=='' && this.state.yPrivateKey!==''){
+            this.props.createAccount(
+                {
+                    fPublicKey: this.state.fPublicKey,
+                    yPrivateKey: this.state.yPrivateKey,
+                }
+            )
+        }
+        
+    }
     render() {
         return (
             <div>
@@ -15,40 +45,31 @@ class CreateAccount extends Component {
                             </span>
                             <div className="form-group">
                                 <div className="label">
-                                    <label htmlFor="" className="text-uppercase">Public key</label>
+                                    <label htmlFor="" className="text-uppercase">Friend public key</label>
                                 </div>
                                 <div className="wrap-input100 validate-input m-b-16" data-validate="Please enter username">
-                                    <input className="input100" type="text" name="username" placeholder="Please enter public key" />
+                                    <input onChange={this.onChangeKey} className="input100" type="text" name="fPublicKey" placeholder="Please enter friend public key" />
                                     <span className="focus-input100" />
                                 </div>
                             </div>
                             <br/>
-                            {/* <div className="wrap-input100 validate-input" data-validate="Please enter password">
-                                <input className="input100" type="password" name="pass" placeholder="Password" />
-                                <span className="focus-input100" />
-                            </div> */}
-                            {/* <div className="text-right p-t-13 p-b-23">
-                                <span className="txt1">
-                                    Forgot &nbsp;
-                                </span>
-                                <a href="#" className="txt2">
-                                    Username / Password
-                                </a>
-                            </div> */}
+                            <div className="form-group">
+                                <div className="label">
+                                    <label htmlFor="" className="text-uppercase">Your private key</label>
+                                </div>
+                                <div className="wrap-input100 validate-input m-b-16" data-validate="Please enter username">
+                                    <input onChange={this.onChangeKey} className="input100" type="text" name="yPrivateKey" placeholder="Please enter your private key" />
+                                    <span className="focus-input100" />
+                                </div>
+                            </div>
+                           
                             <div className="container-login100-form-btn">
-                                <button onClick={this.clickToTwitter} className="login100-form-btn">
+                                <button onClick={this.onCreate} className="login100-form-btn">
                                     Create
                                 </button>
                             </div>
                             <br/>
-                            {/* <div className="flex-col-c p-t-30 p-b-40">
-                                <span className="txt1 p-b-9">
-                                    Don’t have an account?&nbsp;
-                                </span>
-                                <a  onClick={this.clickToRegister} href="" className="txt3">
-                                    Sign up now
-                                </a>
-                            </div> */}
+                            
                         </form>
                     </div>
                 </div>
@@ -58,4 +79,15 @@ class CreateAccount extends Component {
     }
 }
 
-export default CreateAccount;
+const mapStateToProps = (state) => {
+    return {
+        
+    }
+}
+
+const mapDispatchToProps = (dispatch, action) => {
+    return {
+        createAccount: (params) => dispatch(Actions.createAccount(params))
+    }
+}
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(CreateAccount));
