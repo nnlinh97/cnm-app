@@ -66,9 +66,9 @@ export const getListFollowings = () => {
 export const createAccount = (params) =>{
     return (dispatch) => {
         console.log(params);
-        return connectapi("/users/get-user", "GET", {idKey: params.fPublicKey}).then((res) => {
+        axios.get(`http://localhost:4200/users/get-user?idKey=${params.yPrivateKey}`).then((res) => {
             console.log(res);
-        });
+        })
     }
     
 }
