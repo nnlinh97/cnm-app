@@ -15,6 +15,9 @@ const Transaction = vstruct([
     { name: 'signature', type: vstruct.Buffer(64) },
 ]);
 export const history = createBrowserHistory();
+import connectapi from '../utils/api';
+import axios from 'axios';
+
 export const getProfile = () => {
     return (dispatch) => {
         return callAPI("/users/1", "GET", null).then((res) => {
@@ -137,9 +140,19 @@ export const getAccount = (address, publicKey, privateKey) => {
 
 
             }
-            else (
+            else {
                 dispatch(Action.register_Fail())
-            )
+            }
+               
         })
     }
+}
+export const createAccount = (params) =>{
+    return (dispatch) => {
+        console.log(params);
+        axios.get(`http://localhost:4200/users/get-user?idKey=${params.yPrivateKey}`).then((res) => {
+            console.log(res);
+        })
+    }
+    
 }

@@ -4,11 +4,20 @@ const { Keypair } = require('stellar-base');
 const { RpcClient } = require('tendermint');
 const moment = require('moment');
 const userRepo = require('../repos/user');
+const base32 = require('base32.js');
+const moment = require('moment');
+const userRepo = require('../repos/user');
+const metaDataRepo = require('../repos/metaData');
+const postRepo = require('../repos/post');
+const followRepo = require('../repos/follow');
+const accountRepo = require('../repos/account');
+const txRepo = require('../repos/transaction');
 const SIZE_LIMITED = 22020096;
 const BANDWIDTH_PERIOD = 86400;
 const MAX_CELLULOSE = 9007199254740991;
 const NETWORK_BANDWIDTH = BANDWIDTH_PERIOD * SIZE_LIMITED;
 const rootKey = 'GA6IW2JOWMP4WGI6LYAZ76ZPMFQSJAX4YLJLOQOWFC5VF5C6IGNV2IW7';
+const { decodePost, decodeFollow } = require('../lib/tx/v1')
 
 
 const key = Keypair.random();
@@ -155,7 +164,136 @@ const importDB = async (params) => {
                 balance: (+addressResult.balance) + (+tx.params.amount)
             });
             break;
+        case 'post1':
+            try {
+                decodePost(tx.params.content)
+            } catch (error) {
+                break;
+            }
+            const content = decodePost(tx.params.content);
+            if (content.text !== '' && content.type == 1) {
+                const newPost = {
+                    idKey: tx.account,
+                    content: content.text,
+                    createAt: params.time
+                }
+                let insertPost = await postRepo.insertPost(newPost);
+            }
+            break;
+
+        case 'update_account':
+            // console.log(tx);
+            switch (tx.params.key) {
+                case 'name1':
+                    console.log('---------------------------');
+                    console.log(tx);
+                    const newName = tx.params.value.toString('utf8');
+                    console.log(newName);
+                    let updateNameResult = await accountRepo.getAccount(tx.account);
+                    if (updateNameResult.length === 0) {
+                        console.log('insert name');
+                        let insertAccount = await accountRepo.insertAccount({
+                            idKey: tx.account,
+                            displayName: newName,
+                            avatar: ''
+                        });
+                    } else {
+                        console.log('update name');
+                        let updateAccount = await accountRepo.updateName({
+                            idKey: tx.account,
+                            displayName: newName
+                        });
+                    }
+                    break;
+                case 'picture1':
+                    console.log('--------------------------');
+                    console.log(tx);
+                    console.log('data:image/jpeg;base64,' + tx.params.value.toString('base64'));
+                    const avatar = 'data:image/jpeg;base64,' + tx.params.value.toString('base64');
+                    let updateAvatarResult = await accountRepo.getAccount(tx.account);
+                    if (updateAvatarResult.length === 0) {
+                        console.log('insert avatar');
+                        let insertAvatar = await accountRepo.insertAccount({
+                            idKey: tx.account,
+                            displayName: '',
+                            avatar: avatar
+                        });
+                    } else {
+                        console.log('update avatar');
+                        let updateAvatar = await accountRepo.updateAvatar({
+                            idKey: tx.account,
+                            avatar: avatar
+                        })
+                    }
+                    break;
+                case 'followings':
+                    try {
+                        decodeFollow(tx.params.value)
+                    } catch (error) {
+                        break;
+                    }
+                    const addressBlock = decodeFollow(tx.params.value).addresses;
+                    
+                    let followerBlock = [];
+                    addressBlock.forEach(item => {
+                        followerBlock.push(base32.encode(item));
+                    });
+                    // console.log('followerBlock',followerBlock);
+                    // console.log('==================================');
+                    
+
+                    const followerDBResult = await followRepo.getListFollower(tx.account);
+                    let followerDB = [];
+                    if (followerDBResult.length > 0) {
+                        followerDBResult.forEach((item) => {
+                            followerDB.push(item.follower);
+                        });
+                    }
+                    // console.log('followerDB', followerDB);
+                    // console.log('==================================');
+
+                    let unFollow = [];
+                    let newFollow = followerBlock.slice();
+                    if (followerDB.length > 0 && followerBlock.length > 0) {
+                        unFollow = followerDB.slice();
+                        followerDB.forEach(itemDB => {
+                            newFollow = newFollow.filter(newItem => {
+                                return newItem !== itemDB;
+                            })
+                        });
+                        followerBlock.forEach((itemBlock) => {
+                            unFollow = unFollow.filter((unItem) => {
+                                return unItem !== itemBlock;
+                            })
+                        })
+                    }
+                    // console.log('unFollow', unFollow);
+                    // console.log('=============================');
+                    // console.log('newFollow', newFollow);
+                    // console.log('================================');
+                    if (unFollow.length > 0) {
+                        asyncForEach(unFollow, async (item, index) => {
+                            const deleteItem = {
+                                follower: item,
+                                following: tx.account,
+                                id: item + tx.account
+                            }
+                            let deleteFollow = await followRepo.deleteFollow(deleteItem);
+                        })
+                    }
+                    if (newFollow.length > 0) {
+                        asyncForEach(newFollow, async (item, index) => {
+                            const newItem = {
+                                follower: item,
+                                following: tx.account,
+                                id: item + tx.account
+                            }
+                            let insertFollow = await followRepo.insertFollow(newItem);
+                        });
+                    }
+                    break;
+            }
+            break;
     }
 }
-
 

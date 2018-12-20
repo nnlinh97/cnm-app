@@ -81,3 +81,4 @@ export const closeAccount=()=>{
         type:Types.CLOSE_ACCOUNT
     }
 }
+

@@ -63,7 +63,7 @@ class Register extends Component {
                             </div>
                             <div className="flex-col-c p-t-30 p-b-40">
                                 <span className="txt1 p-b-9">
-                                    Have an account? &nbsp;
+                                    Please give your Public key to your friend to create account &nbsp;
                                 </span>
                                 <a onClick={(e) => this.clickToSignIn(e)} href="" className="txt3">
                                     Sign in

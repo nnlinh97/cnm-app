@@ -21,6 +21,10 @@ const PaymentParams = vstruct([
   { name: 'amount', type: vstruct.UInt64BE },
 ]);
 
+const PlainTextContent = vstruct([
+  { name: 'type', type: vstruct.UInt8 },
+  { name: 'text', type: vstruct.VarString(vstruct.UInt16BE) },
+]);
 const PostParams = vstruct([
   // Maximum length 65536 in bytes
   { name: 'content', type: vstruct.VarBuffer(vstruct.UInt16BE) },
@@ -44,7 +48,24 @@ const InteractParams = vstruct([
   // React if '', like, love, haha, anrgy, sad, wow
 ]);
 
-export function encode(tx) {
+function decodePost(tx) {
+  return PlainTextContent.decode(tx);
+}
+
+function encodePost(tx) {
+  return PlainTextContent.encode(tx);
+}
+
+const Followings = vstruct([
+  { name: 'addresses', type: vstruct.VarArray(vstruct.UInt16BE, vstruct.Buffer(35)) },
+]);
+
+function decodeFollow(value) {
+  return Followings.decode(value);
+
+}
+
+function encode(tx) {
   let params, operation;
   if (tx.version !== 1) {
     throw Error('Wrong version');
@@ -99,7 +120,8 @@ export function encode(tx) {
   });
 }
 
-export function decode(data) {
+
+function decode(data) {
   const tx = Transaction.decode(data);
   if (tx.version !== 1) {
     throw Error('Wrong version');
@@ -119,23 +141,25 @@ export function decode(data) {
       params.address = base32.encode(params.address);
       Keypair.fromPublicKey(params.address);
       break;
-    
+
     case 3:
       operation = 'post';
-      params = PostParams.decode(tx.params);
+      params = PostParams.decode(
+        tx.params
+        // content: PlainTextContent.decode(tx.params.content)
+      );
+
       break;
 
     case 4:
       operation = 'update_account';
       params = UpdateAccountParams.decode(tx.params);
       break;
-    
     case 5:
       operation = 'interact';
       params = InteractParams.decode(tx.params);
       params.object = params.object.toString('hex').toUpperCase();
       break;
-    
     default:
       throw Error('Unspport operation');
   }
@@ -149,8 +173,10 @@ export function decode(data) {
     signature: tx.signature,
   };
 }
-
-// module.exports = {
-//   encode,
-//   decode,
-// };
+module.exports = {
+  encode,
+  decode,
+  decodePost,
+  decodeFollow,
+  encodePost
+};

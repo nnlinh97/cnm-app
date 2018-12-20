@@ -18,11 +18,12 @@ class Header extends Component {
             isModal: false,
             editModal: 'none',
             isEditModal: false,
-            location:  this.props.profile ? this.props.profile.location : "",
+            location: this.props.profile ? this.props.profile.location : "",
             desc: this.props.profile ? this.props.profile.desc : "",
             name: this.props.profile? this.props.profile.username :  "",
             accModal:'none',
             isAccount:false
+           // name: this.props.profile ? this.props.profile.username : ""
         }
     }
 
@@ -31,7 +32,7 @@ class Header extends Component {
             modal: 'block',
             isModal: true
         })
-        document.getElementById('body').style.overflow='hidden';
+        document.getElementById('body').style.overflow = 'hidden';
     }
 
     removeModal = () => {
@@ -39,7 +40,7 @@ class Header extends Component {
             modal: 'none',
             isModal: false
         })
-        document.getElementById('body').style.overflow='auto';
+        document.getElementById('body').style.overflow = 'auto';
     }
     toggleAccountModal = ()=>{
         this.props.openModalAcc()
@@ -114,22 +115,28 @@ class Header extends Component {
             editModal: 'block',
             isEditModal: true
         })
-        document.getElementById('body').style.overflow='hidden';
+        document.getElementById('body').style.overflow = 'hidden';
     }
 
     removeEditModal = () => {
         this.setState({
             editModal: 'none'
         })
-        document.getElementById('body').style.overflow='auto';
+        document.getElementById('body').style.overflow = 'auto';
     }
 
     saveChanges = () => {
         this.removeEditModal()
     }
 
+    onCreateAccout = (e) => {
+        e.preventDefault();
+        this.props.history.push('/account/createaccount')
+    }
 
-
+    onClickToTwitter = () => {
+        this.props.history.push('/nnlinh97')
+    }
     render() {
         const { profile } = this.props;
         let avatar = "https://tinyurl.com/yapenv5f";
@@ -141,7 +148,9 @@ class Header extends Component {
             <div className="bg-white" style={{ position: 'fixed', width: '100%', zIndex: 1 }}>
                 <div className="container mx-auto flex flex-col lg:flex-row items-center py-4">
                     <nav className="w-full lg:w-2/5">
-                        <a onClick={(e) => this.preventDefault(e)} href="" className="text-grey-darker text-sm mr-4 font-semibold pb-6 border-b-2 border-solid border-transparent no-underline hover:text-teal hover:border-teal hover:no-underline">
+                        {/* <a onClick={(e) => this.preventDefault(e)} href="" className="text-grey-darker text-sm mr-4 font-semibold pb-6 border-b-2 border-solid border-transparent no-underline hover:text-teal hover:border-teal hover:no-underline">
+                            <i className="fa fa-home fa-lg" /> Home</a> */}
+                        <a onClick={this.onClickToTwitter} href="" className="text-grey-darker text-sm mr-4 font-semibold pb-6 border-b-2 border-solid border-transparent no-underline hover:text-teal hover:border-teal hover:no-underline">
                             <i className="fa fa-home fa-lg" /> Home</a>
                         <a onClick={(e) => this.preventDefault(e)} style={{ marginLeft: '2rem' }} href="" className="text-grey-darker text-sm mr-4 font-semibold pb-6 border-b-2 border-solid border-transparent no-underline hover:text-teal hover:border-teal hover:no-underline">
                             <i className="fa fa-bell fa-lg" /> Notifications</a>
@@ -166,6 +175,10 @@ class Header extends Component {
                                 <img src={avatar} alt="avatar" className="h-8 w-8 rounded-full" />
                             </a>
                             <div className="linh-dropdown-content">
+                                <a onClick={this.onCreateAccout} className="linh-a" href="">
+                                    <i className="fa fa-plus"></i>
+                                    &nbsp;&nbsp;&nbsp;Create account
+                                </a>
                                 <a onClick={(e) => this.toggleEditModal(profile, e)} className="linh-a" href="#">
                                     <i className="fa fa-user"></i>
                                     &nbsp;&nbsp;&nbsp;Edit Profile
@@ -247,7 +260,7 @@ class Header extends Component {
                                                         <input id="image2" type="file" name="image2" />
                                                         {/* <input id="image2" type="file" name="image2" onChange={(event) => this.loadFile(event)} /> */}
                                                     </div>
-                                                    <div style={{marginTop: '-36px'}} className="locationBtn w-full lg:w-1/4 flex my-4 lg:my-0 lg:justify-end items-center">
+                                                    <div style={{ marginTop: '-36px' }} className="locationBtn w-full lg:w-1/4 flex my-4 lg:my-0 lg:justify-end items-center">
                                                         <div className="mr-6">
                                                             <button onClick={this.removeEditModal} style={{ backgroundColor: '#bbb' }} type="button" className="btn btn-primary radius-button " data-dismiss="modal">
                                                                 Cancel
@@ -258,13 +271,13 @@ class Header extends Component {
 
                                                         </div>
                                                     </div>
-                                                    <div style={{marginTop: '-150px'}} className="w-full lg:w-1/4 pictureAva">
+                                                    <div style={{ marginTop: '-150px' }} className="w-full lg:w-1/4 pictureAva">
 
                                                         {/* <label htmlFor="image3" className="circle2" style={{fontSize:'80px', background:"#008CBA"}}><i className="fa fa-camera" title="Add photo"></i></label>
                                                         <input id="image3" type="file" name="image3" onChange={(event) => this.loadFile(event)}/> */}
                                                         <img src={avatar} id="avatar" alt="logo" className="circle2" />
                                                         <form className="form2-control">
-                                                            <input onChange={this.onHandleChange} value={this.state.name} type="text" className='input-edit' placeholder="Intro" name="name"  /><br />
+                                                            <input onChange={this.onHandleChange} value={this.state.name} type="text" className='input-edit' placeholder="Intro" name="name" /><br />
                                                             {/* <input onChange={this.onHandleChange} value={this.state.location} type="text" className='input-edit' placeholder="Intro" name="location"  /><br /> */}
                                                             {/* <input type="text" className='input-edit' placeholder="Vi trí" name="birth" /> */}
                                                             {/* <input type="text" className='input-edit' placeholder="Ten" name="user" /><br /> */}
