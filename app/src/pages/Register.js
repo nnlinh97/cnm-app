@@ -1,10 +1,34 @@
 
 import React, { Component } from 'react';
-import {withRouter} from 'react-router-dom'
+import { withRouter } from 'react-router-dom';
+import { getAccount } from './../actions/request'
+import { connect } from 'react-redux'
+const { Keypair } = require('stellar-base');
+const vstruct = require('varstruct');
+const base32 = require('base32.js');
 
+//var key = Keypair.random();
 class Register extends Component {
-    clickToSignIn = () => {
+    constructor(props) {
+        super(props);
+        const key = Keypair.random();
+        this.state = {
+            privateKey: key.secret(),
+            publicKey: key.publicKey()
+        }
+
+    }
+    clickToSignIn = (e) => {
+        e.preventDefault();
         this.props.history.push('/');
+    }
+
+    componentWillUnmount() {
+        console.log('haha')
+        this.setState({
+            privateKey: '',
+            publicKey: ''
+        })
     }
     render() {
         return (
@@ -13,25 +37,27 @@ class Register extends Component {
                     <div className="wrap-login100">
                         <form className="login100-form validate-form p-l-55 p-r-55 p-t-178">
                             <span className="login100-form-title">
-                                Create New Wallet
+                                Create Key
                             </span>
                             <div className="form-group">
-                                <div className="label">
-                                    <label htmlFor="" className="text-uppercase">Enter a password</label>
+                                <div className="">
+                                    <label htmlFor="" className="text-uppercase">Private Key</label><br /><br />
+                                    <textarea className="input100 text-uppercase" value={this.state.privateKey} readOnly></textarea>
+
                                 </div>
-                                <div className="wrap-input100 validate-input m-b-16" data-validate="Please enter username">
-                                    <input className="input100" type="text" name="username" placeholder="Private key" />
-                                    <span className="focus-input100" />
+                                <div>
+                                    <br />
+                                </div>
+                                <div className="">
+                                    <label htmlFor="" className="text-uppercase">Public Key</label><br /><br />
+                                    <textarea className="input100 text-uppercase" value={this.state.publicKey} readOnly></textarea>
+
                                 </div>
                             </div>
 
 
                             <br />
-                            <div className="container-login100-form-btn">
-                                <button onClick={this.clickToTwitter} className="login100-form-btn">
-                                    Create account
-                                </button>
-                            </div>
+
                             <div>
                                 <br />
                             </div>
@@ -39,7 +65,7 @@ class Register extends Component {
                                 <span className="txt1 p-b-9">
                                     Have an account? &nbsp;
                                 </span>
-                                <a  onClick={this.clickToSignIn} href="" className="txt3">
+                                <a onClick={(e) => this.clickToSignIn(e)} href="" className="txt3">
                                     Sign in
                                 </a>
                             </div>
@@ -50,4 +76,16 @@ class Register extends Component {
         );
     }
 }
-export default withRouter(Register);
+const mapStateToProp = (state) => {
+    // console.log(state)
+    return {
+        register: state.register
+    }
+}
+const mapDispathToProp = (dispath) => {
+    return {
+        getAccount: (address, publicKey, privateKey) => dispath(getAccount(address, publicKey, privateKey))
+    }
+}
+
+export default connect(mapStateToProp, mapDispathToProp)(withRouter(Register));

@@ -1,14 +1,53 @@
 import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
-
+import { Keypair } from 'stellar-base';
+import { login } from './../actions/request';
+import { connect } from 'react-redux'
+import * as Types from './../constants/ActionTypes';
 class Login extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            privateKey: ''
+        }
+    }
+    onChange = (event) => {
+        this.setState({
+            privateKey: event.target.value
+        })
+    }
+    onSubmit = async (event) => {
+        event.preventDefault();
 
+        try {
+            let keypair = Keypair.fromSecret(this.state.privateKey);
+            let publicKey = keypair.publicKey()
+                await this.props.signIn(publicKey, this.state.privateKey)
+                let status = await this.props.status
+                if (status === -1 || status !== 1) {
+                    document.getElementById("error").innerHTML = Types.MESS_ERR;
+                    document.getElementById('error').style.display = 'block'
+                } else if (status === 1) {
+                    this.props.history.push('/nnlinh97')
+                }
+        }
+        catch (err) {
+            console.log(err)
+            document.getElementById("error").innerHTML = Types.MESS_ERR;
+            document.getElementById('error').style.display = 'block';
+        }
+
+
+
+
+    }
     clickToTwitter = () => {
         this.props.history.push('/nnlinh97');
-    } 
-    clickToRegister = () => {
+    }
+    clickToRegister = (event) => {
+        event.preventDefault();
         this.props.history.push('account/register')
-    }  
+    }
     render() {
         return (
             <div className="limiter">
@@ -19,11 +58,15 @@ class Login extends Component {
                                 Sign In
                             </span>
                             <div className="form-group">
-                                <div className="label">
-                                    <label htmlFor="" className="text-uppercase">Private key</label>
+                                <div className="label input100" style={{ display: 'none' }} id="error" >
+                                    <label htmlFor="" className="text-uppercase"></label>
                                 </div>
+                                <div className="label">
+                                    <label htmlFor="" className="text-uppercase alert-danger">Private key</label>
+                                </div>
+
                                 <div className="wrap-input100 validate-input m-b-16" data-validate="Please enter username">
-                                    <input className="input100" type="text" name="username" placeholder="Private key" />
+                                    <input className="input100" type="text" value={this.state.privateKey} onChange={(e) => this.onChange(e)} name="privateKey" placeholder="Private key" />
                                     <span className="focus-input100" />
                                 </div>
                             </div>
@@ -32,16 +75,9 @@ class Login extends Component {
                                 <input className="input100" type="password" name="pass" placeholder="Password" />
                                 <span className="focus-input100" />
                             </div> */}
-                            <div className="text-right p-t-13 p-b-23">
-                                <span className="txt1">
-                                    Forgot &nbsp;
-                                </span>
-                                <a href="#" className="txt2">
-                                    Username / Password
-                                </a>
-                            </div>
+
                             <div className="container-login100-form-btn">
-                                <button onClick={this.clickToTwitter} className="login100-form-btn">
+                                <button onClick={(event) => this.onSubmit(event)} className="login100-form-btn">
                                     Sign in
                                 </button>
                             </div>
@@ -49,7 +85,7 @@ class Login extends Component {
                                 <span className="txt1 p-b-9">
                                     Don’t have an account?&nbsp;
                                 </span>
-                                <a  onClick={this.clickToRegister} href="" className="txt3">
+                                <a onClick={this.clickToRegister} href="" className="txt3">
                                     Sign up now
                                 </a>
                             </div>
@@ -60,5 +96,15 @@ class Login extends Component {
         );
     }
 }
-
-export default withRouter(Login);
+const mapStateToProp = (state) => {
+    // console.log(state)
+    return {
+        status: state.login.status
+    }
+}
+const mapDispathToProp = (dispath) => {
+    return {
+        signIn: (keyPublic, privateKey) => dispath(login(keyPublic, privateKey))
+    }
+}
+export default connect(mapStateToProp, mapDispathToProp)(withRouter(Login));

@@ -3,6 +3,9 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import * as Actions from './../actions/request';
 import './../styles/modal2.css';
+import {logout} from './../actions/request';
+import Generate from './Generate'
+import {openAccount} from './../actions'
 var randomString = require('random-string');
 
 
@@ -17,7 +20,9 @@ class Header extends Component {
             isEditModal: false,
             location:  this.props.profile ? this.props.profile.location : "",
             desc: this.props.profile ? this.props.profile.desc : "",
-            name: this.props.profile? this.props.profile.username :  ""
+            name: this.props.profile? this.props.profile.username :  "",
+            accModal:'none',
+            isAccount:false
         }
     }
 
@@ -36,13 +41,23 @@ class Header extends Component {
         })
         document.getElementById('body').style.overflow='auto';
     }
-
+    toggleAccountModal = ()=>{
+        this.props.openModalAcc()
+        document.getElementById('body').style.overflow='hidden';
+    }
+    removeAccountModal = ()=>{
+        this.setState({
+            isAccount:false
+        })
+        document.getElementById('body').style.overflow='auto';
+    }
     preventDefault = (e) => {
         e.preventDefault();
     }
 
     signOut = (e) => {
         e.preventDefault();
+        this.props.logout();
         this.props.history.push('/');
     }
 
@@ -121,7 +136,7 @@ class Header extends Component {
         if (profile) {
             avatar = profile.avatarURL;
         }
-
+        let accModal = this.props.toogle === true?<Generate/>:<div></div>
         return (
             <div className="bg-white" style={{ position: 'fixed', width: '100%', zIndex: 1 }}>
                 <div className="container mx-auto flex flex-col lg:flex-row items-center py-4">
@@ -155,6 +170,10 @@ class Header extends Component {
                                     <i className="fa fa-user"></i>
                                     &nbsp;&nbsp;&nbsp;Edit Profile
                                 </a>
+                                <a onClick={(e) => this.toggleAccountModal(profile, e)} className="linh-a" href="#">
+                                    <i className="fa fa-user-plus"></i>
+                                    &nbsp;New User
+                                </a>
                                 <a onClick={(e) => this.signOut(e)} className="linh-a" href="">
                                     <i className="fa fa-sign-out"></i>
                                     &nbsp;&nbsp;Sign Out
@@ -165,6 +184,7 @@ class Header extends Component {
                             <button onClick={this.toggleModal} className="bg-teal hover:bg-teal-dark text-white font-medium py-2 px-4 rounded-full">
                                 Tweet
                             </button>
+                            {accModal}
                             <div className="modal fade" id="myModal" role="dialog" style={{ display: this.state.modal }}>
                                 <div className="modal-dialog">
                                     <div ref={this.state.isModal ? this.setWrapperRef : ""} className="modal-content">
@@ -285,13 +305,16 @@ class Header extends Component {
 // export default Header;
 const mapStateToProps = (state) => {
     return {
-        profile: state.profile
+        profile: state.profile,
+        toogle:state.createAcc,
     }
 }
 
 const mapDispatchToProps = (dispatch, action) => {
     return {
-        createNewPost: (post) => dispatch(Actions.createNewPost(post))
+        createNewPost: (post) => dispatch(Actions.createNewPost(post)),
+        logout: () => dispatch(logout()),
+        openModalAcc:()=>dispatch(openAccount())
     }
 }
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Header));

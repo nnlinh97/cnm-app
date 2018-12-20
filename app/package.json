@@ -4,6 +4,9 @@
   "private": true,
   "dependencies": {
     "axios": "^0.18.0",
+    "base32.js": "^0.1.0",
+    "crypto": "^1.0.1",
+    "history": "^4.7.2",
     "lodash": "^4.17.10",
     "material-ui": "^0.20.2",
     "moment": "^2.22.2",
@@ -14,7 +17,9 @@
     "react-router-dom": "^4.3.1",
     "react-scripts": "2.1.1",
     "redux": "^4.0.0",
-    "redux-thunk": "^2.3.0"
+    "redux-thunk": "^2.3.0",
+    "stellar-base": "^0.10.0",
+    "varstruct": "^6.1.2"
   },
   "scripts": {
     "start": "react-scripts start",
