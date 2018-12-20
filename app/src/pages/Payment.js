@@ -3,12 +3,12 @@ import Header from '../components/Header';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import * as Actions from './../actions/request'
-class CreateAccount extends Component {
+class Payment extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            fPublicKey: '',
-            yPrivateKey: '',
+            address: '',
+            amount: '',
         }
     }
     onChangeKey = (e) => {
@@ -21,12 +21,12 @@ class CreateAccount extends Component {
     }
     onCreate = (e) => {
         e.preventDefault();
-        //console.log(this.state);
-        if (this.state.fPublicKey !== '' && this.state.yPrivateKey !== '') {
-            this.props.createAccount(
+        // console.log(this.state);
+        if (this.state.address !== '' && this.state.amount !== '') {
+            this.props.payment(
                 {
-                    fPublicKey: this.state.fPublicKey,
-                    yPrivateKey: this.state.yPrivateKey,
+                    address: this.state.address,
+                    amount: this.state.amount,
                 }
             )
         }
@@ -40,32 +40,32 @@ class CreateAccount extends Component {
                     <div className="container-login100" style={{ backgroundColor: "#d4d3d2" }}>
                         <div className="wrap-login100">
                             <form className="login100-form validate-form p-l-55 p-r-55 p-t-178">
-                                <span className="login100-form-title">
-                                    Create Account
+                                <span className="login100-form-title" style={{backgroundColor:"rgb(222, 115, 111)"}}>
+                                    Payment
                             </span>
                                 <div className="form-group">
                                     <div className="label">
-                                        <label htmlFor="" className="text-uppercase">Friend public key</label>
+                                        <label htmlFor="" className="text-uppercase">Address want to pay</label>
                                     </div>
                                     <div className="wrap-input100 validate-input m-b-16" data-validate="Please enter username">
-                                        <input onChange={this.onChangeKey} className="input100" type="text" name="fPublicKey" placeholder="Please enter friend public key" />
+                                        <input onChange={this.onChangeKey} className="input100" type="text" name="address" placeholder="Please enter address want to pay" />
                                         <span className="focus-input100" />
                                     </div>
                                 </div>
                                 <br />
                                 <div className="form-group">
                                     <div className="label">
-                                        <label htmlFor="" className="text-uppercase">Your private key</label>
+                                        <label htmlFor="" className="text-uppercase">Amount</label>
                                     </div>
                                     <div className="wrap-input100 validate-input m-b-16" data-validate="Please enter username">
-                                        <input onChange={this.onChangeKey} className="input100" type="text" name="yPrivateKey" placeholder="Please enter your private key" />
+                                        <input onChange={this.onChangeKey} className="input100" type="text" name="amount" placeholder="Please enter amount of money" />
                                         <span className="focus-input100" />
                                     </div>
                                 </div>
 
                                 <div className="container-login100-form-btn">
-                                    <button onClick={this.onCreate} className="login100-form-btn">
-                                        Create
+                                    <button onClick={this.onCreate} className="login100-form-btn" style={{backgroundColor:"rgb(222, 115, 111)"}}>
+                                        Transfer
                                 </button>
                                 </div>
                                 <br />
@@ -78,7 +78,6 @@ class CreateAccount extends Component {
         );
     }
 }
-
 const mapStateToProps = (state) => {
     return {
 
@@ -87,7 +86,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch, action) => {
     return {
-        createAccount: (params) => dispatch(Actions.createAccount(params))
+        payment: (params) => dispatch(Actions.createAccount(params))
     }
 }
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(CreateAccount));
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Payment));
