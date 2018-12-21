@@ -3,9 +3,9 @@ import * as Action from './index';
 import { checkAccount, createAccount } from './../utils/test'
 import { createBrowserHistory } from 'history';
 // export const history = createBrowserHistory();
-import connectapi from '../utils/api';
+//import connectapi from '../utils/api';
 import axios from 'axios';
-
+import connectapi from '../utils/api'
 
 export const getProfile = () => {
     return (dispatch) => {
@@ -57,15 +57,15 @@ export const getListFollowers = () => {
     }
 }
 
-export const getListFollowings = () => {
-    return (dispatch) => {
-        return callAPI("/following", "GET", null).then((res) => {
-            if (res) {
-                dispatch(Action.getListFollowings(res.data));
-            }
-        });
-    }
-}
+// export const getListFollowings = () => {
+//     return (dispatch) => {
+//         return callAPI("/following", "GET", null).then((res) => {
+//             if (res) {
+//                 dispatch(Action.getListFollowings(res.data));
+//             }
+//         });
+//     }
+// }
 export const login = (publicKey, privateKey) => {
     return (dispatch) => {
         return checkAccount(publicKey).then((res) => {
@@ -148,5 +148,19 @@ export const logout = () => {
 
 export const payment = (params) => {
     console.log(params);
+}
+export const getListFollowings = (idKey) => {
+    return (dispatch) => {
+        return connectapi(`/follow/following?idKey=${idKey}`, "GET", null).then((res) => {
+        
+            if (res.status === 200 ) {
+               
+                    dispatch(Action.getListFollowings(res.data));
+                }
+                else{
+                    return;
+                }
+        });
+    }
 }
 

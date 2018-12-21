@@ -19,7 +19,7 @@ class Profile extends Component {
         }
         this.props.getProfile();
         this.props.getListPosts();
-        this.props.getListFollowings();
+        //this.props.getListFollowings();
         this.props.getListFollowers();
     }
 
@@ -56,7 +56,7 @@ const mapDispatchToProps = (dispatch, action) => {
     return {
         getProfile: () => dispatch(Actions.getProfile()),
         getListPosts: () => dispatch(Actions.getListPosts()),
-        getListFollowings: () => dispatch(Actions.getListFollowings()),
+        //getListFollowings: () => dispatch(Actions.getListFollowings()),
         getListFollowers: () => dispatch(Actions.getListFollowers())
     }
 }

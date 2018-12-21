@@ -1,8 +1,31 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
+import {getListFollowings} from './../actions/request'
 class MenuTop extends Component {
-
+    constructor(props) {
+        super(props);
+        this.state={
+            idKey:''
+        }
+    }
+    componentWillReceiveProps(nextProps){
+        let id = nextProps.match.params.id
+        this.setState({
+            idKey: nextProps.match.params.id,
+        })
+        if(id !== this.props.match.params.id){
+            this.props.getListFollow(id);
+        }
+    }
+    componentDidMount(){
+        this.setState({
+            idKey:this.props.match.params.id
+        })
+        if(this.state.idKey){
+            this.props.getListFollow(this.state.idKey);
+        }
+    }
     preventDefault = (e) => {
         e.preventDefault();
     }
@@ -15,8 +38,8 @@ class MenuTop extends Component {
 
     getFollowings = (e) => {
         e.preventDefault();
-        const user = this.props.match.params.username;
-        this.props.history.push(`/${user}/followings`);
+        const publicKey = this.props.match.params.id;
+        this.props.history.push(`/${publicKey}/followings`);
     }
 
     getFollowers = (e) => {
@@ -59,7 +82,8 @@ class MenuTop extends Component {
             tab3 = " border-teal";
             text3 = " text-teal";
         }
-
+        let { following } = this.props;
+         let numberFoll = following.count?following.count: 0;
         return (
             <div className="bg-white shadow">
                 <div className="container mx-auto flex flex-col lg:flex-row items-center lg:relative">
@@ -77,7 +101,7 @@ class MenuTop extends Component {
                             <li className={`text-center py-3 px-4 border-b-2 border-solid border-transparent${tab2}`}>
                                 <a onClick={(e) => this.getFollowings(e)} href="" className="text-grey-darker no-underline hover:no-underline">
                                     <div className="text-sm font-bold tracking-tight mb-1">{profile ? "Following" : ""}</div>
-                                    <div className={`text-lg tracking-tight font-bold${text2}`}>{profile ? profile.following : ""}</div>
+                                    <div className={`text-lg tracking-tight font-bold${text2}`}>{numberFoll}</div>
                                 </a>
                             </li>
                             <li className={`text-center py-3 px-4 border-b-2 border-solid border-transparent${tab3}`}>
@@ -165,12 +189,14 @@ class MenuTop extends Component {
 const mapStateToProps = (state) => {
     return {
         profile: state.profile,
-        posts: state.posts
+        posts: state.posts,
+        following: state.followings
     }
 }
 
 const mapDispatchToProps = (dispatch, action) => {
     return {
+        getListFollow:(publicKey) => dispatch(getListFollowings(publicKey))
     }
 }
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(MenuTop));

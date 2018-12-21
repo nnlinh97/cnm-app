@@ -1,10 +1,18 @@
 import React, { Component } from 'react';
-
-
+import { withRouter } from 'react-router-dom';
+import moment from 'moment'
 class Following extends Component {
-
+    toProFile = (e) => {
+        let publicKey = this.props.following.idKey
+        e.preventDefault();
+        //const publicKey = localStorage.getItem('PUBLIC_KEY');
+        this.props.history.push(`/users/${publicKey}`);
+    }
     render() {
         const { following } = this.props;
+        const displayName = following.displayName ? following.displayName : following.idKey;
+        const bandwidthTime = moment(following.bandwidthTime).format('DD-MM-YYYY');;
+        //const bandwidthDate = moment(bandwidthTime).format('DD-MM-YYYY');
         let btnClass = "btn1 bg-blue-light hover:bg-yellow-darker text-white font-medium py-2 px-4 rounded-full";
         let descBtn = "Following";
 
@@ -21,7 +29,7 @@ class Following extends Component {
                     </a>
                     <div className="ProfileCard-content">
                         <a className="ProfileCard-avatarLink js-nav js-tooltip" href="/nnlinh971" title="nnlinh97" tabindex="-1" aria-hidden="true">
-                            <img className="ProfileCard-avatarImage js-action-profile-avatar" src={following.avatarURL}
+                            <img className="ProfileCard-avatarImage js-action-profile-avatar" src={following.avata}
                                 alt="" />
                         </a>
                         <div className="ProfileCard-actions">
@@ -53,21 +61,31 @@ class Following extends Component {
                             </div>
                         </div>
                         <div className="ProfileCard-userFields">
-                            <div className="ProfileNameTruncated account-group">
-                                <div className="u-textTruncate u-inlineBlock">
-                                    <a className="fullname ProfileNameTruncated-link u-textInheritColor js-nav" href="/nnlinh971" data-aria-label-part="">
-                                        {following.username}</a>
+                            <div className="ProfileNameTruncated account-group" >
+
+                                <div className="u-textTruncate u-inlineBlock" style={{ cursor: 'pointer', color:'#1476d8' }} onClick={(e) => this.toProFile(e)} >
+                                    <a className="fullname ProfileNameTruncated-link u-textInheritColor js-nav" data-aria-label-part="" style={{ textAlign: 'center' }}>
+                                        {displayName}</a>
+                                </div><br />
+                                <div className="u-textTruncate u-inlineBlock color" style={{color:'black'}}>
+
+                                    <div className="ProfileNameTruncated-link u-textTruncate js-nav" data-aria-label-part="">
+                                        Balance: {following.balance}</div>
+                                    
+                                    <div className="fullname ProfileNameTruncated-link u-textTruncate js-nav" data-aria-label-part="">
+                                        Sequence: {following.sequence}</div>
+                             
+                                    <div className="fullname ProfileNameTruncated-link u-textTruncate js-nav" data-aria-label-part="">
+                                        BandwidthTime: {bandwidthTime}</div>
+                                  
+                                    
                                 </div>
+
+
+
                                 <span className="UserBadges"></span>
                             </div>
-                            <span className="ProfileCard-screenname">
-                                <a href="/nnlinh971" className="ProfileCard-screennameLink u-linkComplex js-nav" data-aria-label-part="">
-                                    <span className="username u-dir" dir="ltr">@
-                                            <b className="u-linkComplex-target">nnlinh971</b>
-                                    </span>
-                                </a>
 
-                            </span>
                             <p className="ProfileCard-bio u-dir" dir="ltr" data-aria-label-part="">{following.desc}</p>
                         </div>
                     </div>
@@ -78,4 +96,4 @@ class Following extends Component {
     }
 }
 
-export default Following;
+export default withRouter(Following);

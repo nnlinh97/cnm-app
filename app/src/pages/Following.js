@@ -10,19 +10,60 @@ import Info from '../components/Info';
 import Posts from '../components/Posts';
 import RightSidebar from '../components/RightSidebar';
 import Following from '../components/Following'
+import Axios from 'axios';
 
 
 class Followings extends Component {
+    constructor(props) {
+        super(props);
+        this.state={
+            error: '',
+            following: [],
+            idKey: ''
+            
+        }
+    }
+    componentWillReceiveProps(nextProps){
 
+    }
     componentDidMount() {
+        if(localStorage.getItem('token') == 'false'){
+            this.props.history.push('/');
+            return;
+        }
+        let idKey=this.props.match.params.username
+        console.log('username ' + idKey)
+        //const idKey = 'GAXVLYJUYND6QKGHK4FGM44XK3U77KJY54VTUJNIORYASOUOHWO63Q7Q'
+        Axios.get(`http://localhost:4200/follow/following?idKey=${idKey}`).then(res =>{
+            console.log(res.data)
+            if(res.status === 200){
+                if(res.data.message === 'success'){
+                    this.setState({
+                        following:res.data.result
+                    })
+                }else{
+                    this.setState({
+                        error: 'Bạn chưa follow ai!'
+                    })
+                }
+            }else{
+                return;
+            }
+
+        })
         this.props.getProfile();
         this.props.getListPosts();
-        this.props.getListFollowings();
+       // this.props.getListFollowings(idKey);
     }
 
     render() {
-        const {followings} = this.props;
+        //const {followings} = this.props;
         let listFollowing ='';
+        if(this.state.error !== ''){
+            alert(this.state.error)
+        }
+        let followings = this.state.following;
+        console.log(followings)
         if(followings.length > 0){
             listFollowing = followings.map((following, index) => {
                 return (
@@ -57,7 +98,7 @@ class Followings extends Component {
 
 const mapStateToProps = (state) => {
     return {
-        followings: state.followings
+        //followings: state.followings
     }
 }
 
@@ -65,7 +106,7 @@ const mapDispatchToProps = (dispatch, action) => {
     return {
         getProfile: () => dispatch(Actions.getProfile()),
         getListPosts: () => dispatch(Actions.getListPosts()),
-        getListFollowings: () => dispatch(Actions.getListFollowings())
+        //getListFollowings: (idKey) => dispatch(Actions.getListFollowings(idKey))
     }
 }
 export default connect(mapStateToProps, mapDispatchToProps)(Followings);

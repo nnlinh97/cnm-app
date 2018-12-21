@@ -1,13 +1,14 @@
 import * as Types from './../constants/ActionTypes';
 
-let initialState = [];
+let initialState = {};
 const followings = (state = initialState, action) => {
     switch (action.type) {
         case Types.GET_LIST_FOLLOWINGS:
+        console.log(action.followings)
             state = action.followings;
-            return [...state];
+            return {...state};
 
-        default: return [...state];
+        default: return {...state};
     }
 }
 

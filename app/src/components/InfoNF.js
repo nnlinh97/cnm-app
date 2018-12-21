@@ -1,10 +1,33 @@
 import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
-
+import {getListFollowings} from './../actions/request'
 class InfoNF extends Component {
+    constructor(props) {
+        super(props);
+        this.state={
+            idKey:''
+        }
+    }
+    componentWillReceiveProps(nextProps){
+        let id = nextProps.match.params.id
+        this.setState({
+            idKey: nextProps.match.params.id,
+        })
+        if(id !== this.props.match.params.id){
+            this.props.getListFollow(id);
+        }
+    }
     componentDidMount() {
-        console.log(this.props.match.params.id);
+        //const publicKey = localStorage.getItem('PUBLIC_KEY');
+        //const publicKey = 'GAXVLYJUYND6QKGHK4FGM44XK3U77KJY54VTUJNIORYASOUOHWO63Q7Q'
+        this.setState({
+            idKey:this.props.match.params.id
+        })
+        if(this.state.idKey){
+            this.props.getListFollow(this.state.idKey);
+        }
+       
     }
     
     toProfile = (e) => {
@@ -12,8 +35,14 @@ class InfoNF extends Component {
         const publicKey = localStorage.getItem('PUBLIC_KEY');
         this.props.history.push(`/users/${publicKey}`);
     }
+    toFollowing = (e) =>{
+        e.preventDefault();
+        const publicKey = localStorage.getItem('PUBLIC_KEY');
+        this.props.history.push(`/${publicKey}/followings`);
+    }
     render() {
-        // const { following } = this.props;
+         let { following } = this.props;
+         let numberFoll = following.count?following.count: 0;
         let btnClass = "btn1 bg-blue-light hover:bg-yellow-darker text-white font-medium py-2 px-4 rounded-full";
         let descBtn = "Following";
         return (
@@ -55,10 +84,11 @@ class InfoNF extends Component {
                                         <div class="text-lg tracking-tight font-bold text-teal">60</div>
                                     </a>
                                 </li>
-                                <li class="text-center py-3 px-4 border-b-2 border-solid border-transparent hover:border-teal">
+                    
+                                <li class="text-center py-3 px-4 border-b-2 border-solid border-transparent hover:border-teal" onClick={(e)=>this.toFollowing(e)}>
                                     <a href="#" class="text-grey-darker no-underline hover:no-underline">
-                                        <div class="text-sm font-bold tracking-tight mb-1">Following</div>
-                                        <div class="text-lg tracking-tight font-bold hover:text-teal">4</div>
+                                        <div class="text-sm font-bold tracking-tight mb-1" >Following</div>
+                                        <div class="text-lg tracking-tight font-bold hover:text-teal">{numberFoll}</div>
                                     </a>
                                 </li>
                                 <li class="text-center py-3 px-4 border-b-2 border-solid border-transparent hover:border-teal">
@@ -79,10 +109,12 @@ class InfoNF extends Component {
 // export default InfoNF;
 const mapStateToProp = (state) => {
     return {
+        following: state.followings
     }
 }
 const mapDispathToProp = (dispatch) => {
     return {
+        getListFollow:(publicKey) => dispatch(getListFollowings(publicKey))
     }
 }
 export default connect(mapStateToProp, mapDispathToProp)(withRouter(InfoNF));
