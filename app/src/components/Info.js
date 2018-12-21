@@ -5,32 +5,32 @@ import moment from 'moment';
 class Info extends Component {
 
     render() {
-        console.log(this.props.profile);
+        // console.log(this.props.profile);
         const { profile } = this.props;
         let tag = '';
-        let joined = '';
-        let location = '';
-        let birthday = '';
+        // let joined = '';
+        // let location = '';
+        // let birthday = '';
         if (profile) {
             tag = '@' + profile.username;
-            joined = (
-                <div className="mb-4">
-                    <i className="fa fa-calendar fa-lg text-grey-darker mr-1" />
-                    <a href="#" className="text-teal no-underline hover:underline"> Joined {moment(profile.createAt).format('ll')}</a>
-                </div>
-            );
-            location = (
-                <div className="mb-4">
-                    &nbsp;<i className="fa fa-map-marker" />
-                    <a href="#" className="text-teal no-underline hover:underline">&nbsp;&nbsp;&nbsp;&nbsp;{profile.location}</a>
-                </div>
-            );
-            birthday = (
-                <div className="mb-4">
-                    <i className="fa fa-birthday-cake" />
-                    <a href="#" className="text-teal no-underline hover:underline"> &nbsp;{moment(profile.birthday).format('ll').split(", ")[0]}</a>
-                </div>
-            )
+            // joined = (
+            //     <div className="mb-4">
+            //         <i className="fa fa-calendar fa-lg text-grey-darker mr-1" />
+            //         <a href="#" className="text-teal no-underline hover:underline"> Joined {moment(profile.createAt).format('ll')}</a>
+            //     </div>
+            // );
+            // location = (
+            //     <div className="mb-4">
+            //         &nbsp;<i className="fa fa-map-marker" />
+            //         <a href="#" className="text-teal no-underline hover:underline">&nbsp;&nbsp;&nbsp;&nbsp;{profile.location}</a>
+            //     </div>
+            // );
+            // birthday = (
+            //     <div className="mb-4">
+            //         <i className="fa fa-birthday-cake" />
+            //         <a href="#" className="text-teal no-underline hover:underline"> &nbsp;{moment(profile.birthday).format('ll').split(", ")[0]}</a>
+            //     </div>
+            // )
 
         }
         return (
@@ -41,13 +41,13 @@ class Info extends Component {
                 <div className="mb-4">
                     <a href="#" className="text-grey-darker no-underline hover:underline">{tag}</a>
                 </div>
-                <div className="mb-4">
+                {/* <div className="mb-4">
                     {profile ? profile.desc : ''}
-                    {/* <a href="#" className="text-teal no-underline hover:underline">@adamwathan</a>,
+                    <a href="#" className="text-teal no-underline hover:underline">@adamwathan</a>,
                         <a href="#" className="text-teal no-underline hover:underline">@reinink</a>,
                         <a href="#" className="text-teal no-underline hover:underline">@davidhemphill</a>, and
-                        <a href="#" className="text-teal no-underline hover:underline">@steveschoger</a>. */}
-                </div>
+                        <a href="#" className="text-teal no-underline hover:underline">@steveschoger</a>.
+                </div> */}
                 {/* {location}
                 {joined}
                 {birthday} */}
@@ -61,7 +61,8 @@ class Info extends Component {
                             overflow: "hidden",
                             textOverflow: "ellipsis",
                         }}>
-                        F8F5D98CF83B03F68C5E2E04CE409804B57EAD1D0BAB24531E769D4A267A45A1
+                        GCD6DHTSLKVMQWOXE4T4S72ZO3T2AM
+                        HXZ3DNKMQFSCFQNDYQ5A5VNHTM
                     </p>
                 </div>
                 <div className="mb-4">
