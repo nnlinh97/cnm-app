@@ -22,7 +22,7 @@ class Info extends Component {
             location = (
                 <div className="mb-4">
                     &nbsp;<i className="fa fa-map-marker" />
-                    <a href="#" className="text-teal no-underline hover:underline">&nbsp;&nbsp;&nbsp;&nbsp;{ profile.location}</a>
+                    <a href="#" className="text-teal no-underline hover:underline">&nbsp;&nbsp;&nbsp;&nbsp;{profile.location}</a>
                 </div>
             );
             birthday = (
@@ -31,10 +31,10 @@ class Info extends Component {
                     <a href="#" className="text-teal no-underline hover:underline"> &nbsp;{moment(profile.birthday).format('ll').split(", ")[0]}</a>
                 </div>
             )
-            
+
         }
         return (
-            <div style={{'marginTop': '0rem'}} className="w-full lg:w-1/4 pl-4 lg:pl-0 pr-6 mt-8 mb-4">
+            <div style={{ 'marginTop': '0rem' }} className="w-full lg:w-1/4 pl-4 lg:pl-0 pr-6 mt-8 mb-4">
                 <h1>
                     <a href="#" className="text-black font-bold no-underline hover:underline">{profile ? profile.username : ''}</a>
                 </h1>
@@ -43,14 +43,33 @@ class Info extends Component {
                 </div>
                 <div className="mb-4">
                     {profile ? profile.desc : ''}
-                        {/* <a href="#" className="text-teal no-underline hover:underline">@adamwathan</a>,
+                    {/* <a href="#" className="text-teal no-underline hover:underline">@adamwathan</a>,
                         <a href="#" className="text-teal no-underline hover:underline">@reinink</a>,
                         <a href="#" className="text-teal no-underline hover:underline">@davidhemphill</a>, and
                         <a href="#" className="text-teal no-underline hover:underline">@steveschoger</a>. */}
                 </div>
-                {location}
+                {/* {location}
                 {joined}
-                {birthday}
+                {birthday} */}
+                <div className="mb-4">
+                    <p title="F8F5D98CF83B03F68C5E2E04CE409804B57EAD1D0BAB24531E769D4A267A45A1"
+                        style={{
+                            width: "250px",
+                            color: "#3273dc",
+                            whiteSpace:"pre-wrap",
+                            cursor: "pointer",
+                            overflow: "hidden",
+                            textOverflow: "ellipsis",
+                        }}>
+                        F8F5D98CF83B03F68C5E2E04CE409804B57EAD1D0BAB24531E769D4A267A45A1
+                    </p>
+                </div>
+                <div className="mb-4">
+                    <p><strong>Sequence</strong>: 1</p>
+                    <p><strong>Balance</strong>: 2.00000000 TRE</p>
+                    <p><strong>Energy</strong>: 42244 OXY</p>
+                    <p><strong>Transactions</strong>: 4</p>
+                </div>
                 {/* <div className="mb-4">
                     <button className="bg-teal hover:bg-teal-dark text-white font-medium py-2 px-4 rounded-full w-full h-10">Tweet to Tailwind CSS</button>
                 </div> */}
