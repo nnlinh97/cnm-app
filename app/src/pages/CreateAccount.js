@@ -21,16 +21,16 @@ class CreateAccount extends Component {
             this.props.history.push('/');
             return;
         }
-        const publicKey = Keypair.fromSecret(localStorage.getItem('PRIVATE_KEY')).publicKey();
-        axios.get(`http://localhost:4200/users/get-user?idKey=${publicKey}`).then(res => {
-            if (res.data.status === 200) {
-                this.props.saveProfile(res.data.result);
-            } else {
-                this.setState({
-                    error: 'Your private key is not registed!!!'
-                });
-            }
-        });
+        // const publicKey = Keypair.fromSecret(localStorage.getItem('PRIVATE_KEY')).publicKey();
+        // axios.get(`http://localhost:4200/users/get-user?idKey=${publicKey}`).then(res => {
+        //     if (res.data.status === 200) {
+        //         this.props.saveProfile(res.data.result);
+        //     } else {
+        //         this.setState({
+        //             error: 'Your private key is not registed!!!'
+        //         });
+        //     }
+        // });
     }
 
     onChangeKey = (e) => {
@@ -45,10 +45,10 @@ class CreateAccount extends Component {
     }
     onCreate = (e) => {
         e.preventDefault();
-        const { profile } = this.props;
         const { publicKey } = this.state;
+        const currentPublicKey = localStorage.getItem('PUBLIC_KEY');
 
-        if (!profile.idKey) {
+        if (!currentPublicKey) {
             this.setState({
                 error: 'ERROR: Who are you?'
             });
@@ -60,7 +60,7 @@ class CreateAccount extends Component {
             });
             return;
         }
-        if (publicKey == profile.idKey) {
+        if (publicKey == currentPublicKey) {
             this.setState({
                 error: 'ERROR: You can not create yourself!'
             });
@@ -72,40 +72,49 @@ class CreateAccount extends Component {
                     error: 'ERROR: This public key is registed!'
                 });
             } else {
-                const tx = {
-                    version: 1,
-                    sequence: +profile.sequence + 1,
-                    memo: Buffer.alloc(0),
-                    account: profile.idKey,
-                    operation: "create_account",
-                    params: {
-                        address: this.state.publicKey,
-                    },
-                    signature: new Buffer(64)
-                }
-                try {
-                    transaction.encode(tx).toString('hex')
-                } catch (error) {
-                    this.setState({
-                        error: 'ERROR: Encode transaction fail!'
-                    });
-                    return;
-                }
-                const privateKey = localStorage.getItem('PRIVATE_KEY');
-                transaction.sign(tx, privateKey);
-                const txEncode = '0x' + transaction.encode(tx).toString('hex');
-                // console.log('send request');
-                axios.post('http://localhost:4200/request', { tx: txEncode }).then((res) => {
-                    if (res.data.status === 200) {
-                        this.setState({
-                            success: 'SUCCESS: Create successfully!'
+                axios.get(`http://localhost:4200/users/get-user?idKey=${currentPublicKey}`).then(user => {
+                    if (user.data.status === 200) {
+                        const info = user.data.result;
+                        const tx = {
+                            version: 1,
+                            sequence: +info.sequence + 1,
+                            memo: Buffer.alloc(0),
+                            account: info.idKey,
+                            operation: "create_account",
+                            params: {
+                                address: this.state.publicKey,
+                            },
+                            signature: new Buffer(64)
+                        }
+                        try {
+                            transaction.encode(tx).toString('hex')
+                        } catch (error) {
+                            this.setState({
+                                error: 'ERROR: Encode transaction fail!'
+                            });
+                            return;
+                        }
+                        const privateKey = localStorage.getItem('PRIVATE_KEY');
+                        transaction.sign(tx, privateKey);
+                        const txEncode = '0x' + transaction.encode(tx).toString('hex');
+                        // console.log('send request');
+                        axios.post('http://localhost:4200/request', { tx: txEncode }).then((response) => {
+                            if (response.status === 200) {
+                                this.setState({
+                                    success: 'SUCCESS: Create successfully!'
+                                });
+                            } else {
+                                this.setState({
+                                    error: 'ERROR: Request fail!'
+                                });
+                            }
                         });
                     } else {
                         this.setState({
-                            error: 'ERROR: Request fail!'
+                            error: 'ERROR: Get your info fail!'
                         });
                     }
-                });
+                })
             }
         });
     }
@@ -170,7 +179,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        saveProfile: (profile) => dispatch(actions.saveProfile(profile))
+        // saveProfile: (profile) => dispatch(actions.saveProfile(profile))
     }
 }
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(CreateAccount));

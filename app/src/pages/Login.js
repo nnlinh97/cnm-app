@@ -47,7 +47,7 @@ class Login extends Component {
             key = Keypair.fromSecret(privateKey)
         } catch (error) {
             this.setState({
-                error: 'Keypair fail'
+                error: 'Keypair fail!'
             });
             return;
         }
@@ -60,6 +60,7 @@ class Login extends Component {
                 // console.log(res.data);
                 localStorage.setItem('token', true);
                 localStorage.setItem('PRIVATE_KEY', privateKey);
+                localStorage.setItem('PUBLIC_KEY', res.data.result.idKey);
                 // console.log(res.data.result);
                 this.props.saveProfile(res.data.result);
                 this.props.history.push('/nnlinh97');
