@@ -11,6 +11,13 @@ import Posts from '../components/Posts';
 import RightSidebar from '../components/RightSidebar';
 
 class Profile extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            posts: ''
+        }
+    }
+    
     componentDidMount() {
         if(localStorage.getItem('token') == 'false'){
             this.props.history.push('/');
@@ -20,6 +27,8 @@ class Profile extends Component {
         this.props.getListPosts();
         this.props.getListFollowings();
         this.props.getListFollowers();
+        console.log(this.props.match.params.id);
+        
     }
 
     render() {

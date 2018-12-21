@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
+import { connect } from 'react-redux';
 import { Keypair } from 'stellar-base';
 import { login } from './../actions/request';
-import { connect } from 'react-redux';
 import * as Types from './../constants/ActionTypes';
 import * as actions from './../actions/index';
 import axios from 'axios';
