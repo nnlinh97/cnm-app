@@ -57,7 +57,11 @@ function decodePost(tx) {
   return PlainTextContent.decode(tx);
 }
 
-function decodeFollowing(tx){
+function encodePost(content) {
+  return PlainTextContent.encode(content);
+}
+
+function decodeFollowing(tx) {
   return Followings.decode(tx);
 }
 
@@ -83,24 +87,28 @@ function encode(tx) {
       operation = 2;
       break;
 
+    // case 'post':
+    //   params = PostParams.encode(tx.params);
+    //   operation = 3;
+    //   break;
     case 'post':
       params = PostParams.encode(
-      {
-        ...tx.params,
-        content: PlainTextContent.encode(tx.params.content)
-      });
+        {
+          ...tx.params,
+          content: PlainTextContent.encode(tx.params.content)
+        });
       operation = 3;
       break;
 
     case 'update_account':
-      if(tx.params.key === 'followings'){
+      if (tx.params.key === 'followings') {
         console.log("OK");
         params = UpdateAccountParams.encode({
           ...tx.params,
           value: Followings.encode(tx.params.value)
         });
       }
-      else{
+      else {
         params = UpdateAccountParams.encode(tx.params);
       }
       operation = 4;
@@ -184,5 +192,6 @@ export default {
   encode,
   decode,
   decodePost,
-  decodeFollowing
+  decodeFollowing,
+  encodePost
 }

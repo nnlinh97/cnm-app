@@ -47,6 +47,11 @@ class MenuTop extends Component {
         const user = this.props.match.params.username;
         this.props.history.push(`/${user}/followers`);
     }
+    getHistory = (e) => {
+        e.preventDefault();
+        const id = this.props.match.params.id;
+        this.props.history.push(`/users/${id}/history`);
+    }
     loadFile = (e) => {
         e.preventDefault();
         var reader = new FileReader();
@@ -68,10 +73,13 @@ class MenuTop extends Component {
         let tab1 = " hover:no-underline";
         let tab2 = " hover:no-underline";
         let tab3 = " hover:no-underline";
+        let tab4 = " hover:no-underline";
 
         let text1 = " hover:text-teal";
         let text2 = " hover:text-teal";
         let text3 = " hover:text-teal";
+        let text4 = " hover:text-teal";
+
         if (tab == "tab1") {
             tab1 = " border-teal";
             text1 = " text-teal";
@@ -82,13 +90,29 @@ class MenuTop extends Component {
             tab3 = " border-teal";
             text3 = " text-teal";
         }
+       
+        else if (tab == 'tab4') {
+            tab4 = " border-teal";
+            text4 = " text-teal";
+        }
         let { following } = this.props;
-         let numberFoll = following.count?following.count: 0;
+        let numberFoll = following.count?following.count: 0;
         return (
             <div className="bg-white shadow">
                 <div className="container mx-auto flex flex-col lg:flex-row items-center lg:relative">
-                    <div className="w-full lg:w-1/4">
-                        <img src={avatar} alt="logo" className="rounded-full h-48 w-48 lg:absolute lg:pin-l lg:pin-t lg:-mt-24" />
+                    <div className="avatar w-full lg:w-1/4">
+                        <img src="https://api.adorable.io/avatars/256/GCD6DHTSLKVMQWOXE4T4S72ZO3T2AMHXZ3DNKMQFSCFQNDYQ5A5VNHTM.png" alt="logo" className="rounded-full h-48 w-48 lg:absolute lg:pin-l lg:pin-t lg:-mt-24" />
+                        
+                        <div class="overlay rounded-full h-48 w-48 lg:absolute lg:pin-l lg:pin-t lg:-mt-24">
+                            <div style={{height:"90px"}}></div>
+                            <label htmlFor="image2" style={{ fontSize: '20px' }}>
+                                <div className="icon">
+                                    <i className="fa fa-camera" title="Add photo" style={{padding:"30px 10px 10px 10px"}}></i>
+                                </div>
+                            </label>
+                            <input id="image2" type="file" name="image2" onChange={(event) => this.loadFile(event)} />
+                        </div>
+
                     </div>
                     <div className="w-full lg:w-1/2">
                         <ul className="list-reset flex">
@@ -108,6 +132,12 @@ class MenuTop extends Component {
                                 <a onClick={(e) => this.getFollowers(e)} href="" className="text-grey-darker no-underline hover:no-underline">
                                     <div className="text-sm font-bold tracking-tight mb-1">{profile ? "Followers" : ""}</div>
                                     <div className={`text-lg tracking-tight font-bold${text3}`}>{profile ? profile.follower : ""}</div>
+                                </a>
+                            </li>
+                            <li className={`text-center py-3 px-4 border-b-2 border-solid border-transparent${tab4}`}>
+                                <a onClick={(e) => this.getHistory(e)} href="" className="text-grey-darker no-underline hover:no-underline">
+                                    <div className="text-sm font-bold tracking-tight mb-1">{profile ? "History" : ""}</div>
+                                    <div className={`text-lg tracking-tight font-bold${text4}`}>{profile ? profile.follower : ""}</div>
                                 </a>
                             </li>
                         </ul>

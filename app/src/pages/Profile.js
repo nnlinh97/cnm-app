@@ -9,6 +9,7 @@ import MenuTop from '../components/MenuTop';
 import Info from '../components/Info';
 import Posts from '../components/Posts';
 import RightSidebar from '../components/RightSidebar';
+import axios from 'axios';
 
 class Profile extends Component {
     constructor(props) {
@@ -27,7 +28,7 @@ class Profile extends Component {
         this.props.getListPosts();
         this.props.getListFollowings();
         this.props.getListFollowers();
-        console.log(this.props.match.params.id);
+        // console.log(this.props.match.params.id);
         
     }
 

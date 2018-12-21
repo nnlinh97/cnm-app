@@ -50,7 +50,7 @@ class Payment extends Component {
         }        
         if (!+amount) {
             this.setState({
-                error: 'ERROR: Amount must be a number'
+                error: 'ERROR: Amount must be a number!'
             });
             return;
         }
@@ -61,7 +61,7 @@ class Payment extends Component {
 
                     if (user.data.status === 200) {
                         const info = user.data.result;
-                        const tx = {
+                        let tx = {
                             version: 1,
                             sequence: +info.sequence + 1,
                             memo: Buffer.alloc(0),
@@ -89,10 +89,12 @@ class Payment extends Component {
                                 this.setState({
                                     success: 'SUCCESS: Transfer successfully!'
                                 });
+                                return;
                             } else {
                                 this.setState({
                                     error: 'ERROR: Request fail!'
                                 });
+                                return;
                             }
                         });
                     } else {
@@ -104,7 +106,7 @@ class Payment extends Component {
                 })
             } else {
                 this.setState({
-                    error: 'ERROR: Address is not register!'
+                    error: 'ERROR: Address is not registed!'
                 });
                 return;
             }
@@ -131,7 +133,7 @@ class Payment extends Component {
                                     <div className="label">
                                         <label htmlFor="" className="text-uppercase">Address want to pay</label>
                                     </div>
-                                    <div className="wrap-input100 validate-input m-b-16" data-validate="Please enter username">
+                                    <div style={{zIndex: '0'}} className="wrap-input100 validate-input m-b-16" data-validate="Please enter username">
                                         <input onChange={this.onChangeKey} className="input100" type="text" name="address" placeholder="Please enter address want to pay" />
                                         <span className="focus-input100" />
                                     </div>
@@ -141,7 +143,7 @@ class Payment extends Component {
                                     <div className="label">
                                         <label htmlFor="" className="text-uppercase">Amount</label>
                                     </div>
-                                    <div className="wrap-input100 validate-input m-b-16" data-validate="Please enter username">
+                                    <div style={{zIndex: '0'}} className="wrap-input100 validate-input m-b-16" data-validate="Please enter username">
                                         <input onChange={this.onChangeKey} className="input100" type="text" name="amount" placeholder="Please enter amount of money" />
                                         <span className="focus-input100" />
                                     </div>

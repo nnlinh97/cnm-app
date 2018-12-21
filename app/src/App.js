@@ -9,6 +9,7 @@ import Register from './pages/Register';
 import CreateAccount from './pages/CreateAccount';
 import Payment from './pages/Payment';
 import NewFeed from './pages/NewFeed';
+import History from './pages/History';
 
 
 class App extends Component {
@@ -23,6 +24,7 @@ class App extends Component {
             <Route exact path='/payment' component={Payment} />
             <Route exact path='/users/:id' component={Profile} />
             <Route exact path='/:username/followings' component={Following} />
+            <Route exact path='/users/:id/history' component={History} />
             {/* <Route exact path='/:username' component={Profile} />
             <Route exact path='/:username/followers' component={Followers} />
             <Route exact path='/:username/followings' component={Following} />
