@@ -71,11 +71,12 @@ class CreateAccount extends Component {
                 this.setState({
                     error: 'ERROR: This public key is registed!'
                 });
+                return;
             } else {
                 axios.get(`http://localhost:4200/users/get-user?idKey=${currentPublicKey}`).then(user => {
                     if (user.data.status === 200) {
                         const info = user.data.result;
-                        const tx = {
+                        let tx = {
                             version: 1,
                             sequence: +info.sequence + 1,
                             memo: Buffer.alloc(0),
@@ -103,16 +104,19 @@ class CreateAccount extends Component {
                                 this.setState({
                                     success: 'SUCCESS: Create successfully!'
                                 });
+                                return;
                             } else {
                                 this.setState({
                                     error: 'ERROR: Request fail!'
                                 });
+                                return;
                             }
                         });
                     } else {
                         this.setState({
                             error: 'ERROR: Get your info fail!'
                         });
+                        return;
                     }
                 })
             }
@@ -131,7 +135,7 @@ class CreateAccount extends Component {
                 <div className="limiter" >
                     <div className="container-login100" style={{ backgroundColor: "#d4d3d2" }}>
                         <div className="wrap-login100">
-                            <form className="login100-form validate-form p-l-55 p-r-55 p-t-178">
+                            <form style={{zIndex: '0'}} className="login100-form validate-form p-l-55 p-r-55 p-t-178">
                                 <span className="login100-form-title">
                                     Create Account
                             </span>

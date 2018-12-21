@@ -16,12 +16,12 @@ class Login extends Component {
         }
     }
     componentDidMount() {
-        if(localStorage.getItem('token') == 'true'){
+        if (localStorage.getItem('token') == 'true') {
             // console.log('logged');
             this.props.history.push('/');
         }
     }
-    
+
     onChangeKey = (e) => {
         let target = e.target;
         let name = target.name;
@@ -31,7 +31,7 @@ class Login extends Component {
             error: ''
         });
     }
-    
+
     onSubmit = (e) => {
         e.preventDefault();
         // console.log(this.state.privateKey);
@@ -56,7 +56,7 @@ class Login extends Component {
         // const LINH = "SA3CRYDZO732G7FSMSSQOJ5FAJRWZELGLEKFBO6XQ4TJQWASMFK4SSM3";
         // const publicTest = 'GBIDPG4BFSTJSR3TYPJG4S4R2MEZX6U6FK5YJVIGD4ZJ3LTM4B5IS4R1';
         axios.get(`http://localhost:4200/users/get-user?idKey=${publicKey}`).then(res => {
-        if(res.data.status === 200){
+            if (res.data.status === 200) {
                 // console.log(res.data);
                 localStorage.setItem('token', true);
                 localStorage.setItem('PRIVATE_KEY', privateKey);
@@ -64,15 +64,15 @@ class Login extends Component {
                 // console.log(res.data.result);
                 this.props.saveProfile(res.data.result);
                 this.props.history.push('/');
-            }else {
+            } else {
                 this.setState({
                     error: 'Your private key is not registed!!!'
                 });
             }
         });
-        
+
     }
-    
+
     onGenerateKey = (e) => {
         e.preventDefault();
     }
