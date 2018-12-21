@@ -2,13 +2,14 @@
 .avatar{
     position: relative;
 }
-.avatar:hover .overlay {
+.avatar:hover .overlay .icon {
     display: block;
     background: rgba(0, 0, 0, .3);
-    opacity: 1;
+    opacity: 1.5;
   }
 #image2{
-    position: absolute;
+    /* position: absolute; */
+    vertical-align: middle; 
     
 }
 
@@ -16,10 +17,18 @@
     position: absolute;
     background: rgba(0, 0, 0, 0);
     transition: background 0.5s ease;
-    text-align: center,
-  
+    text-align: center;
+    border-bottom-left-radius: 90px;
+    border-bottom-right-radius: 90px;
+    height: 90px;
   }
 .icon{
     text-align: center;
     color: white;
+    opacity: 0;
+    z-index: 1.5;
+    border-bottom-left-radius: 90px;
+    border-bottom-right-radius: 90px;
+    height: 90px;
+    vertical-align: middle; 
 }

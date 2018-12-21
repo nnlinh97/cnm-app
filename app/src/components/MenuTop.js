@@ -78,11 +78,12 @@ class MenuTop extends Component {
                 <div className="container mx-auto flex flex-col lg:flex-row items-center lg:relative">
                     <div className="avatar w-full lg:w-1/4">
                         <img src="https://api.adorable.io/avatars/256/GCD6DHTSLKVMQWOXE4T4S72ZO3T2AMHXZ3DNKMQFSCFQNDYQ5A5VNHTM.png" alt="logo" className="rounded-full h-48 w-48 lg:absolute lg:pin-l lg:pin-t lg:-mt-24" />
-
+                        
                         <div class="overlay rounded-full h-48 w-48 lg:absolute lg:pin-l lg:pin-t lg:-mt-24">
+                            <div style={{height:"90px"}}></div>
                             <label htmlFor="image2" style={{ fontSize: '20px' }}>
                                 <div className="icon">
-                                    <i className="fa fa-camera" title="Add photo" style={{padding:"10px 10px 10px 10px"}}></i>
+                                    <i className="fa fa-camera" title="Add photo" style={{padding:"30px 10px 10px 10px"}}></i>
                                 </div>
                             </label>
                             <input id="image2" type="file" name="image2" onChange={(event) => this.loadFile(event)} />
