@@ -83,7 +83,6 @@ class MenuTop extends Component {
                             <label htmlFor="image2" style={{ fontSize: '20px' }}>
                                 <div className="icon">
                                     <i className="fa fa-camera" title="Add photo" style={{padding:"10px 10px 10px 10px"}}></i>
-
                                 </div>
                             </label>
                             <input id="image2" type="file" name="image2" onChange={(event) => this.loadFile(event)} />
