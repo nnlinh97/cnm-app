@@ -1,0 +1,649 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="./newfeed.css">
+    <title>Document</title>
+</head>
+
+<body class="bg-grey-light font-sans">
+    <div class="bg-white">
+        <div class="container mx-auto flex flex-col lg:flex-row items-center py-4">
+            <nav class="w-full lg:w-2/5">
+                <a href="#" class="text-grey-darker text-sm mr-4 font-semibold pb-6 border-b-2 border-solid border-transparent no-underline hover:text-teal hover:border-teal hover:no-underline">
+                    <i class="fa fa-home fa-lg"></i> Home</a>
+                <a href="#" class="text-grey-darker text-sm mr-4 font-semibold pb-6 border-b-2 border-solid border-transparent no-underline hover:text-teal hover:border-teal hover:no-underline">
+                    <i class="fa fa-bolt fa-lg"></i> Moments</a>
+                <a href="#" class="text-grey-darker text-sm mr-4 font-semibold pb-6 border-b-2 border-solid border-transparent no-underline hover:text-teal hover:border-teal hover:no-underline">
+                    <i class="fa fa-bell fa-lg"></i> Notifications</a>
+                <a href="#" class="text-grey-darker text-sm mr-4 font-semibold pb-6 border-b-2 border-solid border-transparent no-underline hover:text-teal hover:border-teal hover:no-underline">
+                    <i class="fa fa-envelope fa-lg"></i> Messages</a>
+
+            </nav>
+            <div class="w-full lg:w-1/5 text-center my-4 lg:my-0">
+                <a href="#">
+                    <i class="fa fa-twitter fa-lg text-blue"></i>
+                </a>
+            </div>
+            <div class="w-full lg:w-2/5 flex lg:justify-end">
+                <div class="mr-4 relative">
+                    <input type="text" class="bg-grey-lighter h-8 px-4 py-2 text-xs w-48 rounded-full" placeholder="Search Twitter">
+                    <span class="flex items-center absolute pin-r pin-y mr-3">
+                        <i class="fa fa-search text-grey"></i>
+                    </span>
+                </div>
+                <div class="mr-4">
+                    <a href="#">
+                        <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/195612/tt_avatar.jpg" alt="avatar" class="h-8 w-8 rounded-full">
+                    </a>
+                </div>
+                <div>
+                    <button class="bg-teal hover:bg-teal-dark text-white font-medium py-2 px-4 rounded-full">Tweet</button>
+                </div>
+            </div>
+        </div>
+        <!-- end container -->
+    </div>
+
+
+    
+
+    <div class="container mx-auto flex flex-col lg:flex-row mt-3 text-sm leading-normal">
+        <div class="w-full lg:w-1/4 pl-4 lg:pl-0 pr-6  mb-4">
+            <div class="ProfileCard" style="margin-top:0px">
+                <a class="ProfileCard-bg js-nav" href="#" tabindex="-1" aria-hidden="true" style="
+                    background-color: #0000CC;
+                    background-image: url(https://pbs.twimg.com/profile_banners/813286/1502508746/600x200);">
+                </a>
+                <div class="ProfileCard-content">
+                    <a class="ProfileCard-avatarLink js-nav js-tooltip" href="/nnlinh971" title="nnlinh97" tabindex="-1" aria-hidden="true">
+                        <img class="ProfileCard-avatarImage js-action-profile-avatar" src="https://abs.twimg.com/sticky/default_profile_images/default_profile_bigger.png"
+                            alt="">
+                    </a>
+                    <div class="ProfileCard-actions">
+                        <div class="ProfileCard-userActions with-rightCaret js-userActions">
+                            <div class="UserActions   UserActions--small u-textLeft">
+                                <div class="user-actions btn-group not-following not-muting can-dm " data-user-id="18438022" data-screen-name="ShinobiNinja"
+                                    data-name="Shinobi Ninja" data-protected="false">
+                                    <span class="user-actions-follow-button js-follow-btn follow-button">
+                                        <button type="button" class="
+                                              EdgeButton
+                                              EdgeButton--secondary
+                                              EdgeButton--small 
+                                              
+                                              button-text
+                                              follow-text">
+                                            <span aria-hidden="true">Follow</span>
+                                            <span class="u-hiddenVisually">Follow
+                                                <span class="username u-dir u-textTruncate" dir="ltr">@
+                                                    <b>ShinobiNinja</b>
+                                                </span>
+                                            </span>
+                                        </button>
+                                        <button type="button" class="
+                                              EdgeButton
+                                              EdgeButton--primary
+                                              EdgeButton--small 
+                                              
+                                              button-text
+                                              following-text">
+                                            <span aria-hidden="true">Following</span>
+                                            <span class="u-hiddenVisually">Following
+                                                <span class="username u-dir u-textTruncate" dir="ltr">@
+                                                    <b>ShinobiNinja</b>
+                                                </span>
+                                            </span>
+                                        </button>
+                                        <button type="button" class="
+                                              EdgeButton
+                                              EdgeButton--danger
+                                              EdgeButton--small 
+                                              
+                                              button-text
+                                              unfollow-text">
+                                            <span aria-hidden="true">Unfollow</span>
+                                            <span class="u-hiddenVisually">Unfollow
+                                                <span class="username u-dir u-textTruncate" dir="ltr">@
+                                                    <b>ShinobiNinja</b>
+                                                </span>
+                                            </span>
+                                        </button>
+
+                                    </span>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="ProfileCard-userFields">
+                        <div class="ProfileNameTruncated account-group">
+                            <div class="u-textTruncate u-inlineBlock">
+                                <a class="fullname ProfileNameTruncated-link u-textInheritColor js-nav" href="/nnlinh971" data-aria-label-part="">
+                                    nnlinh97</a>
+                            </div>
+                            <span class="UserBadges"></span>
+                        </div>
+
+                        <span class="ProfileCard-screenname">
+                            <a href="/nnlinh971" class="ProfileCard-screennameLink u-linkComplex js-nav" data-aria-label-part="">
+                                <span class="username u-dir" dir="ltr">@
+                                    <b class="u-linkComplex-target">nnlinh971</b>
+                                </span>
+                            </a>
+                            <span>‏</span>
+                            <span class="FollowStatus">Follows you</span>
+                        </span>
+
+                        <p class="ProfileCard-bio u-dir" dir="ltr" data-aria-label-part="">Sharing things I'm learning through my foundation work and other interests.</p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+
+        <div class="w-full lg:w-1/2 bg-white mb-4">
+
+            <div class="p-3 text-lg font-bold border-b border-solid border-grey-light">
+                <a href="#" class="text-black mr-6 no-underline hover-underline">Tweets</a>
+                <a href="#" class="mr-6 text-teal no-underline hover:underline">Tweets &amp; Replies</a>
+                <a href="#" class="text-teal no-underline hover:underline">Media</a>
+            </div>
+
+            <div class="flex border-b border-solid border-grey-light">
+                <div class="w-1/8 text-right pl-3 pt-3">
+                    <div>
+                        <i class="fa fa-thumb-tack text-teal mr-2"></i>
+                    </div>
+                    <div>
+                        <a href="#">
+                            <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/195612/tt_avatar_tailwind.jpg" alt="avatar"
+                                class="rounded-full h-12 w-12 mr-2">
+                        </a>
+                    </div>
+                </div>
+                <div class="w-7/8 p-3 pl-0">
+                    <div class="text-xs text-grey-dark">Pinned Tweet</div>
+                    <div class="flex justify-between">
+                        <div>
+                            <span class="font-bold">
+                                <a href="#" class="text-black">Tailwind CSS</a>
+                            </span>
+                            <span class="text-grey-dark">@tailwindcss</span>
+                            <span class="text-grey-dark">&middot;</span>
+                            <span class="text-grey-dark">15 Dec 2017</span>
+                        </div>
+                        <div>
+                            <a href="#" class="text-grey-dark hover:text-teal">
+                                <i class="fa fa-chevron-down"></i>
+                            </a>
+                        </div>
+                    </div>
+
+                    <div>
+                        <div class="mb-4">
+                            <p class="mb-6">🎉 Tailwind CSS v0.4.0 is out!</p>
+                            <p class="mb-6">Makes `apply` more useful when using !important utilities, and includes an improved default color
+                                palette:</p>
+                            <p class="mb-4">
+                                <a href="#" class="text-teal">github.com/tailwindcss/ta...</a>
+                            </p>
+                            <p>
+                                <a href="#">
+                                    <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/195612/tt_tweet1.jpg" alt="tweet image"
+                                        class="border border-solid border-grey-light rounded-sm">
+                                </a>
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="pb-2">
+                        <span class="mr-8">
+                            <a href="#" class="text-grey-dark hover:no-underline hover:text-blue-light">
+                                <i class="fa fa-comment fa-lg mr-2"></i> 9</a>
+                        </span>
+                        <span class="mr-8">
+                            <a href="#" class="text-grey-dark hover:no-underline hover:text-green">
+                                <i class="fa fa-retweet fa-lg mr-2"></i> 29</a>
+                        </span>
+                        <span class="mr-8">
+                            <a href="#" class="text-grey-dark hover:no-underline hover:text-red">
+                                <i class="fa fa-heart fa-lg mr-2"></i> 135</a>
+                        </span>
+                        <span class="mr-8">
+                            <a href="#" class="text-grey-dark hover:no-underline hover:text-teal">
+                                <i class="fa fa-envelope fa-lg mr-2"></i>
+                            </a>
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex border-b border-solid border-grey-light">
+
+                <div class="w-1/8 text-right pl-3 pt-3">
+                    <div>
+                        <i class="fa fa-retweet text-grey-dark mr-2"></i>
+                    </div>
+                    <div>
+                        <a href="#">
+                            <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/195612/tt_avatar_adam.jpg" alt="avatar" class="rounded-full h-12 w-12 mr-2">
+                        </a>
+                    </div>
+                </div>
+
+                <div class="w-7/8 p-3 pl-0">
+                    <div class="text-xs text-grey-dark">Tailwind CSS Retweeted</div>
+                    <div class="flex justify-between">
+                        <div>
+                            <span class="font-bold">
+                                <a href="#" class="text-black">Adam Wathan</a>
+                            </span>
+                            <span class="text-grey-dark">@adamwathan</span>
+                            <span class="text-grey-dark">&middot;</span>
+                            <span class="text-grey-dark">7 Dec 2017</span>
+                        </div>
+                        <div>
+                            <a href="#" class="text-grey-dark hover:text-teal">
+                                <i class="fa fa-chevron-down"></i>
+                            </a>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="mb-4">
+                            <p class="mb-6">💥 Check out this Slack clone built with
+                                <a href="#" class="text-teal">@tailwindcss</a> using no custom CSS and just the default configuration:</p>
+                            <p class="mb-4">
+                                <a href="#" class="text-teal">https://codepen.io/adamwathan/pen/JOQWVa...</a>
+                            </p>
+                            <p class="mb-6">(based on some work
+                                <a href="#" class="text-teal">@Killgt</a> started for
+                                <a href="#" class="text-teal">tailwindcomponents.com</a> !)</p>
+                            <p>
+                                <a href="#">
+                                    <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/195612/tt_tweet2.jpg" alt="tweet image"
+                                        class="border border-solid border-grey-light rounded-sm">
+                                </a>
+                            </p>
+                        </div>
+                        <div class="pb-2">
+                            <span class="mr-8">
+                                <a href="#" class="text-grey-dark hover:no-underline hover:text-blue-light">
+                                    <i class="fa fa-comment fa-lg mr-2"></i> 19</a>
+                            </span>
+                            <span class="mr-8">
+                                <a href="#" class="text-grey-dark hover:no-underline hover:text-green">
+                                    <i class="fa fa-retweet fa-lg mr-2"></i> 56</a>
+                            </span>
+                            <span class="mr-8">
+                                <a href="#" class="text-grey-dark hover:no-underline hover:text-red">
+                                    <i class="fa fa-heart fa-lg mr-2"></i> 247</a>
+                            </span>
+                            <span class="mr-8">
+                                <a href="#" class="text-grey-dark hover:no-underline hover:text-teal">
+                                    <i class="fa fa-envelope fa-lg mr-2"></i>
+                                </a>
+                            </span>
+                        </div>
+
+                        <div>
+                            <a href="#" class="text-teal">Show this thread</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex border-b border-solid border-grey-light">
+
+                <div class="w-1/8 text-right pl-3 pt-3">
+                    <div>
+                        <a href="#">
+                            <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/195612/tt_avatar_tailwind.jpg" alt="avatar"
+                                class="rounded-full h-12 w-12 mr-2">
+                        </a>
+                    </div>
+                </div>
+
+                <div class="w-7/8 p-3 pl-0">
+                    <div class="flex justify-between">
+                        <div>
+                            <span class="font-bold">
+                                <a href="#" class="text-black">Tailwind CSS</a>
+                            </span>
+                            <span class="text-grey-dark">@tailwindcss</span>
+                            <span class="text-grey-dark">&middot;</span>
+                            <span class="text-grey-dark">1 Dec 2017</span>
+                        </div>
+                        <div>
+                            <a href="#" class="text-grey-dark hover:text-teal">
+                                <i class="fa fa-chevron-down"></i>
+                            </a>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="mb-4">
+                            <p class="mb-6">🎉 Tailwind CSS v0.3.0 is here!</p>
+                            <p class="mb-4">Enable/disable modules, focus and group-hover variants, new utilities, and more.</p>
+                            <p class="mb-4">Learn more in our upgrade guide:</p>
+                            <p class="mb-6">
+                                <a href="#" class="text-teal">github.com/tailwind/ta...</a>
+                            </p>
+                            <p>
+                                <a href="#">
+                                    <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/195612/tt_tweet3.jpg" alt="tweet image"
+                                        class="border border-solid border-grey-light rounded-sm">
+                                </a>
+                            </p>
+                        </div>
+                        <div class="pb-2">
+                            <span class="mr-8">
+                                <a href="#" class="text-grey-dark hover:no-underline hover:text-blue-light">
+                                    <i class="fa fa-comment fa-lg mr-2"></i> 6</a>
+                            </span>
+                            <span class="mr-8">
+                                <a href="#" class="text-grey-dark hover:no-underline hover:text-green">
+                                    <i class="fa fa-retweet fa-lg mr-2"></i> 74</a>
+                            </span>
+                            <span class="mr-8">
+                                <a href="#" class="text-grey-dark hover:no-underline hover:text-red">
+                                    <i class="fa fa-heart fa-lg mr-2"></i> 206</a>
+                            </span>
+                            <span class="mr-8">
+                                <a href="#" class="text-grey-dark hover:no-underline hover:text-teal">
+                                    <i class="fa fa-envelope fa-lg mr-2"></i>
+                                </a>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex border-b border-solid border-grey-light">
+
+                <div class="w-1/8 text-right pl-3 pt-3">
+                    <div>
+                        <i class="fa fa-retweet text-grey-dark mr-2"></i>
+                    </div>
+                    <div>
+                        <a href="#">
+                            <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/195612/tt_avatar_egghead.jpg" alt="avatar"
+                                class="rounded-full h-12 w-12 mr-2">
+                        </a>
+                    </div>
+                </div>
+
+                <div class="w-7/8 p-3 pl-0">
+                    <div class="text-xs text-grey-dark">Tailwind CSS Retweeted</div>
+                    <div class="flex justify-between">
+                        <div>
+                            <span class="font-bold">
+                                <a href="#" class="text-black">egghead.io</a>
+                            </span>
+                            <span class="text-grey-dark">@eggheadio</span>
+                            <span class="text-grey-dark">&middot;</span>
+                            <span class="text-grey-dark">29 Nov 2017</span>
+                        </div>
+                        <div>
+                            <a href="#" class="text-grey-dark hover:text-teal">
+                                <i class="fa fa-chevron-down"></i>
+                            </a>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="mb-4">
+                            <p class="mb-6">Create a Responsive Card Component by Composing Tailwind's Utility Classes -
+                                <a href="#" class="text-teal">#html</a> lesson by
+                                <a href="#" class="text-teal">@simonswiss</a>
+                            </p>
+                            <div class="flex border border-solid border-grey rounded">
+                                <div class="w-1/4">
+                                    <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/195612/tt_tweet4.jpg" alt="image">
+                                </div>
+                                <div class="w-3/4 p-3">
+                                    <div class="font-bold mb-1">egghead Lesson: Abstract utility classes to ...</div>
+                                    <p class="mb-1">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Temporibus voluptate tempore
+                                        itaque culpa hic qui nostrum, minus harum cupiditate a voluptatibus.
+                                        <div class="text-grey-dark">egghead.io</div>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="pb-2">
+                            <span class="mr-8">
+                                <a href="#" class="text-grey-dark hover:no-underline hover:text-blue-light">
+                                    <i class="fa fa-comment fa-lg mr-2"></i> 2</a>
+                            </span>
+                            <span class="mr-8">
+                                <a href="#" class="text-grey-dark hover:no-underline hover:text-green">
+                                    <i class="fa fa-retweet fa-lg mr-2"></i> 8</a>
+                            </span>
+                            <span class="mr-8">
+                                <a href="#" class="text-grey-dark hover:no-underline hover:text-red">
+                                    <i class="fa fa-heart fa-lg mr-2"></i> 24</a>
+                            </span>
+                            <span class="mr-8">
+                                <a href="#" class="text-grey-dark hover:no-underline hover:text-teal">
+                                    <i class="fa fa-envelope fa-lg mr-2"></i>
+                                </a>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="w-full lg:w-1/4 pl-4">
+            <div class="bg-white p-3 mb-3">
+                <div>
+                    <span class="text-lg font-bold">Who to follow</span>
+                    <span>&middot;</span>
+                    <span>
+                        <a href="#" class="text-teal text-xs">Refresh</a>
+                    </span>
+                    <span>&middot;</span>
+                    <span>
+                        <a href="#" class="text-teal text-xs">View All</a>
+                    </span>
+                </div>
+
+                <div class="flex border-b border-solid border-grey-light">
+                    <div class="py-2">
+                        <a href="#">
+                            <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/195612/tt_follow1.jpg" alt="follow1" class="rounded-full h-12 w-12">
+                        </a>
+                    </div>
+                    <div class="pl-2 py-2 w-full">
+                        <div class="flex justify-between mb-1">
+                            <div>
+                                <a href="#" class="font-bold text-black">Nuxt.js</a>
+                                <a href="#" class="text-grey-dark">@nuxt_js</a>
+                            </div>
+
+                            <div>
+                                <a href="#" class="text-grey hover:text-grey-dark">
+                                    <i class="fa fa-times"></i>
+                                </a>
+                            </div>
+                        </div>
+                        <div>
+                            <button class="bg-transparent text-xs hover:bg-teal text-teal font-semibold hover:text-white py-2 px-6 border border-teal hover:border-transparent rounded-full">
+                                Follow
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex border-b border-solid border-grey-light">
+                    <div class="py-2">
+                        <a href="#">
+                            <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/195612/tt_follow2.jpg" alt="follow1" class="rounded-full h-12 w-12">
+                        </a>
+                    </div>
+                    <div class="pl-2 py-2 w-full">
+                        <div class="flex justify-between mb-1">
+                            <div>
+                                <a href="#" class="font-bold text-black">Laracon EU</a>
+                                <a href="#" class="text-grey-dark">@LaraconEU</a>
+                            </div>
+
+                            <div>
+                                <a href="#" class="text-grey hover:text-grey-dark">
+                                    <i class="fa fa-times"></i>
+                                </a>
+                            </div>
+                        </div>
+                        <div>
+                            <button class="bg-transparent text-xs hover:bg-teal text-teal font-semibold hover:text-white py-2 px-6 border border-teal hover:border-transparent rounded-full">
+                                Follow
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex border-b border-solid border-grey-light">
+                    <div class="py-2">
+                        <a href="#">
+                            <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/195612/tt_follow3.jpg" alt="follow1" class="rounded-full h-12 w-12">
+                        </a>
+                    </div>
+                    <div class="pl-2 py-2 w-full">
+                        <div class="flex justify-between mb-1">
+                            <div>
+                                <a href="#" class="font-bold text-black">Laracon US</a>
+                                <a href="#" class="text-grey-dark">@LaraconUS</a>
+                            </div>
+
+                            <div>
+                                <a href="#" class="text-grey hover:text-grey-dark">
+                                    <i class="fa fa-times"></i>
+                                </a>
+                            </div>
+                        </div>
+                        <div>
+                            <button class="bg-transparent text-xs hover:bg-teal text-teal font-semibold hover:text-white py-2 px-6 border border-teal hover:border-transparent rounded-full">
+                                Follow
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex border-b border-solid border-grey-light">
+                    <div class="py-4">
+                        <a href="#" class=" p-1">
+                            <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/195612/tt_outlook.png" alt="follow1" class="rounded h-6 w-6">
+                        </a>
+                    </div>
+                    <div class="pl-2 py-2 w-full">
+                        <div class="flex justify-between">
+                            <div>
+                                <a href="#" class="font-bold text-black">Find people you know</a>
+                            </div>
+                        </div>
+                        <div class="text-xs">
+                            Import your contacts from Outlook
+                        </div>
+                    </div>
+                </div>
+
+                <div class="pt-2">
+                    <a href="#" class="text-teal text-xs">Connect other address book</a>
+                </div>
+            </div>
+
+            <div class="bg-white p-3 mb-3">
+                <div class="mb-3">
+                    <span class="text-lg font-bold">Trends for you</span>
+                    <span>&middot;</span>
+                    <span>
+                        <a href="#" class="text-teal text-xs">Change</a>
+                    </span>
+                </div>
+
+                <div class="mb-3 leading-tight">
+                    <div>
+                        <a href="#" class="text-teal font-bold">Happy New Year</a>
+                    </div>
+                    <div>
+                        <a href="#" class="text-grey-dark text-xs">645K Tweets</a>
+                    </div>
+                </div>
+
+                <div class="mb-3 leading-tight">
+                    <div>
+                        <a href="#" class="text-teal font-bold">Happy 2018</a>
+                    </div>
+                    <div>
+                        <a href="#" class="text-grey-dark text-xs">NYE 2018 Celebrations</a>
+                    </div>
+                </div>
+
+                <div class="mb-3 leading-tight">
+                    <div>
+                        <a href="#" class="text-teal font-bold">#ByeBye2017</a>
+                    </div>
+                    <div>
+                        <a href="#" class="text-grey-dark text-xs">21.7K Tweets</a>
+                    </div>
+                </div>
+
+                <div class="mb-3 leading-tight">
+                    <div>
+                        <a href="#" class="text-teal font-bold">#SomeHashTag</a>
+                    </div>
+                    <div>
+                        <a href="#" class="text-grey-dark text-xs">45K Tweets</a>
+                    </div>
+                </div>
+
+                <div class="mb-3 leading-tight">
+                    <div>
+                        <a href="#" class="text-teal font-bold">Something Trending</a>
+                    </div>
+                    <div>
+                        <a href="#" class="text-grey-dark text-xs">36K Tweets</a>
+                    </div>
+                </div>
+
+                <div class="mb-3 leading-tight">
+                    <div>
+                        <a href="#" class="text-teal font-bold">#ColdAF</a>
+                    </div>
+                    <div>
+                        <a href="#" class="text-grey-dark text-xs">100K Tweets</a>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="mb-3 text-xs">
+                <span class="mr-2">
+                    <a href="#" class="text-grey-darker">&copy; 2018 Twitter</a>
+                </span>
+                <span class="mr-2">
+                    <a href="#" class="text-grey-darker">About</a>
+                </span>
+                <span class="mr-2">
+                    <a href="#" class="text-grey-darker">Help Center</a>
+                </span>
+                <span class="mr-2">
+                    <a href="#" class="text-grey-darker">Terms</a>
+                </span>
+                <span class="mr-2">
+                    <a href="#" class="text-grey-darker">Privacy policy</a>
+                </span>
+                <span class="mr-2">
+                    <a href="#" class="text-grey-darker">Cookies</a>
+                </span>
+                <span class="mr-2">
+                    <a href="#" class="text-grey-darker">Ads info</a>
+                </span>
+            </div>
+        </div>
+
+    </div>
+
+</body>
+
+</html>
