@@ -18,7 +18,7 @@ class CreateAccount extends Component {
     }
     componentDidMount() {
         if (localStorage.getItem('token') === 'false') {
-            this.props.history.push('/');
+            this.props.history.push('/login');
             return;
         }
         // const publicKey = Keypair.fromSecret(localStorage.getItem('PRIVATE_KEY')).publicKey();
