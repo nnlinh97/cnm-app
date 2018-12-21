@@ -1,8 +1,19 @@
 import React, { Component } from 'react';
+import { withRouter } from 'react-router-dom';
+import { connect } from 'react-redux';
 
 class InfoNF extends Component {
+    componentDidMount() {
+        console.log(this.props.match.params.id);
+    }
+    
+    toProfile = (e) => {
+        e.preventDefault();
+        const publicKey = localStorage.getItem('PUBLIC_KEY');
+        this.props.history.push(`/users/${publicKey}`);
+    }
     render() {
-        const { following } = this.props;
+        // const { following } = this.props;
         let btnClass = "btn1 bg-blue-light hover:bg-yellow-darker text-white font-medium py-2 px-4 rounded-full";
         let descBtn = "Following";
         return (
@@ -19,7 +30,7 @@ class InfoNF extends Component {
 
                         <div className="ProfileCard-userFields">
                             <div className="ProfileNameTruncated account-group">
-                                <div className="u-textTruncate u-inlineBlock">
+                                <div onClick={this.toProfile} className="u-textTruncate u-inlineBlock">
                                     <a className="fullname ProfileNameTruncated-link u-textInheritColor js-nav" href="/nnlinh971" data-aria-label-part="">
                                         tdhuan</a>
                                 </div>
@@ -65,4 +76,13 @@ class InfoNF extends Component {
     }
 }
 
-export default InfoNF;
+// export default InfoNF;
+const mapStateToProp = (state) => {
+    return {
+    }
+}
+const mapDispathToProp = (dispatch) => {
+    return {
+    }
+}
+export default connect(mapStateToProp, mapDispathToProp)(withRouter(InfoNF));
