@@ -24,6 +24,11 @@ class MenuTop extends Component {
         const user = this.props.match.params.username;
         this.props.history.push(`/${user}/followers`);
     }
+    getHistory = (e) => {
+        e.preventDefault();
+        const id = this.props.match.params.id;
+        this.props.history.push(`/users/${id}/history`);
+    }
     loadFile = (e) => {
         e.preventDefault();
         var reader = new FileReader();
@@ -45,10 +50,13 @@ class MenuTop extends Component {
         let tab1 = " hover:no-underline";
         let tab2 = " hover:no-underline";
         let tab3 = " hover:no-underline";
+        let tab4 = " hover:no-underline";
 
         let text1 = " hover:text-teal";
         let text2 = " hover:text-teal";
         let text3 = " hover:text-teal";
+        let text4 = " hover:text-teal";
+
         if (tab == "tab1") {
             tab1 = " border-teal";
             text1 = " text-teal";
@@ -58,6 +66,10 @@ class MenuTop extends Component {
         } else if (tab == 'tab3') {
             tab3 = " border-teal";
             text3 = " text-teal";
+        }
+        else if (tab == 'tab4') {
+            tab4 = " border-teal";
+            text4 = " text-teal";
         }
 
         return (
@@ -84,6 +96,12 @@ class MenuTop extends Component {
                                 <a onClick={(e) => this.getFollowers(e)} href="" className="text-grey-darker no-underline hover:no-underline">
                                     <div className="text-sm font-bold tracking-tight mb-1">{profile ? "Followers" : ""}</div>
                                     <div className={`text-lg tracking-tight font-bold${text3}`}>{profile ? profile.follower : ""}</div>
+                                </a>
+                            </li>
+                            <li className={`text-center py-3 px-4 border-b-2 border-solid border-transparent${tab4}`}>
+                                <a onClick={(e) => this.getHistory(e)} href="" className="text-grey-darker no-underline hover:no-underline">
+                                    <div className="text-sm font-bold tracking-tight mb-1">{profile ? "History" : ""}</div>
+                                    <div className={`text-lg tracking-tight font-bold${text4}`}>{profile ? profile.follower : ""}</div>
                                 </a>
                             </li>
                         </ul>
