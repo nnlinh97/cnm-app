@@ -18,7 +18,7 @@ class InfoNF extends Component {
         let descBtn = "Following";
         return (
             <div className="w-full lg:w-1/4 pl-4 lg:pl-0 pr-6 mb-4">
-                <div className="ProfileCard" style={{marginTop:"0px"}}>
+                <div className="ProfileCard" style={{ marginTop: "0px" }}>
                     <a className="ProfileCard-bg js-nav" href="#" tabindex="-1" aria-hidden="true">
                         <img src="https://pbs.twimg.com/profile_banners/813286/1502508746/600x200" alt="" />
                     </a>
@@ -44,6 +44,30 @@ class InfoNF extends Component {
                                 </a>
 
                             </span>
+                        </div>
+                    </div>
+                    <div class="ProfileCardStats">
+                        <div class="ProfileCardStats">
+                            <ul className="list-reset flex">
+                                <li class="text-center py-3 px-4 border-b-2 border-solid border-transparent border-teal">
+                                    <a href="#" class="text-grey-darker no-underline hover:no-underline">
+                                        <div class="text-sm font-bold tracking-tight mb-1">Tweets</div>
+                                        <div class="text-lg tracking-tight font-bold text-teal">60</div>
+                                    </a>
+                                </li>
+                                <li class="text-center py-3 px-4 border-b-2 border-solid border-transparent hover:border-teal">
+                                    <a href="#" class="text-grey-darker no-underline hover:no-underline">
+                                        <div class="text-sm font-bold tracking-tight mb-1">Following</div>
+                                        <div class="text-lg tracking-tight font-bold hover:text-teal">4</div>
+                                    </a>
+                                </li>
+                                <li class="text-center py-3 px-4 border-b-2 border-solid border-transparent hover:border-teal">
+                                    <a href="#" class="text-grey-darker no-underline hover:no-underline">
+                                        <div class="text-sm font-bold tracking-tight mb-1">Follower</div>
+                                        <div class="text-lg tracking-tight font-bold hover:text-teal">4</div>
+                                    </a>
+                                </li>
+                            </ul>
                         </div>
                     </div>
                 </div>
