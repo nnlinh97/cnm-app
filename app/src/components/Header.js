@@ -60,6 +60,7 @@ class Header extends Component {
         e.preventDefault();
         localStorage.setItem('token', false);
         localStorage.setItem('PRIVATE_KEY', '');
+        localStorage.setItem('PUBLIC_KEY', '');
         this.props.logout();
         this.props.history.push('/');
     }
@@ -138,7 +139,7 @@ class Header extends Component {
 
     onPayment = (e) => {
         e.preventDefault();
-        this.props.history.push('account/payment');
+        this.props.history.push('/account/payment');
     }
     onClickToTwitter = () => {
         this.props.history.push('/nnlinh97')

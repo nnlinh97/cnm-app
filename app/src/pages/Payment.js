@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import Header from '../components/Header';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
+import axios from 'axios';
+import transaction from '../lib/tx/index';
 // import * as Actions from './../actions/request'
 class Payment extends Component {
     constructor(props) {
@@ -9,6 +11,14 @@ class Payment extends Component {
         this.state = {
             address: '',
             amount: '',
+            error: '',
+            success: ''
+        }
+    }
+    componentDidMount() {
+        if (localStorage.getItem('token') === 'false') {
+            this.props.history.push('/');
+            return;
         }
     }
     onChangeKey = (e) => {
@@ -16,23 +26,97 @@ class Payment extends Component {
         let name = target.name;
         let value = target.value;
         this.setState({
-            [name]: value
+            [name]: value,
+            error: '',
+            success: ''
         });
     }
-    onCreate = (e) => {
+    ontransfer = (e) => {
         e.preventDefault();
         // console.log(this.state);
-        if (this.state.address !== '' && this.state.amount !== '') {
-            // this.props.payment(
-            //     {
-            //         address: this.state.address,
-            //         amount: this.state.amount,
-            //     }
-            // )
+        let { address, amount } = this.state;
+        if (address === '' || amount == '') {
+            this.setState({
+                error: 'ERROR: Address or Amount is empty!'
+            });
+            return;
         }
+        const publicKey = localStorage.getItem('PUBLIC_KEY');
+        if(address == publicKey){
+            this.setState({
+                error: 'ERROR: You can not transfer to yourseft!'
+            });
+            return;
+        }        
+        if (!+amount) {
+            this.setState({
+                error: 'ERROR: Amount must be a number'
+            });
+            return;
+        }
+        amount = +amount;
+        axios.get(`http://localhost:4200/users/get-user?idKey=${address}`).then((res) => {
+            if (res.data.status === 200) {
+                axios.get(`http://localhost:4200/users/get-user?idKey=${publicKey}`).then((user) => {
 
+                    if (user.data.status === 200) {
+                        const info = user.data.result;
+                        const tx = {
+                            version: 1,
+                            sequence: +info.sequence + 1,
+                            memo: Buffer.alloc(0),
+                            account: publicKey,
+                            operation: "payment",
+                            params: {
+                                address: address,
+                                amount: amount
+                            },
+                            signature: new Buffer(64)
+                        }
+                        try {
+                            transaction.encode(tx).toString('hex')
+                        } catch (error) {
+                            this.setState({
+                                error: 'ERROR: Encode transaction fail!'
+                            });
+                            return;
+                        }
+                        const privateKey = localStorage.getItem('PRIVATE_KEY');
+                        transaction.sign(tx, privateKey);
+                        const txEncode = '0x' + transaction.encode(tx).toString('hex');
+                        axios.post('http://localhost:4200/request', { tx: txEncode }).then((response) => {
+                            if (response.status === 200) {
+                                this.setState({
+                                    success: 'SUCCESS: Transfer successfully!'
+                                });
+                            } else {
+                                this.setState({
+                                    error: 'ERROR: Request fail!'
+                                });
+                            }
+                        });
+                    } else {
+                        this.setState({
+                            error: 'ERROR: Get your info fail!'
+                        });
+                        return;
+                    }
+                })
+            } else {
+                this.setState({
+                    error: 'ERROR: Address is not register!'
+                });
+                return;
+            }
+        })
     }
     render() {
+        if (this.state.error !== '') {
+            alert(this.state.error)
+        }
+        if(this.state.success !== ''){
+            alert(this.state.success)
+        }
         return (
             <div>
                 <Header />
@@ -40,7 +124,7 @@ class Payment extends Component {
                     <div className="container-login100" style={{ backgroundColor: "#d4d3d2" }}>
                         <div className="wrap-login100">
                             <form className="login100-form validate-form p-l-55 p-r-55 p-t-178">
-                                <span className="login100-form-title" style={{backgroundColor:"rgb(222, 115, 111)"}}>
+                                <span className="login100-form-title" style={{ backgroundColor: "rgb(222, 115, 111)" }}>
                                     Payment
                             </span>
                                 <div className="form-group">
@@ -64,7 +148,7 @@ class Payment extends Component {
                                 </div>
 
                                 <div className="container-login100-form-btn">
-                                    <button onClick={this.onCreate} className="login100-form-btn" style={{backgroundColor:"rgb(222, 115, 111)"}}>
+                                    <button onClick={this.ontransfer} className="login100-form-btn" style={{ backgroundColor: "rgb(222, 115, 111)" }}>
                                         Transfer
                                 </button>
                                 </div>
