@@ -1,0 +1,23 @@
+
+.avatar{
+    position: relative;
+}
+.avatar:hover .overlay {
+    display: block;
+    background: rgba(0, 0, 0, .3);
+    opacity: 1;
+  }
+#image2{
+    position: absolute;
+}
+.overlay {
+    position: absolute;
+    background: rgba(0, 0, 0, 0);
+    transition: background 0.5s ease;
+    text-align: center,
+  
+  }
+.icon{
+    text-align: center;
+    color: white;
+}

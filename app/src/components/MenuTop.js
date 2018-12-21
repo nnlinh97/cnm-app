@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
+
 class MenuTop extends Component {
 
     preventDefault = (e) => {
@@ -75,8 +76,19 @@ class MenuTop extends Component {
         return (
             <div className="bg-white shadow">
                 <div className="container mx-auto flex flex-col lg:flex-row items-center lg:relative">
-                    <div className="w-full lg:w-1/4">
-                        <img src={avatar} alt="logo" className="rounded-full h-48 w-48 lg:absolute lg:pin-l lg:pin-t lg:-mt-24" />
+                    <div className="avatar w-full lg:w-1/4">
+                        <img src="https://api.adorable.io/avatars/256/GCD6DHTSLKVMQWOXE4T4S72ZO3T2AMHXZ3DNKMQFSCFQNDYQ5A5VNHTM.png" alt="logo" className="rounded-full h-48 w-48 lg:absolute lg:pin-l lg:pin-t lg:-mt-24" />
+
+                        <div class="overlay rounded-full h-48 w-48 lg:absolute lg:pin-l lg:pin-t lg:-mt-24">
+                            <label htmlFor="image2" style={{ fontSize: '20px' }}>
+                                <div className="icon">
+                                    <i className="fa fa-camera" title="Add photo" style={{padding:"10px 10px 10px 10px"}}></i>
+
+                                </div>
+                            </label>
+                            <input id="image2" type="file" name="image2" onChange={(event) => this.loadFile(event)} />
+                        </div>
+
                     </div>
                     <div className="w-full lg:w-1/2">
                         <ul className="list-reset flex">
