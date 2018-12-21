@@ -3,9 +3,12 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import * as Actions from './../actions/request';
 import './../styles/modal2.css';
-import {logout} from './../actions/request';
+import { logout } from './../actions/request';
 import Generate from './Generate'
-import {openAccount} from './../actions'
+import { openAccount } from './../actions';
+import axios from 'axios';
+import transaction from '../lib/tx/index';
+import v1 from '../lib/tx/v1';
 var randomString = require('random-string');
 
 
@@ -20,17 +23,20 @@ class Header extends Component {
             isEditModal: false,
             location: this.props.profile ? this.props.profile.location : "",
             desc: this.props.profile ? this.props.profile.desc : "",
-            name: this.props.profile? this.props.profile.username :  "",
-            accModal:'none',
-            isAccount:false
-           // name: this.props.profile ? this.props.profile.username : ""
+            name: this.props.profile ? this.props.profile.username : "",
+            accModal: 'none',
+            isAccount: false,
+            // name: this.props.profile ? this.props.profile.username : ""
+
+            error: '',
+            success: ''
         }
     }
 
     toggleModal = () => {
         this.setState({
             modal: 'block',
-            isModal: true
+            isModal: true,
         })
         document.getElementById('body').style.overflow = 'hidden';
     }
@@ -38,19 +44,21 @@ class Header extends Component {
     removeModal = () => {
         this.setState({
             modal: 'none',
-            isModal: false
+            isModal: false,
+            error: '',
+            success: ''
         })
         document.getElementById('body').style.overflow = 'auto';
     }
-    toggleAccountModal = ()=>{
+    toggleAccountModal = () => {
         this.props.openModalAcc()
-        document.getElementById('body').style.overflow='hidden';
+        document.getElementById('body').style.overflow = 'hidden';
     }
-    removeAccountModal = ()=>{
+    removeAccountModal = () => {
         this.setState({
-            isAccount:false
+            isAccount: false
         })
-        document.getElementById('body').style.overflow='auto';
+        document.getElementById('body').style.overflow = 'auto';
     }
     preventDefault = (e) => {
         e.preventDefault();
@@ -70,28 +78,73 @@ class Header extends Component {
         let name = target.name;
         let value = target.value;
         this.setState({
-            [name]: value
+            [name]: value,
+            error: '',
+            success: ''
         });
     }
 
     onHandleSubmit = () => {
-        const item = {
-            id: randomString(),
-            username: 'nnlinh97',
-            creatAt: Date.now(),
-            content: this.state.content,
-            comments: [],
-            retweets: 0,
-            likes: 0,
-            avatarURL: 'https://tinyurl.com/yavpgl4g',
-            liked: false,
-            image: ''
+        const { content } = this.state;
+        console.log(content);
+        if (content == '') {
+            this.setState({
+                error: 'ERROR: Tweet is empty!',
+            });
+            return;
         }
-        this.removeModal();
-        this.props.createNewPost(item);
-        this.setState({
-            content: ''
+        const publicKey = localStorage.getItem('PUBLIC_KEY');
+        axios.get(`http://localhost:4200/users/get-user?idKey=${publicKey}`).then((user) => {
+            if (user.data.status === 200) {
+                const info = user.data.result;
+                let tx = {
+                    version: 1,
+                    account: info.idKey,
+                    sequence: +info.sequence + 1,
+                    memo: Buffer.alloc(0),
+                    operation: 'post',
+                    params: {
+                        content: {
+                            type: 1,
+                            text: content,
+                        },
+                        keys: []
+                    },
+                    signature: new Buffer(64)
+                }
+                try {
+                    transaction.encode(tx).toString('hex');
+                } catch (error) {
+                    this.setState({
+                        error: 'ERROR: Encode transaction fail!'
+                    });
+                    return;
+                }
+                const privateKey = localStorage.getItem('PRIVATE_KEY');
+                transaction.sign(tx, privateKey);
+                const txEncode = '0x' + transaction.encode(tx).toString('hex');
+                axios.post('http://localhost:4200/request', { tx: txEncode }).then((response) => {
+                    if (response.status === 200) {
+                        this.setState({
+                            success: 'SUCCESS: Post successfully!',
+                            content: ''
+                        });
+                        this.removeModal();
+                    } else {
+                        this.setState({
+                            error: 'ERROR: Request fail!'
+                        });
+                    }
+                });
+            } else {
+                this.setState({
+                    error: 'ERROR: Get your info fail!'
+                });
+            }
         })
+        // this.removeModal();
+        // this.props.createNewPost(item);
+
     }
 
     componentDidMount() {
@@ -151,7 +204,17 @@ class Header extends Component {
         if (profile) {
             avatar = profile.avatarURL;
         }
-        let accModal = this.props.toogle === true?<Generate/>:<div></div>
+        let accModal = this.props.toogle === true ? <Generate /> : <div></div>
+
+
+        if(this.state.error !== ''){
+            alert(this.state.error)
+        }
+        if(this.state.success !== ''){
+            alert(this.state.success)
+        }
+
+
         return (
             <div className="bg-white" style={{ position: 'fixed', width: '100%', zIndex: 1 }}>
                 <div className="container mx-auto flex flex-col lg:flex-row items-center py-4">
@@ -225,15 +288,9 @@ class Header extends Component {
                                                 <div className="col-sm-2 avataImage">
                                                     <img className="imageCol Avatar--size32 user-avatar-img avatar circle" src={avatar} alt="thanhhue" />
                                                 </div>
-
-
-
                                                 <div className="col-sm-10">
                                                     <textarea onChange={this.onHandleChange} name="content" value={this.state.content} placeholder="Write your tweet here" className="form-control" row="5" ></textarea>
                                                 </div>
-
-
-
 
                                             </div>
                                             <div className="row footer-image " >
@@ -331,7 +388,7 @@ class Header extends Component {
 const mapStateToProps = (state) => {
     return {
         profile: state.profile,
-        toogle:state.createAcc,
+        toogle: state.createAcc,
     }
 }
 
@@ -339,7 +396,7 @@ const mapDispatchToProps = (dispatch, action) => {
     return {
         createNewPost: (post) => dispatch(Actions.createNewPost(post)),
         logout: () => dispatch(logout()),
-        openModalAcc:()=>dispatch(openAccount())
+        openModalAcc: () => dispatch(openAccount())
     }
 }
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Header));

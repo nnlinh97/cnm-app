@@ -1,10 +1,32 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
 import Post from './Post';
+import axios from 'axios';
 
 class Posts extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            posts: ''
+        }
+    }
+    
+    componentDidMount() {
+        const idPost = this.props.match.params.id;
+        console.log(idPost);
+        axios.get(`http://localhost:4200/post/get-list-posts?idKey=${idPost}`).then((posts) => {
+            if(posts.data.result){
+                console.log(posts.data.result);
+                this.setState({
+                    posts: posts.data.result
+                });
+            }
+        })
+    }
+    
     render() {
-        console.log(this.props.posts);
+        // console.log(this.props.posts);
         const {posts} = this.props;
         let listPosts = '';
         if(posts.length > 0){
@@ -309,4 +331,4 @@ const mapDispatchToProps = (dispatch, action) => {
     return {
     }
 }
-export default connect(mapStateToProps, mapDispatchToProps)(Posts);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Posts));
