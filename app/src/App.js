@@ -21,6 +21,7 @@ class App extends Component {
             <Route exact path='/login' component={Login} />
             <Route exact path='/create' component={CreateAccount} />
             <Route exact path='/payment' component={Payment} />
+            <Route exact path='/users/:id' component={Profile} />
             {/* <Route exact path='/:username' component={Profile} />
             <Route exact path='/:username/followers' component={Followers} />
             <Route exact path='/:username/followings' component={Following} />
