@@ -62,7 +62,7 @@ class Header extends Component {
         localStorage.setItem('PRIVATE_KEY', '');
         localStorage.setItem('PUBLIC_KEY', '');
         this.props.logout();
-        this.props.history.push('/');
+        this.props.history.push('/login');
     }
 
     onHandleChange = (e) => {
@@ -134,15 +134,16 @@ class Header extends Component {
 
     onCreateAccout = (e) => {
         e.preventDefault();
-        this.props.history.push('/account/createaccount')
+        this.props.history.push('/create')
     }
 
     onPayment = (e) => {
         e.preventDefault();
-        this.props.history.push('/account/payment');
+        this.props.history.push('/payment');
     }
-    onClickToTwitter = () => {
-        this.props.history.push('/nnlinh97')
+    onClickToTwitter = (e) => {
+        e.preventDefault();
+        this.props.history.push('/')
     }
     render() {
         const { profile } = this.props;

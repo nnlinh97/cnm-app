@@ -17,7 +17,7 @@ class Payment extends Component {
     }
     componentDidMount() {
         if (localStorage.getItem('token') === 'false') {
-            this.props.history.push('/');
+            this.props.history.push('/login');
             return;
         }
     }
