@@ -8,6 +8,7 @@ import Login from './pages/Login';
 import Register from './pages/Register';
 import CreateAccount from './pages/CreateAccount';
 import Payment from './pages/Payment';
+import NewFeed from './pages/NewFeed';
 
 
 class App extends Component {
@@ -23,6 +24,8 @@ class App extends Component {
             <Route exact path='/account/register' component={Register} />
             <Route exact path='/account/payment' component={Payment} />
             <Route exact path='/account/createaccount' component={CreateAccount} />
+            <Route exact path='/newfeed/a' component={NewFeed} />
+
             <Route path='' component={NotFoundPage} />
           </Switch>
         </div>
