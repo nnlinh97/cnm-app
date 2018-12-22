@@ -15,10 +15,13 @@ class Info extends Component {
             editModal: 'none',
             isEditModal: false,
 
+            publicKey: '',
             displayName: '',
             sequence: '',
             balance: '',
-            energy: '',
+            bandwith: '',
+            bandwithTime: '',
+            bandwithLimit: '',
             displayNameChange: '',
             error: '',
             success: ''
@@ -30,7 +33,12 @@ class Info extends Component {
             if (info.data.status === 200) {
                 let user = info.data.result;
                 this.setState({
-                    displayName: user.displayName !== '' ? user.displayName : 'Update Name'
+                    displayName: user.displayName !== '' ? user.displayName : 'No Name',
+                    sequence: user.sequence,
+                    balance: user.balance,
+                    bandwithTime: user.bandwithTime,
+                    bandwithLimit: user.bandwithLimit,
+                    publicKey: idKey
                 });
             }
         })
@@ -165,7 +173,7 @@ class Info extends Component {
             <div style={{ 'marginTop': '1rem' }} className="w-full lg:w-1/4 pl-4 lg:pl-0 pr-6 mt-8 mb-4">
                 <div className="mb-4">
                     <a onClick={this.onClickDisplayName} style={{ fontSize: "20px" }} href="" className="text-black font-bold no-underline hover:underline">{this.state.displayName} &nbsp;</a>
-                    <i style={{ cursor: 'pointer' }} onClick={this.toggleEditModal} class="fa fa-pencil fa-lg text-grey-darker ml-1"></i>
+                    <i style={{ cursor: 'pointer' }} onClick={this.toggleEditModal} className="fa fa-pencil fa-lg text-grey-darker ml-1"></i>
                     {/* <a href="#" className="text-black font-bold no-underline hover:underline">{profile ? profile.username : ''}</a> */}
                 </div>
                 <div className="mb-4" style={{ display: this.state.editModal }} >
@@ -190,12 +198,11 @@ class Info extends Component {
 
                     </div>
                 </div>
-                <div className="mb-4">
-                    {/* <a href="#" className="text-grey-darker no-underline hover:underline">{tag}</a> */}
+                {/* <div className="mb-4">
                     <a href="#" className="text-grey-darker no-underline hover:underline">
                         @huantd
                     </a>
-                </div>
+                </div> */}
 
                 <div className="mb-4">
                     {profile ? profile.desc : ''}
@@ -205,7 +212,7 @@ class Info extends Component {
                         <a href="#" className="text-teal no-underline hover:underline">@steveschoger</a>. */}
                 </div>
                 {/* {location} */}
-                {joined}
+                {/* {joined} */}
                 {/* {birthday} */}
                 <div className="mb-4">
                     <p title="F8F5D98CF83B03F68C5E2E04CE409804B57EAD1D0BAB24531E769D4A267A45A1"
@@ -217,15 +224,14 @@ class Info extends Component {
                             overflow: "hidden",
                             textOverflow: "ellipsis",
                         }}>
-                        GCD6DHTSLKVMQWOXE4T4S72ZO3T2AM
-                        HXZ3DNKMQFSCFQNDYQ5A5VNHTM
+                        {this.state.publicKey}
                     </p>
                 </div>
                 <div className="mb-4">
-                    <p><strong>Sequence</strong>: 1</p>
-                    <p><strong>Balance</strong>: 2.00000000 TRE</p>
-                    <p><strong>Energy</strong>: 42244 OXY</p>
-                    <p><strong>Transactions</strong>: 4</p>
+                    <p><strong>Sequence</strong>: {this.state.sequence}</p>
+                    <p><strong>Balance</strong>: {this.state.balance} CEL</p>
+                    {/* <p><strong>Energy</strong>: 42244 OXY</p>
+                    <p><strong>Transactions</strong>: 4</p> */}
                 </div>
                 {/* <div className="mb-4">
                     <button className="bg-teal hover:bg-teal-dark text-white font-medium py-2 px-4 rounded-full w-full h-10">Tweet to Tailwind CSS</button>

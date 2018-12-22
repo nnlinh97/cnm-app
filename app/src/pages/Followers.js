@@ -41,8 +41,8 @@ class Followers extends Component {
                 <MenuTop tab="tab3" />
                 <div className="container mx-auto flex flex-col lg:flex-row mt-3 text-sm leading-normal">
                     <Info />
-                    <div class="w-full lg:w-3/4 bg-white mb-4">
-                        <div class="grid border-b border-solid border-grey-light">
+                    <div className="w-full lg:w-3/4 bg-white mb-4">
+                        <div className="grid border-b border-solid border-grey-light">
                             {listFollowers}
                             {/* <div class="w-full mb-4">
                                 <div class="ProfileCard">

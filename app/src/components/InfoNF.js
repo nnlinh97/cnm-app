@@ -1,48 +1,82 @@
 import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
-import {getListFollowings} from './../actions/request'
+import { getListFollowings } from './../actions/request';
+import axios from 'axios';
 class InfoNF extends Component {
     constructor(props) {
         super(props);
-        this.state={
-            idKey:''
+        this.state = {
+            idKey: '',
+            displayName: '',
+            tweets: '',
+            followings: '',
+            followers: ''
         }
     }
-    componentWillReceiveProps(nextProps){
+    componentWillReceiveProps(nextProps) {
         let id = nextProps.match.params.id
         this.setState({
             idKey: nextProps.match.params.id,
         })
-        if(id !== this.props.match.params.id){
+        if (id !== this.props.match.params.id) {
             this.props.getListFollow(id);
         }
     }
     componentDidMount() {
         //const publicKey = localStorage.getItem('PUBLIC_KEY');
         //const publicKey = 'GAXVLYJUYND6QKGHK4FGM44XK3U77KJY54VTUJNIORYASOUOHWO63Q7Q'
-        this.setState({
-            idKey:this.props.match.params.id
-        })
-        if(this.state.idKey){
-            this.props.getListFollow(this.state.idKey);
-        }
-       
+        const publicKey = localStorage.getItem("PUBLIC_KEY");
+        let pFollower = axios.get(`http://localhost:4200/follow/followerID?idKey=${publicKey}`);
+        let pFollowing = axios.get(`http://localhost:4200/follow/followingID?idKey=${publicKey}`);
+        let pAccount = axios.get(`http://localhost:4200/account/get-account?idKey=${publicKey}`);
+        let pTweet = axios.get(`http://localhost:4200/post/get-list-posts?idKey=${publicKey}`);
+        Promise.all([pAccount, pFollower, pFollowing, pTweet]).then(([account, follower, following, tweet]) => {
+            if (account && follower && following && tweet) {
+                console.log(tweet);
+                this.setState({
+                    displayName: account.data.result.displayName,
+                    followers: follower.data.count,
+                    followings: following.data.count,
+                    tweets: tweet.data.count
+                });
+            }
+        });
+        // .then((account) => {
+        //     if (account.data.status === 200){
+        //         const info = account.data.result;
+        //         this.setState({
+        //             displayName: info.displayName
+        //         })
+        //     }
+        // })
+        // this.setState({
+        //     idKey:this.props.match.params.id
+        // })
+        // if(this.state.idKey){
+        //     this.props.getListFollow(this.state.idKey);
+        // }
+
     }
-    
+
     toProfile = (e) => {
         e.preventDefault();
         const publicKey = localStorage.getItem('PUBLIC_KEY');
-        this.props.history.push(`/users/${publicKey}`);
+        this.props.history.push(`/tweets/${publicKey}`);
     }
-    toFollowing = (e) =>{
+    toFollowing = (e) => {
         e.preventDefault();
         const publicKey = localStorage.getItem('PUBLIC_KEY');
-        this.props.history.push(`/${publicKey}/followings`);
+        this.props.history.push(`/followings/${publicKey}`);
+    }
+    toFollower = (e) => {
+        e.preventDefault();
+        const publicKey = localStorage.getItem('PUBLIC_KEY');
+        this.props.history.push(`/followers/${publicKey}`);
     }
     render() {
-         let { following } = this.props;
-         let numberFoll = following.count?following.count: 0;
+        let { following } = this.props;
+        let numberFoll = following.count ? following.count : 0;
         let btnClass = "btn1 bg-blue-light hover:bg-yellow-darker text-white font-medium py-2 px-4 rounded-full";
         let descBtn = "Following";
         return (
@@ -60,19 +94,19 @@ class InfoNF extends Component {
                         <div className="ProfileCard-userFields">
                             <div className="ProfileNameTruncated account-group">
                                 <div onClick={this.toProfile} className="u-textTruncate u-inlineBlock">
-                                    <a className="fullname ProfileNameTruncated-link u-textInheritColor js-nav" href="/nnlinh971" data-aria-label-part="">
-                                        tdhuan</a>
+                                    <a className="fullname ProfileNameTruncated-link u-textInheritColor js-nav" href="" data-aria-label-part="">
+                                        {this.state.displayName}</a>
                                 </div>
                                 <span className="UserBadges"></span>
                             </div>
-                            <span className="ProfileCard-screenname">
+                            {/* <span className="ProfileCard-screenname">
                                 <a href="/nnlinh971" className="ProfileCard-screennameLink u-linkComplex js-nav" data-aria-label-part="">
                                     <span className="username u-dir" dir="ltr">@
                                             <b className="u-linkComplex-target">nnlinh971</b>
                                     </span>
                                 </a>
 
-                            </span>
+                            </span> */}
                         </div>
                     </div>
                     <div class="ProfileCardStats">
@@ -81,20 +115,22 @@ class InfoNF extends Component {
                                 <li class="text-center py-3 px-4 border-b-2 border-solid border-transparent border-teal">
                                     <a onClick={this.toProfile} href="" class="text-grey-darker no-underline hover:no-underline">
                                         <div class="text-sm font-bold tracking-tight mb-1">Tweets</div>
-                                        <div class="text-lg tracking-tight font-bold text-teal">60</div>
+                                        <div class="text-lg tracking-tight font-bold text-teal">{this.state.tweets}</div>
                                     </a>
                                 </li>
-                    
-                                <li class="text-center py-3 px-4 border-b-2 border-solid border-transparent hover:border-teal" onClick={(e)=>this.toFollowing(e)}>
+
+                                <li class="text-center py-3 px-4 border-b-2 border-solid border-transparent hover:border-teal"
+                                    onClick={(e) => this.toFollowing(e)}>
                                     <a href="#" class="text-grey-darker no-underline hover:no-underline">
                                         <div class="text-sm font-bold tracking-tight mb-1" >Following</div>
-                                        <div class="text-lg tracking-tight font-bold hover:text-teal">{numberFoll}</div>
+                                        <div class="text-lg tracking-tight font-bold hover:text-teal">{this.state.followings}</div>
                                     </a>
                                 </li>
-                                <li class="text-center py-3 px-4 border-b-2 border-solid border-transparent hover:border-teal">
+                                <li class="text-center py-3 px-4 border-b-2 border-solid border-transparent hover:border-teal"
+                                     onClick={(e) => this.toFollower(e)}>
                                     <a href="#" class="text-grey-darker no-underline hover:no-underline">
                                         <div class="text-sm font-bold tracking-tight mb-1">Follower</div>
-                                        <div class="text-lg tracking-tight font-bold hover:text-teal">4</div>
+                                        <div class="text-lg tracking-tight font-bold hover:text-teal">{this.state.followers}</div>
                                     </a>
                                 </li>
                             </ul>
@@ -114,7 +150,7 @@ const mapStateToProp = (state) => {
 }
 const mapDispathToProp = (dispatch) => {
     return {
-        getListFollow:(publicKey) => dispatch(getListFollowings(publicKey))
+        getListFollow: (publicKey) => dispatch(getListFollowings(publicKey))
     }
 }
 export default connect(mapStateToProp, mapDispathToProp)(withRouter(InfoNF));

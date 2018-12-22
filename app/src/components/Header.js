@@ -198,6 +198,12 @@ class Header extends Component {
         e.preventDefault();
         this.props.history.push('/')
     }
+
+    toProfile = (e) => {
+        e.preventDefault();
+        const publicKey = localStorage.getItem('PUBLIC_KEY');
+        this.props.history.push(`/tweets/${publicKey}`);
+    }
     render() {
         const { profile } = this.props;
         let avatar = "https://tinyurl.com/yapenv5f";
@@ -222,9 +228,11 @@ class Header extends Component {
                         {/* <a onClick={(e) => this.preventDefault(e)} href="" className="text-grey-darker text-sm mr-4 font-semibold pb-6 border-b-2 border-solid border-transparent no-underline hover:text-teal hover:border-teal hover:no-underline">
                             <i className="fa fa-home fa-lg" /> Home</a> */}
                         <a onClick={this.onClickToTwitter} href="" className="text-grey-darker text-sm mr-4 font-semibold pb-6 border-b-2 border-solid border-transparent no-underline hover:text-teal hover:border-teal hover:no-underline">
-                            <i className="fa fa-home fa-lg" /> Home</a>
-                        <a onClick={(e) => this.preventDefault(e)} style={{ marginLeft: '2rem' }} href="" className="text-grey-darker text-sm mr-4 font-semibold pb-6 border-b-2 border-solid border-transparent no-underline hover:text-teal hover:border-teal hover:no-underline">
-                            <i className="fa fa-bell fa-lg" /> Notifications</a>
+                            <i className="fa fa-home fa-lg" />&nbsp;
+                             Home</a>
+                        <a onClick={this.toProfile} style={{ marginLeft: '2rem' }} href="" className="text-grey-darker text-sm mr-4 font-semibold pb-6 border-b-2 border-solid border-transparent no-underline hover:text-teal hover:border-teal hover:no-underline">
+                            <i className="fa fa-user-circle fa-lg" />&nbsp;
+                             Profile</a>
                         {/* <a href="#" className="text-grey-darker text-sm mr-4 font-semibold pb-6 border-b-2 border-solid border-transparent no-underline hover:text-teal hover:border-teal hover:no-underline">
                             <i className="fa fa-envelope fa-lg" /> Messages
                             </a> */}

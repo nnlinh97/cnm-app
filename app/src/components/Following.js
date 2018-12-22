@@ -24,11 +24,11 @@ class Following extends Component {
         return (
             <div className="w-full mb-4">
                 <div className="ProfileCard">
-                    <a className="ProfileCard-bg js-nav" href="#" tabindex="-1" aria-hidden="true">
+                    <a className="ProfileCard-bg js-nav" href="#" tabIndex="-1" aria-hidden="true">
                         <img src="https://pbs.twimg.com/profile_banners/813286/1502508746/600x200" alt="" />
                     </a>
                     <div className="ProfileCard-content">
-                        <a className="ProfileCard-avatarLink js-nav js-tooltip" href="/nnlinh971" title="nnlinh97" tabindex="-1" aria-hidden="true">
+                        <a className="ProfileCard-avatarLink js-nav js-tooltip" href="/nnlinh971" title="nnlinh97" tabIndex="-1" aria-hidden="true">
                             <img className="ProfileCard-avatarImage js-action-profile-avatar" src={following.avata}
                                 alt="" />
                         </a>

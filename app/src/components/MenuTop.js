@@ -1,58 +1,79 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
-import {getListFollowings} from './../actions/request'
+import { getListFollowings } from './../actions/request';
+import axios from 'axios';
 class MenuTop extends Component {
     constructor(props) {
         super(props);
-        this.state={
-            idKey:''
+        this.state = {
+            idKey: '',
+            displayName: '',
+            tweets: '',
+            followings: '',
+            followers: ''
         }
     }
-    componentWillReceiveProps(nextProps){
-        let id = nextProps.match.params.username || nextProps.match.params.id
-        
-        this.setState({
-            idKey: id
-        })
-        // if(id !== this.props.match.params.username ){
-        //     this.props.getListFollow(id);
-        // }
+    componentWillReceiveProps(nextProps) {
+        // let id = nextProps.match.params.username || nextProps.match.params.id
+
+        // this.setState({
+        //     idKey: id
+        // })
+        // // if(id !== this.props.match.params.username ){
+        // //     this.props.getListFollow(id);
+        // // }
     }
-    componentDidMount(){
-        
-        this.setState({
-            idKey:this.props.match.params.username || this.props.match.params.id
-        })
-       
-            this.props.getListFollow(this.props.match.params.username || this.props.match.params.id);
-        
+    componentDidMount() {
+
+        // this.setState({
+        //     idKey:this.props.match.params.username || this.props.match.params.id
+        // })
+
+        //     this.props.getListFollow(this.props.match.params.username || this.props.match.params.id);
+
+        const publicKey = this.props.match.params.id;
+        let pFollower = axios.get(`http://localhost:4200/follow/followerID?idKey=${publicKey}`);
+        let pFollowing = axios.get(`http://localhost:4200/follow/followingID?idKey=${publicKey}`);
+        let pAccount = axios.get(`http://localhost:4200/account/get-account?idKey=${publicKey}`);
+        let pTweet = axios.get(`http://localhost:4200/post/get-list-posts?idKey=${publicKey}`);
+        Promise.all([pAccount, pFollower, pFollowing, pTweet]).then(([account, follower, following, tweet]) => {
+            if (account && follower && following && tweet) {
+                this.setState({
+                    displayName: account.data.result.displayName,
+                    followers: follower.data.count,
+                    followings: following.data.count,
+                    tweets: tweet.data.count
+                });
+            }
+        });
+
     }
     preventDefault = (e) => {
         e.preventDefault();
     }
 
-    getTweets = (e) => {
+    toTweets = (e) => {
         e.preventDefault();
         const user = this.props.match.params.username;
-        this.props.history.push(`/${user}`);
+        this.props.history.push(`/tweets/${this.props.match.params.id}`);
     }
 
-    getFollowings = (e) => {
+    toFollowing = (e) => {
         e.preventDefault();
         const publicKey = this.props.match.params.id;
-        this.props.history.push(`/${publicKey}/followings`);
+        this.props.history.push(`/followings/${publicKey}`);
     }
 
-    getFollowers = (e) => {
+    toFollowers = (e) => {
         e.preventDefault();
-        const user = this.props.match.params.username;
-        this.props.history.push(`/${user}/followers`);
+        const publicKey = this.props.match.params.id;
+        this.props.history.push(`/followers/${publicKey}`);
     }
     getHistory = (e) => {
         e.preventDefault();
         const id = this.props.match.params.id;
-        this.props.history.push(`/users/${id}/history`);
+        this.props.history.push(`/tweets/${id}/history`);
     }
     loadFile = (e) => {
         e.preventDefault();
@@ -92,25 +113,25 @@ class MenuTop extends Component {
             tab3 = " border-teal";
             text3 = " text-teal";
         }
-       
+
         else if (tab == 'tab4') {
             tab4 = " border-teal";
             text4 = " text-teal";
         }
         let { following } = this.props;
         console.log(following)
-        let numberFoll = following.count?following.count: 0;
+        let numberFoll = following.count ? following.count : 0;
         return (
             <div className="bg-white shadow">
                 <div className="container mx-auto flex flex-col lg:flex-row items-center lg:relative">
                     <div className="avatar w-full lg:w-1/4">
                         <img src="https://api.adorable.io/avatars/256/GCD6DHTSLKVMQWOXE4T4S72ZO3T2AMHXZ3DNKMQFSCFQNDYQ5A5VNHTM.png" alt="logo" className="rounded-full h-48 w-48 lg:absolute lg:pin-l lg:pin-t lg:-mt-24" />
-                        
-                        <div class="overlay rounded-full h-48 w-48 lg:absolute lg:pin-l lg:pin-t lg:-mt-24">
-                            <div style={{height:"90px"}}></div>
+
+                        <div className="overlay rounded-full h-48 w-48 lg:absolute lg:pin-l lg:pin-t lg:-mt-24">
+                            <div style={{ height: "90px" }}></div>
                             <label htmlFor="image2" style={{ fontSize: '20px' }}>
                                 <div className="icon">
-                                    <i className="fa fa-camera" title="Add photo" style={{padding:"30px 10px 10px 10px"}}></i>
+                                    <i className="fa fa-camera" title="Add photo" style={{ padding: "30px 10px 10px 10px" }}></i>
                                 </div>
                             </label>
                             <input id="image2" type="file" name="image2" onChange={(event) => this.loadFile(event)} />
@@ -120,21 +141,21 @@ class MenuTop extends Component {
                     <div className="w-full lg:w-1/2">
                         <ul className="list-reset flex">
                             <li className={`text-center py-3 px-4 border-b-2 border-solid border-transparent${tab1}`}>
-                                <a onClick={(e) => this.getTweets(e)} href="" className="text-grey-darker no-underline hover:no-underline">
-                                    <div className="text-sm font-bold tracking-tight mb-1">{profile ? "Tweets" : ""}</div>
-                                    <div className={`text-lg tracking-tight font-bold${text1}`}>{posts.length > 0 ? posts.length : ""}</div>
+                                <a onClick={this.toTweets} href="" className="text-grey-darker no-underline hover:no-underline">
+                                    <div className="text-sm font-bold tracking-tight mb-1">Tweets</div>
+                                    <div className={`text-lg tracking-tight font-bold${text1}`}>{this.state.tweets}</div>
                                 </a>
                             </li>
                             <li className={`text-center py-3 px-4 border-b-2 border-solid border-transparent${tab2}`}>
-                                <a onClick={(e) => this.getFollowings(e)} href="" className="text-grey-darker no-underline hover:no-underline">
-                                    <div className="text-sm font-bold tracking-tight mb-1">{profile ? "Following" : ""}</div>
-                                    <div className={`text-lg tracking-tight font-bold${text2}`}>{numberFoll}</div>
+                                <a onClick={(e) => this.toFollowing(e)} href="" className="text-grey-darker no-underline hover:no-underline">
+                                    <div className="text-sm font-bold tracking-tight mb-1">Followings</div>
+                                    <div className={`text-lg tracking-tight font-bold${text2}`}>{this.state.followings}</div>
                                 </a>
                             </li>
                             <li className={`text-center py-3 px-4 border-b-2 border-solid border-transparent${tab3}`}>
-                                <a onClick={(e) => this.getFollowers(e)} href="" className="text-grey-darker no-underline hover:no-underline">
-                                    <div className="text-sm font-bold tracking-tight mb-1">{profile ? "Followers" : ""}</div>
-                                    <div className={`text-lg tracking-tight font-bold${text3}`}>{profile ? profile.follower : ""}</div>
+                                <a onClick={(e) => this.toFollowers(e)} href="" className="text-grey-darker no-underline hover:no-underline">
+                                    <div className="text-sm font-bold tracking-tight mb-1">Followers</div>
+                                    <div className={`text-lg tracking-tight font-bold${text3}`}>{this.state.followers}</div>
                                 </a>
                             </li>
                             <li className={`text-center py-3 px-4 border-b-2 border-solid border-transparent${tab4}`}>
@@ -229,7 +250,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch, action) => {
     return {
-        getListFollow:(publicKey) => dispatch(getListFollowings(publicKey))
+        getListFollow: (publicKey) => dispatch(getListFollowings(publicKey))
     }
 }
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(MenuTop));
@@ -246,13 +267,13 @@ export default withRouter(connect(mapStateToProps, mapDispatchToProps)(MenuTop))
         <div className="w-full lg:w-1/2">
             <ul className="list-reset flex">
                 <li className={`text-center py-3 px-4 border-b-2 border-solid border-transparent${tab1}`}>
-                    <a onClick={(e) => this.getTweets(e)} href="" className="text-grey-darker no-underline hover:no-underline">
+                    <a onClick={(e) => this.toTweets(e)} href="" className="text-grey-darker no-underline hover:no-underline">
                         <div className="text-sm font-bold tracking-tight mb-1">{profile ? "Tweets" : ""}</div>
                         <div className={`text-lg tracking-tight font-bold${text1}`}>{profile ? profile.tweets : ""}</div>
                     </a>
                 </li>
                 <li className={`text-center py-3 px-4 border-b-2 border-solid border-transparent${tab2}`}>
-                    <a onClick={(e) => this.getFollowings(e)} href="" className="text-grey-darker no-underline hover:no-underline">
+                    <a onClick={(e) => this.toFollowing(e)} href="" className="text-grey-darker no-underline hover:no-underline">
                         <div className="text-sm font-bold tracking-tight mb-1">{profile ? "Following" : ""}</div>
                         <div className={`text-lg tracking-tight font-bold${text2}`}>{profile ? profile.following : ""}</div>
                     </a>
