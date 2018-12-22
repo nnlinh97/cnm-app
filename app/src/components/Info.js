@@ -75,8 +75,8 @@ class Info extends Component {
     }
   
 
-    toggleEditModal = (profile, e) => {
-        e.preventDefault();
+    toggleEditModal = () => {
+        // e.preventDefault();
         this.setState({
             editModal: 'block',
             isEditModal: true,
@@ -241,13 +241,12 @@ class Info extends Component {
                     </div>
                 </div>
 
-                <div className="mb-4">
-                    {/* <a href="#" className="text-grey-darker no-underline hover:underline">{tag}</a> */}
+                {/* <div className="mb-4">
                     <a href="#" className="text-grey-darker no-underline hover:underline">
                         @huantd
                     </a>
-                </div>
-                <div className="modal3 " id="myModal3" role="dialog" style={{ display: this.state.editModal }} >
+                </div> */}
+                <div className="modal3 " id="myModal3" role="dialog" style={{ display: 'none' }} >
                     <div className="center-parent" style={{ zIndex: 1 }}>
                         <button onClick={this.removeEditModal} style={{ color: "red" }}>
                             <i className="fa fa-times fa-lg"></i>

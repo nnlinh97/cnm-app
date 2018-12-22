@@ -13,7 +13,7 @@ class MenuTop extends Component {
             followings: '',
             followers: '',
             history: '',
-            avatar: ''
+            avatar: '',
             // them ben uploadImage
             modal: 'none',
             content: '',
