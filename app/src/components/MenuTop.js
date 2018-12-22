@@ -14,6 +14,16 @@ class MenuTop extends Component {
             followers: '',
             history: '',
             avatar: ''
+            // them ben uploadImage
+            modal: 'none',
+            content: '',
+            isModal: false,
+            editModal: 'none',
+            isEditModal: false,
+            listImages: [],
+            previewImage: [],
+            isEditImage: false,
+            editImage: 'none',
         }
     }
     componentWillReceiveProps(nextProps) {
@@ -57,6 +67,7 @@ class MenuTop extends Component {
         });
 
     }
+
     preventDefault = (e) => {
         e.preventDefault();
     }
@@ -94,7 +105,91 @@ class MenuTop extends Component {
         reader.readAsDataURL(e.target.files[0]);
 
     }
+    onChange = (e) => {
+        let name = e.target.name;
+        let value = e.target.value;
+        this.setState({
+            [name]: value,
+        })
+    }
+    onHandleChooseImage = (e) => {
+        console.log('2');
+        // let image = e.target.files[0];
+        // console.log("1");
+        // let reader = new FileReader()
+        // reader.onloadend = () => {
+        //     if (image) {
+        //         this.setState({
+        //             previewImage: [...this.state.previewImage, reader.result],
+        //             listImages: [...this.state.listImages, image],
+        //     
+        //         })
+        //     }
+        // }
+        // reader.readAsDataURL(image);
+        // e.target.value = null;
+        // document.getElementById('body').style.overflow = 'hidden';
+    }
+
+    onDelete = (index) => {
+        let preImgs = this.state.previewImage;
+        preImgs.splice(index, 1);
+        let listImgs = this.state.listImages;
+        listImgs.splice(index, 1);
+        this.setState({
+            previewImage: preImgs,
+            listImages: listImgs,
+        })
+        console.log(this.state.listImages);
+    }
+    removeEditModal = () => {
+        this.setState({
+            editImage: 'none'
+        })
+        document.getElementById('body').style.overflow = 'auto';
+    }
+
+    saveChanges = () => {
+        this.removeEditModal()
+    }
     render() {
+        // PREVIEW IMAGE
+        console.log(this.state.editImage);
+        let listPreviewImgs = this.state.previewImage;
+        let listPreImgs = null;
+        if (listPreviewImgs.length > 0) {
+            listPreImgs = listPreviewImgs.map((preImg, index) => {
+                return (
+                    <div key={index} className="modal3 " id="myModal3" role="dialog" style={{ display: this.state.editModal }} >
+                        <div className="center-parent" style={{ zIndex: 1 }}>
+                            <button onClick={this.removeEditModal} style={{ color: "red" }}>
+                                <i className="fa fa-times fa-lg"></i>
+                            </button>
+
+                            <div className="previewImage">
+
+                                <img src="https://api.adorable.io/avatars/256/GCD6DHTSLKVMQWOXE4T4S72ZO3T2AMHXZ3DNKMQFSCFQNDYQ5A5VNHTM.png" id="pre" />
+
+                            </div>
+                        </div>
+                        <div style={{ marginRight: "450px", marginTop: "80px" }}>
+                            <button onClick={this.saveChanges} type="button" className="btn btn-primary radius-button " data-dismiss="modal">
+                                Save Changes
+                            </button>
+                            <button onClick={this.removeEditModal} style={{ backgroundColor: '#bbb' }} type="button" className="btn btn-primary radius-button " data-dismiss="modal">
+                                Cancel
+                            </button>
+
+                        </div>
+
+                    </div>
+
+                )
+            })
+        }
+
+
+        // -------------------------------------------------
         const { profile, posts } = this.props;
         let avatar = "https://tinyurl.com/yapenv5f";
         // if (profile) {
@@ -134,15 +229,18 @@ class MenuTop extends Component {
                     <div className="avatar w-full lg:w-1/4">
                         <img src={this.state.avatar ? this.state.avatar : avatar} alt="logo" className="rounded-full h-48 w-48 lg:absolute lg:pin-l lg:pin-t lg:-mt-24" />
 
+
                         <div className="overlay rounded-full h-48 w-48 lg:absolute lg:pin-l lg:pin-t lg:-mt-24">
+
                             <div style={{ height: "90px" }}></div>
                             <label htmlFor="image2" style={{ fontSize: '20px' }}>
                                 <div className="icon">
                                     <i className="fa fa-camera" title="Add photo" style={{ padding: "30px 10px 10px 10px" }}></i>
                                 </div>
                             </label>
-                            <input id="image2" type="file" name="image2" onChange={(event) => this.loadFile(event)} />
+                            <input id="image2" type="file" accept="image/*" ref="fileUploader" onChange={(e) => this.onHandleChooseImage(e)} />
                         </div>
+                        {listPreImgs}
 
                     </div>
                     <div className="w-full lg:w-1/2">
@@ -239,6 +337,7 @@ class MenuTop extends Component {
                         </div> */}
                     </div>
                 </div>
+
                 {/* end container */}
             </div>
 
