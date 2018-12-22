@@ -225,9 +225,9 @@ class MenuTop extends Component {
                     <div className="avatar w-full lg:w-1/4">
                         <img src="https://api.adorable.io/avatars/256/GCD6DHTSLKVMQWOXE4T4S72ZO3T2AMHXZ3DNKMQFSCFQNDYQ5A5VNHTM.png" alt="logo" className="rounded-full h-48 w-48 lg:absolute lg:pin-l lg:pin-t lg:-mt-24" />
 
+
                         <div className="overlay rounded-full h-48 w-48 lg:absolute lg:pin-l lg:pin-t lg:-mt-24">
-=======
-                     
+
                             <div style={{ height: "90px" }}></div>
                             <label htmlFor="image2" style={{ fontSize: '20px' }}>
                                 <div className="icon">

@@ -51,14 +51,7 @@ class Info extends Component {
     onClickDisplayName = (e) => {
         e.preventDefault();
     }
-    toggleEditModal = (e) => {
-
-            listImages: [],
-            previewImage: [],
-            isEditImage: false,
-            editImage: 'none',
-        }
-    }
+  
 
     toggleEditModal = (profile, e) => {
         e.preventDefault();
@@ -146,7 +139,7 @@ class Info extends Component {
         // this.removeEditModal();
     }
     render() {
-<<<<<<< HEAD
+
         if (this.state.error !== '') {
             alert(this.state.error)
         }
@@ -155,10 +148,10 @@ class Info extends Component {
             alert(this.state.success)
         }
 
-=======
+
 
         // console.log(this.props.profile);
->>>>>>> uploadImage
+
         const { profile } = this.props;
         // let tag = '';
         // let joined = '';
