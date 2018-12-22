@@ -29,9 +29,12 @@ class Header extends Component {
             // name: this.props.profile ? this.props.profile.username : ""
 
             error: '',
-            success: ''
+            success: '',
+            avatar: ''
         }
     }
+    
+    
 
     toggleModal = () => {
         this.setState({
@@ -149,6 +152,14 @@ class Header extends Component {
 
     componentDidMount() {
         document.addEventListener('mousedown', this.handleClickOutside);
+        const publicKey = localStorage.getItem('PUBLIC_KEY')
+        axios.get(`http://localhost:4200/account/get-account?idKey=${publicKey}`).then((user) => {
+            if(user.data.status == 200){
+                this.setState({
+                    avatar: user.data.result.avatar
+                })
+            }
+        })
     }
 
     componentWillUnmount() {
@@ -207,9 +218,9 @@ class Header extends Component {
     render() {
         const { profile } = this.props;
         let avatar = "https://tinyurl.com/yapenv5f";
-        if (profile) {
-            avatar = profile.avatarURL;
-        }
+        // if (profile) {
+        //     avatar = profile.avatarURL;
+        // }
         let accModal = this.props.toogle === true ? <Generate /> : <div></div>
 
 
@@ -251,7 +262,7 @@ class Header extends Component {
                         </div>
                         <div className="mr-4 linh-dropdown">
                             <a onClick={(e) => this.preventDefault(e)} href="" className="linh-dropbtn">
-                                <img src={avatar} alt="avatar" className="h-8 w-8 rounded-full" />
+                                <img src={this.state.avatar !== '' ? this.state.avatar: avatar} alt="avatar" className="h-8 w-8 rounded-full" />
                             </a>
                             <div className="linh-dropdown-content">
                                 <a onClick={this.onCreateAccout} className="linh-a" href="">

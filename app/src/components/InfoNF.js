@@ -87,7 +87,7 @@ class InfoNF extends Component {
                     </a>
                     <div className="ProfileCard-content">
                         <a className="ProfileCard-avatarLink js-nav js-tooltip" href="/nnlinh971" title="nnlinh97" tabindex="-1" aria-hidden="true">
-                            <img className="ProfileCard-avatarImage js-action-profile-avatar" src="https://abs.twimg.com/sticky/default_profile_images/default_profile_bigger.png   "
+                            <img className="ProfileCard-avatarImage js-action-profile-avatar" src="https://abs.twimg.com/sticky/default_profile_images/default_profile_bigger.png"
                                 alt="" />
                         </a>
 

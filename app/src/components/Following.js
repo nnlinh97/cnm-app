@@ -2,13 +2,21 @@ import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
 import moment from 'moment'
 class Following extends Component {
-    toProFile = (e) => {
-        let publicKey = this.props.following.idKey
+    constructor(props) {
+        super(props);
+        this.state = {
+            follow: true
+        }
+    }
+
+    toProFile = (idKey, e) => {
+        // let publicKey = this.props.following.idKey
         e.preventDefault();
         //const publicKey = localStorage.getItem('PUBLIC_KEY');
-        this.props.history.push(`/users/${publicKey}`);
+        this.props.history.push(`/tweets/${idKey}`);
     }
     render() {
+        let avatar = "https://tinyurl.com/yapenv5f";
         const { following } = this.props;
         const displayName = following.displayName ? following.displayName : following.idKey;
         const bandwidthTime = moment(following.bandwidthTime).format('DD-MM-YYYY');;
@@ -29,7 +37,7 @@ class Following extends Component {
                     </a>
                     <div className="ProfileCard-content">
                         <a className="ProfileCard-avatarLink js-nav js-tooltip" href="/nnlinh971" title="nnlinh97" tabIndex="-1" aria-hidden="true">
-                            <img className="ProfileCard-avatarImage js-action-profile-avatar" src={following.avata}
+                            <img className="ProfileCard-avatarImage js-action-profile-avatar" src={following.avatar ? following.avatar : avatar}
                                 alt="" />
                         </a>
                         <div className="ProfileCard-actions">
@@ -63,27 +71,27 @@ class Following extends Component {
                         <div className="ProfileCard-userFields">
                             <div className="ProfileNameTruncated account-group" >
 
-                                <div className="u-textTruncate u-inlineBlock" style={{ cursor: 'pointer', color: '#1476d8' }} onClick={(e) => this.toProFile(e)} >
-                                    <a className="fullname ProfileNameTruncated-link u-textInheritColor js-nav" data-aria-label-part="" style={{ textAlign: 'center' }}>
+                                <div className="u-textTruncate u-inlineBlock" style={{ cursor: 'pointer', color: '#1476d8' }}
+                                    onClick={(e) => this.toProFile(following.idKey, e)} >
+                                    <a className="fullname ProfileNameTruncated-link u-textInheritColor js-nav" data-aria-label-part=""
+                                        style={{ textAlign: 'center', fontSize: '13px' }}>
                                         {displayName}</a>
                                 </div><br />
                                 <div className="u-textTruncate u-inlineBlock color" style={{ color: 'black' }}>
-                                    <div className="fullname ProfileNameTruncated-link u-textTruncate js-nav" data-aria-label-part="">
-                                        Sequence: {following.sequence}</div>
-                                    <div className="ProfileNameTruncated-link u-textTruncate js-nav" data-aria-label-part="">
-                                        Balance: {following.balance} TRE</div>
-                                    <div className="fullname ProfileNameTruncated-link u-textTruncate js-nav" data-aria-label-part="">
-                                        Energy: {following.bandwidth} OXY</div>
-
-
-                                    <div className="fullname ProfileNameTruncated-link u-textTruncate js-nav" data-aria-label-part="">
-                                        BandwidthTime: {bandwidthTime}</div>
-
+                                    <div style={{ fontSize: '12px' }} className="fullname ProfileNameTruncated-link u-textTruncate js-nav" data-aria-label-part="">
+                                        Sequence: {following.sequence}
+                                    </div>
+                                    <div style={{ fontSize: '12px' }} className="ProfileNameTruncated-link u-textTruncate js-nav" data-aria-label-part="">
+                                        Balance: {following.balance} CEL
+                                        </div>
+                                    {/* <div style={{ fontSize: '12px' }} className="fullname ProfileNameTruncated-link u-textTruncate js-nav" data-aria-label-part="">
+                                        Energy: {following.bandwidth} OXY
+                                        </div>
+                                    <div style={{ fontSize: '12px' }} className="fullname ProfileNameTruncated-link u-textTruncate js-nav" data-aria-label-part="">
+                                        BandwidthTime: {bandwidthTime}
+                                    </div> */}
 
                                 </div>
-
-
-
                                 <span className="UserBadges"></span>
                             </div>
 

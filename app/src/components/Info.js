@@ -24,11 +24,13 @@ class Info extends Component {
             bandwithLimit: '',
             displayNameChange: '',
             error: '',
-            success: ''
+            success: '',
+            visitor: false
         }
     }
-    componentDidMount() {
-        const idKey = this.props.match.params.id;
+    componentWillReceiveProps(nextProps) {
+        const idKey = nextProps.match.params.id;
+        const publicKey = localStorage.getItem('PUBLIC_KEY');
         axios.get(`http://localhost:4200/users/get-info?idKey=${idKey}`).then((info) => {
             if (info.data.status === 200) {
                 let user = info.data.result;
@@ -38,7 +40,27 @@ class Info extends Component {
                     balance: user.balance,
                     bandwithTime: user.bandwithTime,
                     bandwithLimit: user.bandwithLimit,
-                    publicKey: idKey
+                    publicKey: idKey,
+                    visitor: publicKey == idKey ? false : true
+                });
+            }
+        })
+    }
+
+    componentDidMount() {
+        const idKey = this.props.match.params.id;
+        const publicKey = localStorage.getItem('PUBLIC_KEY');
+        axios.get(`http://localhost:4200/users/get-info?idKey=${idKey}`).then((info) => {
+            if (info.data.status === 200) {
+                let user = info.data.result;
+                this.setState({
+                    displayName: user.displayName !== '' ? user.displayName : 'No Name',
+                    sequence: user.sequence,
+                    balance: user.balance,
+                    bandwithTime: user.bandwithTime,
+                    bandwithLimit: user.bandwithLimit,
+                    publicKey: idKey,
+                    visitor: publicKey == idKey ? false : true
                 });
             }
         })
@@ -138,7 +160,7 @@ class Info extends Component {
             alert(this.state.error)
         }
 
-        if(this.state.success !== ''){
+        if (this.state.success !== '') {
             alert(this.state.success)
         }
 
@@ -173,7 +195,10 @@ class Info extends Component {
             <div style={{ 'marginTop': '1rem' }} className="w-full lg:w-1/4 pl-4 lg:pl-0 pr-6 mt-8 mb-4">
                 <div className="mb-4">
                     <a onClick={this.onClickDisplayName} style={{ fontSize: "20px" }} href="" className="text-black font-bold no-underline hover:underline">{this.state.displayName} &nbsp;</a>
-                    <i style={{ cursor: 'pointer' }} onClick={this.toggleEditModal} className="fa fa-pencil fa-lg text-grey-darker ml-1"></i>
+                    {this.state.visitor ? ''
+                        :
+                        <i style={{ cursor: 'pointer' }} onClick={this.toggleEditModal} className="fa fa-pencil fa-lg text-grey-darker ml-1"></i>
+                    }
                     {/* <a href="#" className="text-black font-bold no-underline hover:underline">{profile ? profile.username : ''}</a> */}
                 </div>
                 <div className="mb-4" style={{ display: this.state.editModal }} >

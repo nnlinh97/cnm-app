@@ -12,27 +12,31 @@ class MenuTop extends Component {
             tweets: '',
             followings: '',
             followers: '',
-            history: ''
+            history: '',
+            avatar: ''
         }
     }
     componentWillReceiveProps(nextProps) {
-        // let id = nextProps.match.params.username || nextProps.match.params.id
-
-        // this.setState({
-        //     idKey: id
-        // })
-        // // if(id !== this.props.match.params.username ){
-        // //     this.props.getListFollow(id);
-        // // }
+        const publicKey = nextProps.match.params.id;
+        let pFollower = axios.get(`http://localhost:4200/follow/followerID?idKey=${publicKey}`);
+        let pFollowing = axios.get(`http://localhost:4200/follow/followingID?idKey=${publicKey}`);
+        let pAccount = axios.get(`http://localhost:4200/account/get-account?idKey=${publicKey}`);
+        let pTweet = axios.get(`http://localhost:4200/post/get-list-posts?idKey=${publicKey}`);
+        let pHistory = axios.get(`http://localhost:4200/transactions?idKey=${publicKey}`);
+        Promise.all([pAccount, pFollower, pFollowing, pTweet, pHistory]).then(([account, follower, following, tweet, history]) => {
+            if (account && follower && following && tweet && history) {
+                this.setState({
+                    displayName: account.data.result.displayName,
+                    avatar: account.data.result.avatar,
+                    followers: follower.data.count,
+                    followings: following.data.count,
+                    tweets: tweet.data.count,
+                    history: history.data.count
+                });
+            }
+        });
     }
     componentDidMount() {
-
-        // this.setState({
-        //     idKey:this.props.match.params.username || this.props.match.params.id
-        // })
-
-        //     this.props.getListFollow(this.props.match.params.username || this.props.match.params.id);
-
         const publicKey = this.props.match.params.id;
         let pFollower = axios.get(`http://localhost:4200/follow/followerID?idKey=${publicKey}`);
         let pFollowing = axios.get(`http://localhost:4200/follow/followingID?idKey=${publicKey}`);
@@ -43,6 +47,7 @@ class MenuTop extends Component {
             if (account && follower && following && tweet && history) {
                 this.setState({
                     displayName: account.data.result.displayName,
+                    avatar: account.data.result.avatar,
                     followers: follower.data.count,
                     followings: following.data.count,
                     tweets: tweet.data.count,
@@ -92,9 +97,9 @@ class MenuTop extends Component {
     render() {
         const { profile, posts } = this.props;
         let avatar = "https://tinyurl.com/yapenv5f";
-        if (profile) {
-            avatar = profile.avatarURL;
-        }
+        // if (profile) {
+        //     avatar = profile.avatarURL;
+        // }
         const { tab } = this.props;
         let tab1 = " hover:no-underline";
         let tab2 = " hover:no-underline";
@@ -122,13 +127,12 @@ class MenuTop extends Component {
             text4 = " text-teal";
         }
         let { following } = this.props;
-        console.log(following)
         let numberFoll = following.count ? following.count : 0;
         return (
             <div className="bg-white shadow">
                 <div className="container mx-auto flex flex-col lg:flex-row items-center lg:relative">
                     <div className="avatar w-full lg:w-1/4">
-                        <img src="https://api.adorable.io/avatars/256/GCD6DHTSLKVMQWOXE4T4S72ZO3T2AMHXZ3DNKMQFSCFQNDYQ5A5VNHTM.png" alt="logo" className="rounded-full h-48 w-48 lg:absolute lg:pin-l lg:pin-t lg:-mt-24" />
+                        <img src={this.state.avatar ? this.state.avatar : avatar} alt="logo" className="rounded-full h-48 w-48 lg:absolute lg:pin-l lg:pin-t lg:-mt-24" />
 
                         <div className="overlay rounded-full h-48 w-48 lg:absolute lg:pin-l lg:pin-t lg:-mt-24">
                             <div style={{ height: "90px" }}></div>

@@ -10,7 +10,7 @@ import Info from '../components/Info';
 import Posts from '../components/Posts';
 import RightSidebar from '../components/RightSidebar';
 import Following from '../components/Following'
-import Axios from 'axios';
+import axios from 'axios';
 
 
 class Followings extends Component {
@@ -18,7 +18,7 @@ class Followings extends Component {
         super(props);
         this.state={
             error: '',
-            following: [],
+            followings: [],
             idKey: ''
             
         }
@@ -31,25 +31,13 @@ class Followings extends Component {
             this.props.history.push('/');
             return;
         }
-        let idKey=this.props.match.params.username
-        console.log('username ' + idKey)
-        //const idKey = 'GAXVLYJUYND6QKGHK4FGM44XK3U77KJY54VTUJNIORYASOUOHWO63Q7Q'
-        Axios.get(`http://localhost:4200/follow/following?idKey=${idKey}`).then(res =>{
-            //console.log(res.data)
-            if(res.status === 200){
-                if(res.data.message === 'success'){
-                    this.setState({
-                        following:res.data.result
-                    })
-                }else{
-                    this.setState({
-                        error: 'Bạn chưa follow ai!'
-                    })
-                }
-            }else{
-                return;
+        let idKey=this.props.match.params.id;
+        axios.get(`http://localhost:4200/follow/following?idKey=${idKey}`).then(data =>{
+            if(data.data.status === 200){
+                this.setState({
+                    followings: data.data.result
+                })
             }
-
         })
         this.props.getProfile();
         this.props.getListPosts();
@@ -58,12 +46,15 @@ class Followings extends Component {
 
     render() {
         //const {followings} = this.props;
-        let listFollowing ='';
-        if(this.state.error !== ''){
-            alert(this.state.error)
-        }
-        let followings = this.state.following;
-        console.log(followings)
+        // let listFollowing ='';
+        // if(this.state.error !== ''){
+        //     alert(this.state.error)
+        // }
+        // let followings = this.state.following;
+        // console.log(followings)
+        const {followings} = this.state;
+        let listFollowing = '';
+
         if(followings.length > 0){
             listFollowing = followings.map((following, index) => {
                 return (
@@ -81,8 +72,8 @@ class Followings extends Component {
                 <MenuTop tab="tab2" />
                 <div className="container mx-auto flex flex-col lg:flex-row mt-3 text-sm leading-normal">
                     <Info />
-                    <div class="w-full lg:w-3/4 bg-white mb-4">
-                        <div class="grid border-b border-solid border-grey-light">
+                    <div className="w-full lg:w-3/4 bg-white mb-4">
+                        <div className="grid border-b border-solid border-grey-light">
                             {listFollowing}
                             
                         </div>
