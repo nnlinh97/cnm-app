@@ -11,7 +11,8 @@ class MenuTop extends Component {
             displayName: '',
             tweets: '',
             followings: '',
-            followers: ''
+            followers: '',
+            history: ''
         }
     }
     componentWillReceiveProps(nextProps) {
@@ -37,13 +38,15 @@ class MenuTop extends Component {
         let pFollowing = axios.get(`http://localhost:4200/follow/followingID?idKey=${publicKey}`);
         let pAccount = axios.get(`http://localhost:4200/account/get-account?idKey=${publicKey}`);
         let pTweet = axios.get(`http://localhost:4200/post/get-list-posts?idKey=${publicKey}`);
-        Promise.all([pAccount, pFollower, pFollowing, pTweet]).then(([account, follower, following, tweet]) => {
-            if (account && follower && following && tweet) {
+        let pHistory = axios.get(`http://localhost:4200/transactions?idKey=${publicKey}`);
+        Promise.all([pAccount, pFollower, pFollowing, pTweet, pHistory]).then(([account, follower, following, tweet, history]) => {
+            if (account && follower && following && tweet && history) {
                 this.setState({
                     displayName: account.data.result.displayName,
                     followers: follower.data.count,
                     followings: following.data.count,
-                    tweets: tweet.data.count
+                    tweets: tweet.data.count,
+                    history: history.data.count
                 });
             }
         });
@@ -70,10 +73,10 @@ class MenuTop extends Component {
         const publicKey = this.props.match.params.id;
         this.props.history.push(`/followers/${publicKey}`);
     }
-    getHistory = (e) => {
+    toHistory = (e) => {
         e.preventDefault();
-        const id = this.props.match.params.id;
-        this.props.history.push(`/tweets/${id}/history`);
+        const publicKey = this.props.match.params.id;
+        this.props.history.push(`/history/${publicKey}`);
     }
     loadFile = (e) => {
         e.preventDefault();
@@ -159,9 +162,9 @@ class MenuTop extends Component {
                                 </a>
                             </li>
                             <li className={`text-center py-3 px-4 border-b-2 border-solid border-transparent${tab4}`}>
-                                <a onClick={(e) => this.getHistory(e)} href="" className="text-grey-darker no-underline hover:no-underline">
-                                    <div className="text-sm font-bold tracking-tight mb-1">{profile ? "History" : ""}</div>
-                                    <div className={`text-lg tracking-tight font-bold${text4}`}>{profile ? profile.follower : ""}</div>
+                                <a onClick={(e) => this.toHistory(e)} href="" className="text-grey-darker no-underline hover:no-underline">
+                                    <div className="text-sm font-bold tracking-tight mb-1">History</div>
+                                    <div className={`text-lg tracking-tight font-bold${text4}`}>{this.state.history}</div>
                                 </a>
                             </li>
                         </ul>
