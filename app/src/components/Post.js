@@ -18,7 +18,7 @@ class Post extends Component {
         this.setState({
             detail: true
         })
-        document.getElementById('body').style.overflow='hidden';
+        document.getElementById('body').style.overflow = 'hidden';
     }
 
     updateLikePost = (post, e) => {
@@ -32,7 +32,7 @@ class Post extends Component {
         this.setState({
             detail: false
         })
-        document.getElementById('body').style.overflow='auto';
+        document.getElementById('body').style.overflow = 'auto';
     }
 
     componentDidMount() {
@@ -253,11 +253,30 @@ class Post extends Component {
                                     <i className="fa fa-share fa-lg mr-2" /> {post.retweets}</a>
                             </span>
                             <span className="mr-8">
-                                <a onClick={(e) => this.updateLikePost(post, e)} title="like" href="" className="text-grey-dark hover:no-underline hover:text-red">
+                                {/* <a onClick={(e) => this.updateLikePost(post, e)} title="like" href="" className="text-grey-dark hover:no-underline hover:text-red">
                                     {post.liked ? <i className="fa fa-heart fa-lg mr-2" /> : <i className="fa fa-heart-o fa-lg mr-2" />}
                                     {post.likes}
+                                </a> */}
+                                <a class="facebook-reaction">
+                                    <span class="like-btn">
+                                        <span class="like-btn-emo like-btn-default"></span>
+                                        <span class="like-btn-text">Like</span>
+                                        <ul class="reactions-box">
+                                            <li class="reaction reaction-like" data-reaction="Like"></li>
+                                            <li class="reaction reaction-love" data-reaction="Love"></li>
+                                            <li class="reaction reaction-haha" data-reaction="HaHa"></li>
+                                            <li class="reaction reaction-wow" data-reaction="Wow"></li>
+                                            <li class="reaction reaction-sad" data-reaction="Sad"></li>
+                                            <li class="reaction reaction-angry" data-reaction="Angry"></li>
+                                        </ul>
+                                    </span>
+                                    <div class="like-stat">
+                                        <span class="like-emo">
+                                            <span class="like-btn-like"></span>
+                                        </span>
+                                        <span class="like-details">Arkaprava Majumder and 1k others</span>
+                                    </div>
                                 </a>
-
                             </span>
                         </div>
                     </div>
