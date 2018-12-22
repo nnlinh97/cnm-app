@@ -132,7 +132,7 @@ export const logout = () => {
 //             else {
 //                 dispatch(Action.register_Fail())
 //             }
-               
+
 //         })
 //     }
 // }
@@ -143,7 +143,7 @@ export const logout = () => {
 //     //         console.log(res);
 //     //     })
 //     // }
-    
+
 // }
 
 export const payment = (params) => {
@@ -152,14 +152,14 @@ export const payment = (params) => {
 export const getListFollowings = (idKey) => {
     return (dispatch) => {
         return connectapi(`/follow/following?idKey=${idKey}`, "GET", null).then((res) => {
-        
-            if (res.status === 200 ) {
-               
-                    dispatch(Action.getListFollowings(res.data));
-                }
-                else{
-                    return;
-                }
+
+            // if (res.status === 200) {
+
+            //     // dispatch(Action.getListFollowings(res.data));
+            // }
+            // else {
+            //     return;
+            // }
         });
     }
 }

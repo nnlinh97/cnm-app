@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
 import moment from 'moment';
+import axios from 'axios';
+import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
+import transaction from '../lib/tx/index';
 
 class Info extends Component {
     constructor(props) {
@@ -11,29 +14,126 @@ class Info extends Component {
             isModal: false,
             editModal: 'none',
             isEditModal: false,
+
+            displayName: '',
+            sequence: '',
+            balance: '',
+            energy: '',
+            displayNameChange: '',
+            error: '',
+            success: ''
         }
     }
-    toggleEditModal = (profile, e) => {
+    componentDidMount() {
+        const idKey = this.props.match.params.id;
+        axios.get(`http://localhost:4200/users/get-info?idKey=${idKey}`).then((info) => {
+            if (info.data.status === 200) {
+                let user = info.data.result;
+                this.setState({
+                    displayName: user.displayName !== '' ? user.displayName : 'Update Name'
+                });
+            }
+        })
+
+    }
+
+    onClickDisplayName = (e) => {
+        e.preventDefault();
+    }
+    toggleEditModal = (e) => {
         e.preventDefault();
         this.setState({
             editModal: 'block',
-            isEditModal: true
+            isEditModal: true,
+            error: '',
+            displayNameChange: this.state.displayName,
+            success: ''
         })
         document.getElementById('body').style.overflow = 'hidden';
     }
 
     removeEditModal = () => {
         this.setState({
-            editModal: 'none'
+            editModal: 'none',
+            displayNameChange: '',
+            error: '',
+            success: '',
         })
         document.getElementById('body').style.overflow = 'auto';
     }
 
     saveChanges = () => {
-        this.removeEditModal()
+        const { displayNameChange } = this.state;
+        if (displayNameChange == '') {
+            this.setState({
+                error: 'ERROR: Displayname is empty!'
+            });
+            return;
+        } else {
+            if (displayNameChange == this.state.displayName) {
+                this.removeEditModal();
+                return;
+            } else {
+                axios.get(`http://localhost:4200/users/get-user?idKey=${this.props.match.params.id}`).then((user) => {
+                    if (user.data.status === 200) {
+                        const info = user.data.result;
+                        let tx = {
+                            version: 1,
+                            sequence: +info.sequence + 1,
+                            memo: Buffer.alloc(0),
+                            account: info.idKey,
+                            operation: "update_account",
+                            params: {
+                                key: 'name',
+                                value: new Buffer(displayNameChange)
+                            },
+                            signature: new Buffer(64)
+                        }
+                        const privateKey = localStorage.getItem('PRIVATE_KEY');
+                        transaction.sign(tx, privateKey);
+                        const txEncode = '0x' + transaction.encode(tx).toString('hex');
+                        axios.post('http://localhost:4200/request', { tx: txEncode }).then((response) => {
+                            if (response.status === 200) {
+                                this.setState({
+                                    success: 'SUCCESS: Update displayname successfully!',
+                                    displayName: displayNameChange
+                                });
+                                this.removeEditModal();
+                                return;
+                            } else {
+                                this.setState({
+                                    error: 'ERROR: Request fail!'
+                                });
+                                return;
+                            }
+                        });
+                    } else {
+                        this.setState({
+                            error: 'ERROR: Get your info fail'
+                        });
+                        return;
+                    }
+                });
+            }
+        }
+    }
+
+    onChangeName = (e) => {
+        this.setState({
+            displayNameChange: e.target.value,
+            error: ''
+        });
+        // this.removeEditModal();
     }
     render() {
-        // console.log(this.props.profile);
+        if (this.state.error !== '') {
+            alert(this.state.error)
+        }
+
+        if(this.state.success !== ''){
+            alert(this.state.success)
+        }
+
         const { profile } = this.props;
         let tag = '';
         let joined = '';
@@ -64,14 +164,21 @@ class Info extends Component {
         return (
             <div style={{ 'marginTop': '1rem' }} className="w-full lg:w-1/4 pl-4 lg:pl-0 pr-6 mt-8 mb-4">
                 <div className="mb-4">
-                    <a style={{fontSize:"20px"}}href="" className="text-black font-bold no-underline hover:underline">huantd &nbsp;</a>
-                    <i onClick={(e) => this.toggleEditModal(profile, e)} class="fa fa-pencil fa-lg text-grey-darker ml-1"></i>
+                    <a onClick={this.onClickDisplayName} style={{ fontSize: "20px" }} href="" className="text-black font-bold no-underline hover:underline">{this.state.displayName} &nbsp;</a>
+                    <i style={{ cursor: 'pointer' }} onClick={this.toggleEditModal} class="fa fa-pencil fa-lg text-grey-darker ml-1"></i>
                     {/* <a href="#" className="text-black font-bold no-underline hover:underline">{profile ? profile.username : ''}</a> */}
                 </div>
                 <div className="mb-4" style={{ display: this.state.editModal }} >
                     <div className="w-full lg:w-1/4 pictureAva">
-                        {/* <input onChange={this.onHandleChange} value={this.state.name} type="text" className='input-edit' placeholder="Intro" name="name" /><br /> */}
-                        <input style={{fontSize:"20px"}}onChange={this.onHandleChange} value="huantd" type="text" className='input-edit' placeholder="Intro" name="name" /><br />
+                        <input
+                            style={{ fontSize: "20px" }}
+                            onChange={this.onChangeName}
+                            name="displayNameChange"
+                            value={this.state.displayNameChange}
+                            type="text"
+                            className='input-edit'
+                            placeholder="DisplayName"
+                        /><br />
                     </div>
                     <div className="mr-6">
                         <button onClick={this.removeEditModal} style={{ backgroundColor: '#bbb' }} type="button" className="btn btn-primary radius-button " data-dismiss="modal">
@@ -196,4 +303,4 @@ const mapDispatchToProps = (dispatch, action) => {
     return {
     }
 }
-export default connect(mapStateToProps, mapDispatchToProps)(Info);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Info));
