@@ -26,6 +26,7 @@ class InfoNF extends Component {
     componentDidMount() {
         //const publicKey = localStorage.getItem('PUBLIC_KEY');
         //const publicKey = 'GAXVLYJUYND6QKGHK4FGM44XK3U77KJY54VTUJNIORYASOUOHWO63Q7Q'
+        console.log(this.state.displayName);
         const publicKey = localStorage.getItem("PUBLIC_KEY");
         let pFollower = axios.get(`http://localhost:4200/follow/followerID?idKey=${publicKey}`);
         let pFollowing = axios.get(`http://localhost:4200/follow/followingID?idKey=${publicKey}`);
