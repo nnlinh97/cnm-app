@@ -10,21 +10,23 @@ class MenuTop extends Component {
         }
     }
     componentWillReceiveProps(nextProps){
-        let id = nextProps.match.params.id
+        let id = nextProps.match.params.username || nextProps.match.params.id
+        
         this.setState({
-            idKey: nextProps.match.params.id,
+            idKey: id
         })
-        if(id !== this.props.match.params.id){
-            this.props.getListFollow(id);
-        }
+        // if(id !== this.props.match.params.username ){
+        //     this.props.getListFollow(id);
+        // }
     }
     componentDidMount(){
+        
         this.setState({
-            idKey:this.props.match.params.id
+            idKey:this.props.match.params.username || this.props.match.params.id
         })
-        if(this.state.idKey){
-            this.props.getListFollow(this.state.idKey);
-        }
+       
+            this.props.getListFollow(this.props.match.params.username || this.props.match.params.id);
+        
     }
     preventDefault = (e) => {
         e.preventDefault();
@@ -96,6 +98,7 @@ class MenuTop extends Component {
             text4 = " text-teal";
         }
         let { following } = this.props;
+        console.log(following)
         let numberFoll = following.count?following.count: 0;
         return (
             <div className="bg-white shadow">

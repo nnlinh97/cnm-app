@@ -63,22 +63,23 @@ class Following extends Component {
                         <div className="ProfileCard-userFields">
                             <div className="ProfileNameTruncated account-group" >
 
-                                <div className="u-textTruncate u-inlineBlock" style={{ cursor: 'pointer', color:'#1476d8' }} onClick={(e) => this.toProFile(e)} >
+                                <div className="u-textTruncate u-inlineBlock" style={{ cursor: 'pointer', color: '#1476d8' }} onClick={(e) => this.toProFile(e)} >
                                     <a className="fullname ProfileNameTruncated-link u-textInheritColor js-nav" data-aria-label-part="" style={{ textAlign: 'center' }}>
                                         {displayName}</a>
                                 </div><br />
-                                <div className="u-textTruncate u-inlineBlock color" style={{color:'black'}}>
-
-                                    <div className="ProfileNameTruncated-link u-textTruncate js-nav" data-aria-label-part="">
-                                        Balance: {following.balance}</div>
-                                    
+                                <div className="u-textTruncate u-inlineBlock color" style={{ color: 'black' }}>
                                     <div className="fullname ProfileNameTruncated-link u-textTruncate js-nav" data-aria-label-part="">
                                         Sequence: {following.sequence}</div>
-                             
+                                    <div className="ProfileNameTruncated-link u-textTruncate js-nav" data-aria-label-part="">
+                                        Balance: {following.balance} TRE</div>
+                                    <div className="fullname ProfileNameTruncated-link u-textTruncate js-nav" data-aria-label-part="">
+                                        Energy: {following.bandwidth} OXY</div>
+
+
                                     <div className="fullname ProfileNameTruncated-link u-textTruncate js-nav" data-aria-label-part="">
                                         BandwidthTime: {bandwidthTime}</div>
-                                  
-                                    
+
+
                                 </div>
 
 

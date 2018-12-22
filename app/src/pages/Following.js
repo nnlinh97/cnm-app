@@ -35,7 +35,7 @@ class Followings extends Component {
         console.log('username ' + idKey)
         //const idKey = 'GAXVLYJUYND6QKGHK4FGM44XK3U77KJY54VTUJNIORYASOUOHWO63Q7Q'
         Axios.get(`http://localhost:4200/follow/following?idKey=${idKey}`).then(res =>{
-            console.log(res.data)
+            //console.log(res.data)
             if(res.status === 200){
                 if(res.data.message === 'success'){
                     this.setState({
