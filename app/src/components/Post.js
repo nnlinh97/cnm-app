@@ -292,8 +292,8 @@ class Post extends Component {
                                         <span class="like-details">Arkaprava Majumder and 1k others</span>
                                     </div>
                                 </a>
-                            </span>
-                        </div> */}
+                            {/* </span> */}
+                        {/* </div> */}
                     </div>
                 </div>
             </div>
