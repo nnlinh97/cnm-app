@@ -8,6 +8,7 @@ import Generate from './Generate'
 import { openAccount } from './../actions';
 import axios from 'axios';
 import transaction from '../lib/tx/index';
+import * as actions from '../actions/index'
 import v1 from '../lib/tx/v1';
 var randomString = require('random-string');
 
@@ -155,6 +156,9 @@ class Header extends Component {
         const publicKey = localStorage.getItem('PUBLIC_KEY')
         axios.get(`http://localhost:4200/account/get-account?idKey=${publicKey}`).then((user) => {
             if(user.data.status == 200){
+                // this.props.getHeader({
+                //     avatar: user.data.result.avatar
+                // })
                 this.setState({
                     avatar: user.data.result.avatar
                 })
@@ -218,9 +222,8 @@ class Header extends Component {
     render() {
         const { profile } = this.props;
         let avatar = "https://tinyurl.com/yapenv5f";
-        // if (profile) {
-        //     avatar = profile.avatarURL;
-        // }
+        avatar = this.state.avatar === '' ? avatar : this.state.avatar;
+        
         let accModal = this.props.toogle === true ? <Generate /> : <div></div>
 
 
@@ -262,7 +265,7 @@ class Header extends Component {
                         </div>
                         <div className="mr-4 linh-dropdown">
                             <a onClick={(e) => this.preventDefault(e)} href="" className="linh-dropbtn">
-                                <img src={this.state.avatar !== '' ? this.state.avatar: avatar} alt="avatar" className="h-8 w-8 rounded-full" />
+                                <img src={avatar} alt="avatar" className="h-8 w-8 rounded-full" />
                             </a>
                             <div className="linh-dropdown-content">
                                 <a onClick={this.onCreateAccout} className="linh-a" href="">
@@ -408,6 +411,7 @@ const mapStateToProps = (state) => {
     return {
         profile: state.profile,
         toogle: state.createAcc,
+        header: state.header
     }
 }
 
@@ -415,7 +419,8 @@ const mapDispatchToProps = (dispatch, action) => {
     return {
         createNewPost: (post) => dispatch(Actions.createNewPost(post)),
         logout: () => dispatch(logout()),
-        openModalAcc: () => dispatch(openAccount())
+        openModalAcc: () => dispatch(openAccount()),
+        getHeader: (header) => dispatch(actions.getHeader(header))
     }
 }
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Header));

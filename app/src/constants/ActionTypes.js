@@ -15,4 +15,9 @@ export const OPEN_ACCOUNT="OPEN_ACCOUNT";
 export const CLOSE_ACCOUNT="CLOSE_ACCOUNT";
 export const CREATE_ACCOUNT = "CREATE_ACCOUNT";
 export const SAVE_PROFILE = "SAVE_PROFILE";
+export const GET_PROFILE_NEW_FEED = "GET_PROFILE_NEW_FEED";
+export const COUNT_MENU_TOP = "COUNT_MENU_TOP";
+export const GET_INFO_PROFILE = "GET_INFO_PROFILE";
+export const HEADER = "HEADER";
+
 

@@ -89,3 +89,32 @@ export const saveProfile = (profile) => {
     }
 }
 
+export const getProfileNF = (profileNF) => {
+    return {
+        type: Types.GET_PROFILE_NEW_FEED,
+        profileNF: profileNF
+    }
+}
+
+export const countMenuTop = (count) => {
+    return {
+        type: Types.COUNT_MENU_TOP,
+        count: count
+    }
+}
+
+export const getInfoProfile = (info) => {
+    return {
+        type: Types.GET_INFO_PROFILE,
+        info: info
+    }
+}
+
+export const getHeader = (header) => {
+    return {
+        type: Types.HEADER,
+        header: header
+    }
+}
+
+

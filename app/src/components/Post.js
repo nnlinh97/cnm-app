@@ -3,22 +3,40 @@ import moment from 'moment';
 import { connect } from 'react-redux';
 import * as Actions from '../actions/request';
 import './../styles/ModalPost.css';
+import axios from 'axios';
 import PostDetail from './PostDetail';
+import { withRouter } from 'react-router-dom';
+
 
 class Post extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            detail: false
+            detail: false,
+            user: null
         }
     }
+
+    componentDidMount() {
+        document.addEventListener('mousedown', this.handleClickOutside);
+        document.removeEventListener('mousedown', this.handleClickOutside);
+        const publicKey = this.props.match.params.id;
+        axios.get(`http://localhost:4200/users/get-info?idKey=${publicKey}`).then((user) => {
+            if (user.data.status == 200) {
+                this.setState({
+                    user: user.data.result
+                });
+            }
+        })
+    }
+
 
     getPost = (post, e) => {
         e.preventDefault();
         this.setState({
             detail: true
         })
-        document.getElementById('body').style.overflow='hidden';
+        document.getElementById('body').style.overflow = 'hidden';
     }
 
     updateLikePost = (post, e) => {
@@ -32,15 +50,13 @@ class Post extends Component {
         this.setState({
             detail: false
         })
-        document.getElementById('body').style.overflow='auto';
+        document.getElementById('body').style.overflow = 'auto';
     }
 
-    componentDidMount() {
-        document.addEventListener('mousedown', this.handleClickOutside);
-    }
 
     componentWillUnmount() {
         document.removeEventListener('mousedown', this.handleClickOutside);
+
     }
 
     setWrapperRef = (node) => {
@@ -53,68 +69,70 @@ class Post extends Component {
         }
     }
     render() {
+        const {user} = this.state;
+        console.log(user);
         const { post } = this.props;
         const cssModal = this.state.detail ? "block" : "none";
         let avatar = "https://tinyurl.com/yapenv5f";
         let comments = '';
-        if (post.comments.length > 0) {
-            comments = post.comments.map((comment, index) => {
-                return (
-                    <div key={index} className="flex border-b border-solid border-grey-light">
-                        <div className="headerPost-left w-1/8 text-right pl-3 pt-3">
-                            <a href="#">
-                                <img src={comment.avatarURL} alt="avatar" className="rounded-full h-12 w-12 mr-2" />
-                            </a>
-                        </div>
-                        <div className="w-7/8 p-3 pl-0">
-                            <div className="flex justify-between">
-                                <div>
-                                    <span className="font-bold">
-                                        <a href="#" className="text-black">{comment.username}</a>
-                                    </span>
-                                    <span className="text-grey-dark">&nbsp;@{comment.username}&nbsp;</span>
-                                    <span className="text-grey-dark">&nbsp;{moment(post.creatAt).format('ll')}&nbsp;</span>
-                                </div>
-                                <div>
-                                    <a href="#" className="text-grey-dark hover:text-teal">
-                                        <i className="fa fa-chevron-down" />
-                                    </a>
-                                </div>
-                            </div>
-                            <div className="mb-4">
-                                <p >{comment.comment}</p>
-                            </div>
-                            {/* <div className="mb-4" >
-                                <div className="pb-2">
-                                    <span className="mr-8">
-                                        <a onClick={(e) => this.getPost(post, e)} href="" className="text-grey-dark hover:no-underline hover:text-blue-light" title="comments">
-                                            {post.comments.length > 0 ? <i className="fa fa-comment fa-lg mr-2" /> : <i className="fa fa-comment-o fa-lg mr-2" />}
-                                            {post.comments.length}
-                                        </a>
-                                    </span>
-                                    <span className="mr-8">
-                                        <a href="#" className="text-grey-dark hover:no-underline hover:text-green" title="share">
-                                            <i className="fa fa-share fa-lg mr-2" /> {post.retweets}</a>
-                                    </span>
-                                    <span className="mr-8">
-                                        <a onClick={(e) => this.updateLikePost(post, e)} title="like" href="" className="text-grey-dark hover:no-underline hover:text-red">
-                                            {post.liked ? <i className="fa fa-heart fa-lg mr-2" /> : <i className="fa fa-heart-o fa-lg mr-2" />}
-                                            {post.likes}
-                                        </a>
-                                    </span>
-                                </div>
-                            </div> */}
-                        </div>
-                    </div>
-                )
-            })
-        }
+        // if (post.comments.length > 0) {
+        //     comments = post.comments.map((comment, index) => {
+        //         return (
+        //             <div key={index} className="flex border-b border-solid border-grey-light">
+        //                 <div className="headerPost-left w-1/8 text-right pl-3 pt-3">
+        //                     <a href="#">
+        //                         <img src={comment.avatarURL} alt="avatar" className="rounded-full h-12 w-12 mr-2" />
+        //                     </a>
+        //                 </div>
+        //                 <div className="w-7/8 p-3 pl-0">
+        //                     <div className="flex justify-between">
+        //                         <div>
+        //                             <span className="font-bold">
+        //                                 <a href="#" className="text-black">{comment.username}</a>
+        //                             </span>
+        //                             <span className="text-grey-dark">&nbsp;@{comment.username}&nbsp;</span>
+        //                             <span className="text-grey-dark">&nbsp;{moment(post.createAt).format('ll')}&nbsp;</span>
+        //                         </div>
+        //                         <div>
+        //                             <a href="#" className="text-grey-dark hover:text-teal">
+        //                                 <i className="fa fa-chevron-down" />
+        //                             </a>
+        //                         </div>
+        //                     </div>
+        //                     <div className="mb-4">
+        //                         <p >{comment.comment}</p>
+        //                     </div>
+        //                     {/* <div className="mb-4" >
+        //                         <div className="pb-2">
+        //                             <span className="mr-8">
+        //                                 <a onClick={(e) => this.getPost(post, e)} href="" className="text-grey-dark hover:no-underline hover:text-blue-light" title="comments">
+        //                                     {post.comments.length > 0 ? <i className="fa fa-comment fa-lg mr-2" /> : <i className="fa fa-comment-o fa-lg mr-2" />}
+        //                                     {post.comments.length}
+        //                                 </a>
+        //                             </span>
+        //                             <span className="mr-8">
+        //                                 <a href="#" className="text-grey-dark hover:no-underline hover:text-green" title="share">
+        //                                     <i className="fa fa-share fa-lg mr-2" /> {post.retweets}</a>
+        //                             </span>
+        //                             <span className="mr-8">
+        //                                 <a onClick={(e) => this.updateLikePost(post, e)} title="like" href="" className="text-grey-dark hover:no-underline hover:text-red">
+        //                                     {post.liked ? <i className="fa fa-heart fa-lg mr-2" /> : <i className="fa fa-heart-o fa-lg mr-2" />}
+        //                                     {post.likes}
+        //                                 </a>
+        //                             </span>
+        //                         </div>
+        //                     </div> */}
+        //                 </div>
+        //             </div>
+        //         )
+        //     })
+        // }
         return (
             <div className="flex border-b border-solid border-grey-light">
                 <div className="w-1/8 text-right pl-3 pt-3">
                     <div>
                         <a href="#">
-                            <img src={post.avatarURL} alt="avatar" className="rounded-full h-12 w-12 mr-2" />
+                            <img src={user && user.avatar !== "" ? user.avatar : avatar} alt="avatar" className="rounded-full h-12 w-12 mr-2" />
                         </a>
                     </div>
                 </div>
@@ -122,15 +140,15 @@ class Post extends Component {
                     <div className="flex justify-between">
                         <div>
                             <span className="font-bold">
-                                <a href="#" className="text-black">{post.username}</a>
+                                <a href="#" className="text-black">@{user ? user.displayName : ""}</a>
                             </span>
-                            <span className="text-grey-dark">&nbsp;@{post.username}&nbsp;</span>
+                            {/* <span className="text-grey-dark">&nbsp;@{post.username}&nbsp;</span> */}
                             <span className="text-grey-dark">·</span>
-                            <span className="text-grey-dark">&nbsp;{moment(post.creatAt).format('ll')} </span>
+                            <span className="text-grey-dark">&nbsp;{moment(post.createAt).format('ll')} </span>
                         </div>
 
                         {/* start post detail */}
-                        <div style={{ display: cssModal }}>
+                        {/* <div style={{ display: cssModal }}>
                             <a href="#" className="text-grey-dark hover:text-teal">
                                 <i className="fa fa-chevron-down" />
                             </a>
@@ -154,9 +172,6 @@ class Post extends Component {
                                                         </span><br />
                                                         <span className="text-grey-dark">@{post.username}&nbsp;</span>
                                                     </div>
-                                                    {/* <div className="p-save btn-follow">
-                                                        <button className="profile-save ">Follow</button>
-                                                    </div> */}
                                                     <div>
                                                         <a href="#" className="text-grey-dark hover:text-teal">
                                                             <i className="fa fa-chevron-down" />
@@ -219,29 +234,29 @@ class Post extends Component {
                                             </div>
                                         </div>
 
-                                        {/* start comment */}
                                         {comments}
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        </div> */}
                         {/* end post detail */}
 
 
                     </div>
                     <div>
                         <div className="mb-4">
-                            <p className="mb-6">🎉 {post.username} is here!</p>
-                            <p style={{ cursor: 'pointer' }} onClick={(e) => this.getPost(post, e)} className="mb-4">{post.content}</p>
-                            <p>
+                            <p className="mb-6">🎉 {user ? user.idKey : ''}</p>
+                            <p style={{ cursor: 'pointer', whiteSpace: 'pre-wrap' }} onClick={(e) => this.getPost(post, e)} className="mb-4">{post.content}</p>
+                            {/* <p>
                                 {post.image == "" ? "" :
                                     <a onClick={(e) => this.getPost(post, e)} href="#">
                                         <img src={post.image} alt="tweet image" className="border border-solid border-grey-light rounded-sm" />
                                     </a>
                                 }
-                            </p>
+                            </p> */}
                         </div>
-                        <div className="pb-2">
+
+                        {/* <div className="pb-2">
                             <span className="mr-8">
                                 <a onClick={(e) => this.getPost(post, e)} href="" className="text-grey-dark hover:no-underline hover:text-blue-light" title="comments">
                                     {post.comments.length > 0 ? <i className="fa fa-comment fa-lg mr-2" /> : <i className="fa fa-comment-o fa-lg mr-2" />}
@@ -259,7 +274,7 @@ class Post extends Component {
                                 </a>
 
                             </span>
-                        </div>
+                        </div> */}
                     </div>
                 </div>
             </div>
@@ -279,4 +294,4 @@ const mapDispatchToProps = (dispatch, action) => {
         updateLikePost: (post) => dispatch(Actions.updateLikePost(post))
     }
 }
-export default connect(mapStateToProps, mapDispatchToProps)(Post);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Post));

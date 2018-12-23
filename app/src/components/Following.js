@@ -1,6 +1,11 @@
 import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
-import moment from 'moment'
+import moment from 'moment';
+import axios from 'axios';
+import _ from 'lodash';
+import v1 from '../lib/tx/v1';
+import transaction from '../lib/tx/index';
+import base32 from 'base32.js';
 class Following extends Component {
     constructor(props) {
         super(props);
@@ -10,9 +15,7 @@ class Following extends Component {
     }
 
     toProFile = (idKey, e) => {
-        // let publicKey = this.props.following.idKey
         e.preventDefault();
-        //const publicKey = localStorage.getItem('PUBLIC_KEY');
         this.props.history.push(`/tweets/${idKey}`);
     }
     render() {
@@ -24,16 +27,11 @@ class Following extends Component {
         let btnClass = "btn1 bg-blue-light hover:bg-yellow-darker text-white font-medium py-2 px-4 rounded-full";
         let descBtn = "Following";
 
-        // chỗ này bị sai sai
-        // if (following.following) {
-        //     btnClass = "btn1 bg-white hover:bg-blue-lightest text-blue font-medium py-2 px-4 rounded-full";
-        //     descBtn = "Follow";
-        // }
         return (
             <div className="w-full mb-4">
                 <div className="ProfileCard">
                     <a className="ProfileCard-bg js-nav" href="#" tabIndex="-1" aria-hidden="true">
-                        <img src="https://pbs.twimg.com/profile_banners/813286/1502508746/600x200" alt="" />
+                        <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/195612/tt_tailwind_bg.jpg" alt="" />
                     </a>
                     <div className="ProfileCard-content">
                         <a className="ProfileCard-avatarLink js-nav js-tooltip" href="/nnlinh971" title="nnlinh97" tabIndex="-1" aria-hidden="true">
@@ -46,22 +44,8 @@ class Following extends Component {
                                     <div className="user-actions btn-group not-following not-muting can-dm " data-user-id="18438022" data-screen-name="ShinobiNinja"
                                         data-name="Shinobi Ninja" data-protected="false">
                                         <span className="user-actions-follow-button js-follow-btn follow-button">
-                                            {/* <button type="button" className={btnClass}>
-                                                <span aria-hidden="true">Follow</span>
-                                                <span className="u-hiddenVisually">Follow
-                                                                <span className="username u-dir u-textTruncate" dir="ltr">@
-                                                                    <b>ShinobiNinja</b>
-                                                    </span>
-                                                </span>
-                                            </button> */}
-                                            <button type="button" className={btnClass}>{descBtn}</button>
-                                            {/* <button type="button" className="EdgeButton EdgeButton--primary EdgeButton--small button-text following-text">
-                                                <span aria-hidden="true">Following</span>
-                                                <span className="u-hiddenVisually">Following
-                                                                <span className="username u-dir u-textTruncate" dir="ltr">@
-                                                                    <b>ShinobiNinja</b>
-                                                    </span>
-                                                </span>
+                                            {/* <button onClick={() => this.unFollow(following.idKey)} title="unFollow" type="button" className="btn1 bg-blue-light hover:bg-yellow-darker text-white font-medium py-2 px-4 rounded-full">
+                                                unFollow
                                             </button> */}
                                         </span>
                                     </div>

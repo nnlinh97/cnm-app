@@ -64,6 +64,9 @@ function encodePost(content) {
 function decodeFollowing(tx) {
   return Followings.decode(tx);
 }
+function encodeFollow(value) {
+  return Followings.encode(value);
+}
 
 function encode(tx) {
   let params, operation;
@@ -102,7 +105,6 @@ function encode(tx) {
 
     case 'update_account':
       if (tx.params.key === 'followings') {
-        console.log("OK");
         params = UpdateAccountParams.encode({
           ...tx.params,
           value: Followings.encode(tx.params.value)
@@ -193,5 +195,6 @@ export default {
   decode,
   decodePost,
   decodeFollowing,
-  encodePost
+  encodePost,
+  encodeFollow
 }

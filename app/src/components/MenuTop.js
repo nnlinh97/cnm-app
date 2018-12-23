@@ -3,9 +3,16 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { getListFollowings } from './../actions/request';
 import axios from 'axios';
+import * as actions from '../actions/index';
+import _ from 'lodash';
+import v1 from '../lib/tx/v1';
+import transaction from '../lib/tx/index';
+import base32 from 'base32.js';
+
 class MenuTop extends Component {
     constructor(props) {
         super(props);
+        this.changeAvatar = React.createRef();
         this.state = {
             idKey: '',
             displayName: '',
@@ -20,56 +27,68 @@ class MenuTop extends Component {
             isModal: false,
             editModal: 'none',
             isEditModal: false,
-            listImages: [],
-            previewImage: [],
             isEditImage: false,
             editImage: 'none',
+            originalImage: '',
+            previewImage: '',
+            error: '',
+            success: '',
+            listFollowings: [],
+            followingOfCurrentUser: []
         }
     }
+
     componentWillReceiveProps(nextProps) {
         const publicKey = nextProps.match.params.id;
+        const current = localStorage.getItem('PUBLIC_KEY');
         let pFollower = axios.get(`http://localhost:4200/follow/followerID?idKey=${publicKey}`);
         let pFollowing = axios.get(`http://localhost:4200/follow/followingID?idKey=${publicKey}`);
+        let pFollowingCurrent = axios.get(`http://localhost:4200/follow/followingID?idKey=${current}`);
         let pAccount = axios.get(`http://localhost:4200/account/get-account?idKey=${publicKey}`);
         let pTweet = axios.get(`http://localhost:4200/post/get-list-posts?idKey=${publicKey}`);
         let pHistory = axios.get(`http://localhost:4200/transactions?idKey=${publicKey}`);
-        Promise.all([pAccount, pFollower, pFollowing, pTweet, pHistory]).then(([account, follower, following, tweet, history]) => {
-            if (account && follower && following && tweet && history) {
+        Promise.all([pAccount, pFollower, pFollowing, pTweet, pHistory, pFollowingCurrent]).then(([account, follower, following, tweet, history, currentFollowing]) => {
+            if (account && follower && following && tweet && history && currentFollowing) {
                 this.setState({
-                    displayName: account.data.result.displayName,
-                    avatar: account.data.result.avatar,
+                    displayName: account.data.status == 200 ? account.data.result.displayName : "",
+                    avatar: account.data.status == 200 ? account.data.result.avatar : "",
                     followers: follower.data.count,
                     followings: following.data.count,
                     tweets: tweet.data.count,
-                    history: history.data.count
+                    history: history.data.count,
+                    listFollowings: following.data.result,
+                    followingOfCurrentUser: currentFollowing.data.result,
+                    visitor: publicKey == current ? false : true
                 });
             }
         });
+
     }
     componentDidMount() {
         const publicKey = this.props.match.params.id;
+        const current = localStorage.getItem('PUBLIC_KEY');
         let pFollower = axios.get(`http://localhost:4200/follow/followerID?idKey=${publicKey}`);
         let pFollowing = axios.get(`http://localhost:4200/follow/followingID?idKey=${publicKey}`);
+        let pFollowingCurrent = axios.get(`http://localhost:4200/follow/followingID?idKey=${current}`);
         let pAccount = axios.get(`http://localhost:4200/account/get-account?idKey=${publicKey}`);
         let pTweet = axios.get(`http://localhost:4200/post/get-list-posts?idKey=${publicKey}`);
         let pHistory = axios.get(`http://localhost:4200/transactions?idKey=${publicKey}`);
-        Promise.all([pAccount, pFollower, pFollowing, pTweet, pHistory]).then(([account, follower, following, tweet, history]) => {
-            if (account && follower && following && tweet && history) {
+        Promise.all([pAccount, pFollower, pFollowing, pTweet, pHistory, pFollowingCurrent]).then(([account, follower, following, tweet, history, currentFollowing]) => {
+            if (account && follower && following && tweet && history && currentFollowing) {
                 this.setState({
-                    displayName: account.data.result.displayName,
-                    avatar: account.data.result.avatar,
+                    displayName: account.data.status == 200 ? account.data.result.displayName : "",
+                    avatar: account.data.status == 200 ? account.data.result.avatar : "",
                     followers: follower.data.count,
                     followings: following.data.count,
                     tweets: tweet.data.count,
-                    history: history.data.count
+                    history: history.data.count,
+                    listFollowings: following.data.result,
+                    followingOfCurrentUser: currentFollowing.data.result,
+                    visitor: publicKey == current ? false : true
                 });
             }
         });
 
-    }
-
-    preventDefault = (e) => {
-        e.preventDefault();
     }
 
     toTweets = (e) => {
@@ -94,107 +113,151 @@ class MenuTop extends Component {
         const publicKey = this.props.match.params.id;
         this.props.history.push(`/history/${publicKey}`);
     }
-    loadFile = (e) => {
-        e.preventDefault();
-        var reader = new FileReader();
-        console.log('haha');
-        reader.onload = function () {
-            var output = document.getElementById('headerImage');
-            output.src = reader.result;
-        };
-        reader.readAsDataURL(e.target.files[0]);
 
-    }
-    onChange = (e) => {
-        let name = e.target.name;
-        let value = e.target.value;
-        this.setState({
-            [name]: value,
-        })
-    }
-    onHandleChooseImage = (e) => {
-        console.log('2');
-        // let image = e.target.files[0];
-        // console.log("1");
-        // let reader = new FileReader()
-        // reader.onloadend = () => {
-        //     if (image) {
-        //         this.setState({
-        //             previewImage: [...this.state.previewImage, reader.result],
-        //             listImages: [...this.state.listImages, image],
-        //     
-        //         })
-        //     }
-        // }
-        // reader.readAsDataURL(image);
-        // e.target.value = null;
-        // document.getElementById('body').style.overflow = 'hidden';
+    onLoadAvatar = (e) => {
+        let file = e.target.files[0];
+        let reader = new FileReader();
+        e.target.value = null;
+        reader.onloadend = () => {
+            if (file) {
+                this.setState({
+                    originalImage: file,
+                    previewImage: reader.result,
+                    error: '',
+                    success: ''
+                });
+            }
+        }
+        reader.readAsDataURL(file);
     }
 
-    onDelete = (index) => {
-        let preImgs = this.state.previewImage;
-        preImgs.splice(index, 1);
-        let listImgs = this.state.listImages;
-        listImgs.splice(index, 1);
-        this.setState({
-            previewImage: preImgs,
-            listImages: listImgs,
-        })
-        console.log(this.state.listImages);
+    saveChangesAvatar = () => {
+        if (this.state.originalImage !== '') {
+            let reader = new FileReader();
+            let avatarEncode = null
+            reader.onload = () => {
+                avatarEncode = new Buffer(reader.result, 'binary');
+                this.requestToServer(avatarEncode);
+            }
+            reader.readAsBinaryString(this.state.originalImage);
+        }
+
+    }
+    requestToServer = (avatarEncode) => {
+        const publicKey = localStorage.getItem('PUBLIC_KEY');
+        axios.get(`http://localhost:4200/users/get-user?idKey=${publicKey}`).then(user => {
+            if (user.data.status === 200) {
+                const info = user.data.result;
+                let tx = {
+                    version: 1,
+                    sequence: +info.sequence + 1,
+                    memo: Buffer.alloc(0),
+                    account: info.idKey,
+                    operation: "update_account",
+                    params: {
+                        key: 'picture',
+                        value: avatarEncode
+                    },
+                    signature: new Buffer(64)
+                }
+                const privateKey = localStorage.getItem('PRIVATE_KEY');
+                transaction.sign(tx, privateKey);
+                const txEncode = '0x' + transaction.encode(tx).toString('hex');
+                axios.post('http://localhost:4200/request', { tx: txEncode }).then((response) => {
+                    if (response.status === 200) {
+                        this.setState({
+                            success: 'SUCCESS: Create successfully!'
+                        });
+                        return;
+                    } else {
+                        this.setState({
+                            error: 'ERROR: Request fail!'
+                        });
+                        this.removeEditModal();
+                        return;
+                    }
+                });
+            } else {
+                this.setState({
+                    error: 'ERROR: Get your info fail!'
+                });
+                return;
+            }
+        });
     }
     removeEditModal = () => {
         this.setState({
-            editImage: 'none'
-        })
-        document.getElementById('body').style.overflow = 'auto';
+            previewImage: '',
+            originalImage: '',
+            error: '',
+            success: ''
+        });
     }
 
-    saveChanges = () => {
-        this.removeEditModal()
+    handleChangeAvatar() {
+        this.changeAvatar.current.click()
+    }
+
+    onHandleFollow = () => {
+        let follow = this.state.followingOfCurrentUser;
+        let index = -1;
+        index = _.findIndex(follow, (item) => {
+            return this.props.match.params.id == item;
+        });
+        if (index !== -1) {
+            follow.splice(index, 1);
+        } else {
+            follow.push(this.props.match.params.id);
+        }
+        const publicKey = localStorage.getItem('PUBLIC_KEY');
+        axios.get(`http://localhost:4200/users/get-user?idKey=${publicKey}`).then((user) => {
+            if (user.data.status == 200) {
+                let addresses = []
+                follow.forEach((item) => {
+                    addresses.push(Buffer.from(base32.decode(item)))
+                });
+                const tx = {
+                    version: 1,
+                    sequence: +user.data.result.sequence + 1,
+                    memo: Buffer.alloc(0),
+                    account: publicKey,
+                    operation: "update_account",
+                    params: {
+                        key: 'followings',
+                        value: {
+                            addresses: addresses
+                        }
+                    },
+                    signature: new Buffer(64)
+                }
+                const privateKey = localStorage.getItem('PRIVATE_KEY');
+                transaction.sign(tx, privateKey);
+                const txEncode = '0x' + transaction.encode(tx).toString('hex');
+                axios.post('http://localhost:4200/request', { tx: txEncode }).then((response) => {
+                    if (response.status === 200) {
+                        console.log('success');
+                    }
+                });
+            }
+        })
     }
     render() {
-        // PREVIEW IMAGE
-        console.log(this.state.editImage);
-        let listPreviewImgs = this.state.previewImage;
-        let listPreImgs = null;
-        if (listPreviewImgs.length > 0) {
-            listPreImgs = listPreviewImgs.map((preImg, index) => {
-                return (
-                    <div key={index} className="modal3 " id="myModal3" role="dialog" style={{ display: this.state.editModal }} >
-                        <div className="center-parent" style={{ zIndex: 1 }}>
-                            <button onClick={this.removeEditModal} style={{ color: "red" }}>
-                                <i className="fa fa-times fa-lg"></i>
-                            </button>
-
-                            <div className="previewImage">
-
-                                <img src="https://api.adorable.io/avatars/256/GCD6DHTSLKVMQWOXE4T4S72ZO3T2AMHXZ3DNKMQFSCFQNDYQ5A5VNHTM.png" id="pre" />
-
-                            </div>
-                        </div>
-                        <div style={{ marginRight: "450px", marginTop: "80px" }}>
-                            <button onClick={this.saveChanges} type="button" className="btn btn-primary radius-button " data-dismiss="modal">
-                                Save Changes
-                            </button>
-                            <button onClick={this.removeEditModal} style={{ backgroundColor: '#bbb' }} type="button" className="btn btn-primary radius-button " data-dismiss="modal">
-                                Cancel
-                            </button>
-
-                        </div>
-
-                    </div>
-
-                )
-            })
-        }
-
-
-        // -------------------------------------------------
-        const { profile, posts } = this.props;
+        const count = this.state;
         let avatar = "https://tinyurl.com/yapenv5f";
-        // if (profile) {
-        //     avatar = profile.avatarURL;
-        // }
+        const publicKey = localStorage.getItem('PUBLIC_KEY');
+        let visitor = false;
+        if (this.props.match.params.id !== publicKey) {
+            visitor = true;
+        }
+        const followingOfCurrentUser = count.followingOfCurrentUser;
+        let index = -1;
+        let btnFollow = 'Follow';
+        index = _.findIndex(followingOfCurrentUser, (item) => {
+            return item == this.props.match.params.id;
+        });
+        if (index !== -1) {
+            btnFollow = 'unfollow'
+        }
         const { tab } = this.props;
         let tab1 = " hover:no-underline";
         let tab2 = " hover:no-underline";
@@ -221,26 +284,42 @@ class MenuTop extends Component {
             tab4 = " border-teal";
             text4 = " text-teal";
         }
-        let { following } = this.props;
-        let numberFoll = following.count ? following.count : 0;
         return (
             <div className="bg-white shadow">
                 <div className="container mx-auto flex flex-col lg:flex-row items-center lg:relative">
                     <div className="avatar w-full lg:w-1/4">
-                        <img src={this.state.avatar ? this.state.avatar : avatar} alt="logo" className="rounded-full h-48 w-48 lg:absolute lg:pin-l lg:pin-t lg:-mt-24" />
+                        <img src={count.avatar ? count.avatar : avatar} alt="logo" className="rounded-full h-48 w-48 lg:absolute lg:pin-l lg:pin-t lg:-mt-24" />
 
-
+                        {this.state.visitor ? '' : 
                         <div className="overlay rounded-full h-48 w-48 lg:absolute lg:pin-l lg:pin-t lg:-mt-24">
-
                             <div style={{ height: "90px" }}></div>
-                            <label htmlFor="image2" style={{ fontSize: '20px' }}>
+                            <label style={{ fontSize: '20px' }} onClick={this.handleChangeAvatar.bind(this)}>
                                 <div className="icon">
                                     <i className="fa fa-camera" title="Add photo" style={{ padding: "30px 10px 10px 10px" }}></i>
                                 </div>
                             </label>
-                            <input id="image2" type="file" accept="image/*" ref="fileUploader" onChange={(e) => this.onHandleChooseImage(e)} />
+                            <input id="image2" type="file" accept="image/*" ref={this.changeAvatar} onChange={(e) => this.onLoadAvatar(e)} />
                         </div>
-                        {listPreImgs}
+                        }
+
+                        <div className="modal3 " id="myModal3" role="dialog" style={{ display: this.state.previewImage == '' ? 'none' : 'block' }} >
+                            <div className="center-parent" style={{ zIndex: 1 }}>
+                                <button onClick={this.removeEditModal} style={{ color: "red" }}>
+                                    <i className="fa fa-times fa-lg"></i>
+                                </button>
+                                <div className="previewImage">
+                                    <img src={this.state.previewImage} id="pre" />
+                                </div>
+                            </div>
+                            <div style={{ marginRight: "530px", marginTop: "80px" }}>
+                                <button style={{ marginTop: '65px' }} onClick={this.saveChangesAvatar} type="button" className="btn btn-primary radius-button " data-dismiss="modal">
+                                    Save Changes
+                            </button >
+                                <button onClick={this.removeEditModal} style={{ backgroundColor: '#bbb', marginTop: '65px' }} type="button" className="btn btn-primary radius-button " data-dismiss="modal">
+                                    Cancel
+                            </button>
+                            </div>
+                        </div>
 
                     </div>
                     <div className="w-full lg:w-1/2">
@@ -248,44 +327,45 @@ class MenuTop extends Component {
                             <li className={`text-center py-3 px-4 border-b-2 border-solid border-transparent${tab1}`}>
                                 <a onClick={this.toTweets} href="" className="text-grey-darker no-underline hover:no-underline">
                                     <div className="text-sm font-bold tracking-tight mb-1">Tweets</div>
-                                    <div className={`text-lg tracking-tight font-bold${text1}`}>{this.state.tweets}</div>
+                                    <div className={`text-lg tracking-tight font-bold${text1}`}>{count.tweets}</div>
                                 </a>
                             </li>
                             <li className={`text-center py-3 px-4 border-b-2 border-solid border-transparent${tab2}`}>
                                 <a onClick={(e) => this.toFollowing(e)} href="" className="text-grey-darker no-underline hover:no-underline">
                                     <div className="text-sm font-bold tracking-tight mb-1">Followings</div>
-                                    <div className={`text-lg tracking-tight font-bold${text2}`}>{this.state.followings}</div>
+                                    <div className={`text-lg tracking-tight font-bold${text2}`}>{count.followings}</div>
                                 </a>
                             </li>
                             <li className={`text-center py-3 px-4 border-b-2 border-solid border-transparent${tab3}`}>
                                 <a onClick={(e) => this.toFollowers(e)} href="" className="text-grey-darker no-underline hover:no-underline">
                                     <div className="text-sm font-bold tracking-tight mb-1">Followers</div>
-                                    <div className={`text-lg tracking-tight font-bold${text3}`}>{this.state.followers}</div>
+                                    <div className={`text-lg tracking-tight font-bold${text3}`}>{count.followers}</div>
                                 </a>
                             </li>
                             <li className={`text-center py-3 px-4 border-b-2 border-solid border-transparent${tab4}`}>
                                 <a onClick={(e) => this.toHistory(e)} href="" className="text-grey-darker no-underline hover:no-underline">
                                     <div className="text-sm font-bold tracking-tight mb-1">History</div>
-                                    <div className={`text-lg tracking-tight font-bold${text4}`}>{this.state.history}</div>
+                                    <div className={`text-lg tracking-tight font-bold${text4}`}>{count.history}</div>
                                 </a>
                             </li>
                         </ul>
                     </div>
-                    <div className="w-full lg:w-1/4 flex my-4 lg:my-0 lg:justify-end items-center">
+                    {!visitor ? ''
+                        :
+                        <div className="w-full lg:w-1/4 flex my-4 lg:my-0 lg:justify-end items-center">
+                            <div className="mr-6">
+                                <button onClick={this.onHandleFollow} className="bg-teal hover:bg-teal-dark text-white font-medium py-2 px-4 rounded-full">{btnFollow}</button>
+                            </div>
+                        </div>
+                    }
+                    {/* <div className="w-full lg:w-1/4 flex my-4 lg:my-0 lg:justify-end items-center">
                         <div className="mr-6">
-                            {/* <button className="bg-teal hover:bg-teal-dark text-white font-medium py-2 px-4 rounded-full" data-toggle="modal2" data-target="#myModal2">
-                                Edit Profile
-                            </button> */}
-
-                            {/* start modal edit profile */}
                             <div className="modal2 " id="myModal2" role="dialog" style={{ display: 'none' }} >
                                 <div className="modal-dialog">
                                     <div className="modal2-content ">
                                         <div className="grid-container">
                                             <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/195612/tt_tailwind_bg.jpg" id="headerImage" className="headerModal" />
-                                            {/* <div className="headerModal" >
-                                            
-                                        </div> */}
+                                           
                                             <div className="footerModal">
                                                 <div className="picture">
                                                     <div className="lg:justify-end items-center">
@@ -294,9 +374,7 @@ class MenuTop extends Component {
                                                     </div>
                                                     <div className="w-full lg:w-1/4 pictureAva">
 
-                                                        {/* <label htmlFor="image3" className="circle2" style={{fontSize:'80px', background:"#008CBA"}}><i className="fa fa-camera" title="Add photo"></i></label>
-                                                        <input id="image3" type="file" name="image3" onChange={(event) => this.loadFile(event)}/> */}
-                                                        <img src={avatar} id="avatar" alt="logo" className="circle2" />
+                                                         <img src={avatar} id="avatar" alt="logo" className="circle2" />
                                                         <form className="form2-control">
                                                             <input type="text" className='input-edit' placeholder="Ten" name="user" /><br />
                                                             <input type="text" className='input-edit' placeholder="Vi trí" name="birth" />
@@ -328,14 +406,9 @@ class MenuTop extends Component {
                                     </div>
                                 </div>
                             </div>
-                            {/* end modal edit profile */}
                         </div>
-                        {/* <div>
-                            <a onClick={(e) => this.preventDefault(e)} href="" className="text-grey-dark">
-                                <i className="fa fa-ellipsis-v fa-lg" />
-                            </a>
-                        </div> */}
-                    </div>
+                     
+                    </div> */}
                 </div>
 
                 {/* end container */}
@@ -350,13 +423,15 @@ const mapStateToProps = (state) => {
     return {
         profile: state.profile,
         posts: state.posts,
-        following: state.followings
+        following: state.followings,
+        count: state.countMenuTop
     }
 }
 
 const mapDispatchToProps = (dispatch, action) => {
     return {
-        getListFollow: (publicKey) => dispatch(getListFollowings(publicKey))
+        getListFollow: (publicKey) => dispatch(getListFollowings(publicKey)),
+        countMenuTop: (count) => dispatch(actions.countMenuTop(count))
     }
 }
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(MenuTop));

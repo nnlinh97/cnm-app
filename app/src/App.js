@@ -10,6 +10,7 @@ import CreateAccount from './pages/CreateAccount';
 import Payment from './pages/Payment';
 import NewFeed from './pages/NewFeed';
 import History from './pages/History';
+import Visit from './pages/Visit';
 
 
 class App extends Component {
@@ -23,6 +24,7 @@ class App extends Component {
             <Route exact path='/create' component={CreateAccount} />
             <Route exact path='/payment' component={Payment} />
             <Route exact path='/tweets/:id' component={Profile} />
+            <Route exact path='/visit/:id' component={Visit} />
             <Route exact path='/followings/:id' component={Following} />
             <Route exact path='/followers/:id' component={Followers} />
             <Route exact path='/history/:id' component={History} />

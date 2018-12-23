@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
 import * as Actions from '../actions/request';
+import * as actions from '../actions/index';
 
 import Header from '../components/Header';
 import CoverImage from '../components/CoverImage';
@@ -34,6 +35,7 @@ class Followings extends Component {
         let idKey=this.props.match.params.id;
         axios.get(`http://localhost:4200/follow/following?idKey=${idKey}`).then(data =>{
             if(data.data.status === 200){
+                // this.props.getListFollowings(data.data.result)
                 this.setState({
                     followings: data.data.result
                 })
@@ -45,16 +47,8 @@ class Followings extends Component {
     }
 
     render() {
-        //const {followings} = this.props;
-        // let listFollowing ='';
-        // if(this.state.error !== ''){
-        //     alert(this.state.error)
-        // }
-        // let followings = this.state.following;
-        // console.log(followings)
         const {followings} = this.state;
         let listFollowing = '';
-
         if(followings.length > 0){
             listFollowing = followings.map((following, index) => {
                 return (
@@ -89,7 +83,7 @@ class Followings extends Component {
 
 const mapStateToProps = (state) => {
     return {
-        //followings: state.followings
+        followings: state.followings
     }
 }
 
@@ -97,7 +91,7 @@ const mapDispatchToProps = (dispatch, action) => {
     return {
         getProfile: () => dispatch(Actions.getProfile()),
         getListPosts: () => dispatch(Actions.getListPosts()),
-        //getListFollowings: (idKey) => dispatch(Actions.getListFollowings(idKey))
+        getListFollowings: (followings) => dispatch(actions.getListFollowings(followings))
     }
 }
 export default connect(mapStateToProps, mapDispatchToProps)(Followings);

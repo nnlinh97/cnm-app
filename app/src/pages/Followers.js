@@ -11,18 +11,46 @@ import MenuTop from '../components/MenuTop';
 import Info from '../components/Info';
 import Posts from '../components/Posts';
 import RightSidebar from '../components/RightSidebar';
-import Follower from '../components/Follower'
+import Follower from '../components/Follower';
+import axios from 'axios';
+
 
 
 class Followers extends Component {
+    // componentDidMount() {
+    //     this.props.getProfile();
+    //     this.props.getListPosts();
+    //     this.props.getListFollowers();
+    // }
+    constructor(props) {
+        super(props);
+        this.state = {
+            followers: []
+        }
+    }
+    
+
     componentDidMount() {
-        this.props.getProfile();
-        this.props.getListPosts();
-        this.props.getListFollowers();
+        if(localStorage.getItem('token') == 'false'){
+            this.props.history.push('/');
+            return;
+        }
+        let idKey=this.props.match.params.id;
+        axios.get(`http://localhost:4200/follow/follower?idKey=${idKey}`).then(data =>{
+            if(data.data.status === 200){
+                // this.props.getListFollowings(data.data.result)
+                this.setState({
+                    followers: data.data.result
+                })
+            }
+        })
+    //     this.props.getProfile();
+    //     this.props.getListPosts();
+    //    // this.props.getListFollowings(idKey);
     }
 
     render() {
-        const {followers} = this.props;
+        const {followers} = this.state;
         let listFollowers ='';
         if(followers.length > 0){
             listFollowers = followers.map((follower, index) => {
@@ -121,9 +149,9 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch, action) => {
     return {
-        getProfile: () => dispatch(Actions.getProfile()),
-        getListPosts: () => dispatch(Actions.getListPosts()),
-        getListFollowers: () => dispatch(Actions.getListFollowers())
+        // getProfile: () => dispatch(Actions.getProfile()),
+        // getListPosts: () => dispatch(Actions.getListPosts()),
+        // getListFollowers: () => dispatch(Actions.getListFollowers())
     }
 }
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Followers));

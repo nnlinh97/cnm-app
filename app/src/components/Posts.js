@@ -8,16 +8,32 @@ class Posts extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            posts: ''
+            posts: null
         }
     }
+
+    componentWillReceiveProps(nextProps) {
+        const idPost = nextProps.match.params.id;
+        this.setState({
+            posts: null
+        })
+        axios.get(`http://localhost:4200/post/get-list-posts?idKey=${idPost}`).then((posts) => {
+            if(posts.data.result){
+                this.setState({
+                    posts: posts.data.result
+                });
+            }
+        })
+    }
+    
     
     componentDidMount() {
         const idPost = this.props.match.params.id;
-        console.log(idPost);
+        this.setState({
+            posts: null
+        })
         axios.get(`http://localhost:4200/post/get-list-posts?idKey=${idPost}`).then((posts) => {
             if(posts.data.result){
-                console.log(posts.data.result);
                 this.setState({
                     posts: posts.data.result
                 });
@@ -27,9 +43,9 @@ class Posts extends Component {
     
     render() {
         // console.log(this.props.posts);
-        const {posts} = this.props;
+        const {posts} = this.state;
         let listPosts = '';
-        if(posts.length > 0){
+        if(posts){
             listPosts = posts.map((post, index) => {
                 return (
                     <Post
