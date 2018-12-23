@@ -179,7 +179,7 @@ class Info extends Component {
         // this.removeEditModal();
     }
     render() {
-        const info  = this.state;
+        const info = this.state;
 
         if (this.state.error !== '') {
             alert(this.state.error)
@@ -257,7 +257,7 @@ class Info extends Component {
                 <div className="mb-4">
                     <p title={info.publicKey}
                         style={{
-                            width: "250px",
+                            width: "200px",
                             color: "#3273dc",
                             whiteSpace: "pre-wrap",
                             cursor: "pointer",
