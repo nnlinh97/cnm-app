@@ -13,11 +13,15 @@ class Post extends Component {
         super(props);
         this.state = {
             detail: false,
-            user: null
+            user: null,
+            react: "like-btn-em like-btn-default",
+            btnText: "like-btn-text",
+            txtLike: "Like",
         }
     }
 
     componentDidMount() {
+
         document.addEventListener('mousedown', this.handleClickOutside);
         document.removeEventListener('mousedown', this.handleClickOutside);
         const publicKey = this.props.match.params.id;
@@ -67,38 +71,67 @@ class Post extends Component {
             this.removeModal();
         }
     }
+    onReactLike = (e) => {
+        e.preventDefault(e);
+        this.setState({
+            react: "like-btn-emo like-btn-like",
+            btnText: "like-btn-text like-btn-text-like active",
+            txtLike: 'Like'
+        })
+    }
+    onReactLove = (e) => {
+        e.preventDefault(e);
+        this.setState({
+            react: "like-btn-emo like-btn-love",
+            btnText: "like-btn-text like-btn-text-love active",
+            txtLike: 'Love'
+        })
+    }
+    onReactHaha = (e) => {
+        e.preventDefault(e);
+        this.setState({
+            react: "like-btn-emo like-btn-haha",
+            btnText: "like-btn-text like-btn-text-haha active",
+            txtLike: 'HaHa'
+        })
+    }
+    onReactWow = (e) => {
+        e.preventDefault(e);
+        this.setState({
+            react: "like-btn-emo like-btn-wow",
+            btnText: "like-btn-text like-btn-text-wow active",
+            txtLike: 'Wow'
+        })
+    }
+    onReactSad = (e) => {
+        e.preventDefault(e);
+        this.setState({
+            react: "like-btn-emo like-btn-sad",
+            btnText: "like-btn-text like-btn-text-sad active",
+            txtLike: 'Sad'
+        })
+    }
+    onReactAngry = (e) => {
+        e.preventDefault(e);
+        this.setState({
+            react: "like-btn-emo like-btn-angry",
+            btnText: "like-btn-text like-btn-text-angry active",
+            txtLike: 'Angry'
+        })
+    }
+    onDislike = (e) => {
+        e.preventDefault(e);
+        this.setState({
+            react: "like-btn-emo like-btn-default",
+            btnText: "like-btn-text",
+            txtLike: 'Like'
+        })
+    }
     render() {
-
-        $(document).ready(function () {
-            $(".reaction").on("click", function () {   // like click
-                var data_reaction = $(this).attr("data-reaction");
-                $(".like-details").html("You, Arkaprava Majumder and 1k others");
-                $(".like-btn-emo").removeClass().addClass('like-btn-emo').addClass('like-btn-' + data_reaction.toLowerCase());
-                $(".like-btn-text").text(data_reaction).removeClass().addClass('like-btn-text').addClass('like-btn-text-' + data_reaction.toLowerCase()).addClass("active");;
-
-                if (data_reaction == "Like")
-                    $(".like-emo").html('<span class="like-btn-like"></span>');
-                else
-                    $(".like-emo").html('<span class="like-btn-like"></span><span class="like-btn-' + data_reaction.toLowerCase() + '"></span>');
-            });
-
-            $(".like-btn-text").on("click", function () { // undo like click
-                if ($(this).hasClass("active")) {
-                    $(".like-btn-text").text("Like").removeClass().addClass('like-btn-text');
-                    $(".like-btn-emo").removeClass().addClass('like-btn-emo').addClass("like-btn-default");
-                    $(".like-emo").html('<span class="like-btn-like"></span>');
-                    $(".like-details").html("Arkaprava Majumder and 1k others");
-
-                }
-            })
-
-
-        });
         const { user } = this.state;
         console.log(user);
 
         // const {user} = this.state;
-
         const { post } = this.props;
         const cssModal = this.state.detail ? "block" : "none";
         let avatar = "https://tinyurl.com/yapenv5f";
@@ -302,15 +335,15 @@ class Post extends Component {
                                 </a> */}
                         <a class="facebook-reaction">
                             <span class="like-btn">
-                                <span class="like-btn-emo like-btn-default"></span>
-                                <span class="like-btn-text">Like</span>
+                                <span onClick={(e) => this.onDislike(e)} class={this.state.react}></span>
+                                <span class={this.state.btnText}>{this.state.txtLike}</span>
                                 <ul class="reactions-box">
-                                    <li class="reaction reaction-like" data-reaction="Like"></li>
-                                    <li class="reaction reaction-love" data-reaction="Love"></li>
-                                    <li class="reaction reaction-haha" data-reaction="HaHa"></li>
-                                    <li class="reaction reaction-wow" data-reaction="Wow"></li>
-                                    <li class="reaction reaction-sad" data-reaction="Sad"></li>
-                                    <li class="reaction reaction-angry" data-reaction="Angry"></li>
+                                    <li onClick={(e) => this.onReactLike(e)} class="reaction reaction-like" data-reaction="Like"></li>
+                                    <li onClick={(e) => this.onReactLove(e)} class="reaction reaction-love" data-reaction="Love"></li>
+                                    <li onClick={(e) => this.onReactHaha(e)} class="reaction reaction-haha" data-reaction="HaHa"></li>
+                                    <li onClick={(e) => this.onReactWow(e)} class="reaction reaction-wow" data-reaction="Wow"></li>
+                                    <li onClick={(e) => this.onReactSad(e)} class="reaction reaction-sad" data-reaction="Sad"></li>
+                                    <li onClick={(e) => this.onReactAngry(e)} class="reaction reaction-angry" data-reaction="Angry"></li>
                                 </ul>
                             </span>
                             {/* <div class="like-stat">
