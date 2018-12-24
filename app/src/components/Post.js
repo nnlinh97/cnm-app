@@ -300,7 +300,6 @@ class Post extends Component {
                                     {post.liked ? <i className="fa fa-heart fa-lg mr-2" /> : <i className="fa fa-heart-o fa-lg mr-2" />}
                                     {post.likes}
                                 </a> */}
-<<<<<<< HEAD
                         <a class="facebook-reaction">
                             <span class="like-btn">
                                 <span class="like-btn-emo like-btn-default"></span>
@@ -322,7 +321,6 @@ class Post extends Component {
                             </div>
                         </a>
                         {/* </span> */}
-=======
                                 <a className="facebook-reaction">
                                     <span className="like-btn">
                                         <span className="like-btn-emo like-btn-default"></span>
@@ -346,7 +344,6 @@ class Post extends Component {
                                     </div> */}
                                 </a>
                             {/* </span> */}
->>>>>>> b14212b32bc398cefd4903100cbc4c0f556fb2c5
                         {/* </div> */}
                     </div>
                 </div>

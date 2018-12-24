@@ -11,27 +11,11 @@ class PostsNF extends Component {
             posts: null
         }
     }
-
-    componentWillReceiveProps(nextProps) {
-        const idPost = nextProps.match.params.id;
-        this.setState({
-            posts: null
-        })
-        axios.get(`http://localhost:4200/post/get-list-posts?idKey=${idPost}`).then((posts) => {
-            if(posts.data.result){
-                this.setState({
-                    posts: posts.data.result
-                });
-            }
-        })
-    }
-    
-    
     componentDidMount() {
         const idPost = this.props.match.params.id;
-        this.setState({
-            posts: null
-        })
+        const publicKey = localStorage.getItem('PUBLIC_KEY');
+
+        
         axios.get(`http://localhost:4200/post/get-list-posts?idKey=${idPost}`).then((posts) => {
             if(posts.data.result){
                 this.setState({
