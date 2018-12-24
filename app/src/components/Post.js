@@ -6,7 +6,7 @@ import './../styles/ModalPost.css';
 import axios from 'axios';
 import PostDetail from './PostDetail';
 import { withRouter } from 'react-router-dom';
-
+import $ from 'jquery';
 
 class Post extends Component {
     constructor(props) {
@@ -69,7 +69,32 @@ class Post extends Component {
         }
     }
     render() {
-        const {user} = this.state;
+        $(document).ready(function () {
+            $(".reaction").on("click", function () {   // like click
+                var data_reaction = $(this).attr("data-reaction");
+                $(".like-details").html("You, Arkaprava Majumder and 1k others");
+                $(".like-btn-emo").removeClass().addClass('like-btn-emo').addClass('like-btn-' + data_reaction.toLowerCase());
+                $(".like-btn-text").text(data_reaction).removeClass().addClass('like-btn-text').addClass('like-btn-text-' + data_reaction.toLowerCase()).addClass("active");;
+
+                if (data_reaction == "Like")
+                    $(".like-emo").html('<span class="like-btn-like"></span>');
+                else
+                    $(".like-emo").html('<span class="like-btn-like"></span><span class="like-btn-' + data_reaction.toLowerCase() + '"></span>');
+            });
+
+            $(".like-btn-text").on("click", function () { // undo like click
+                if ($(this).hasClass("active")) {
+                    $(".like-btn-text").text("Like").removeClass().addClass('like-btn-text');
+                    $(".like-btn-emo").removeClass().addClass('like-btn-emo').addClass("like-btn-default");
+                    $(".like-emo").html('<span class="like-btn-like"></span>');
+                    $(".like-details").html("Arkaprava Majumder and 1k others");
+
+                }
+            })
+
+
+        });
+        const { user } = this.state;
         console.log(user);
         const { post } = this.props;
         const cssModal = this.state.detail ? "block" : "none";
@@ -272,27 +297,27 @@ class Post extends Component {
                                     {post.liked ? <i className="fa fa-heart fa-lg mr-2" /> : <i className="fa fa-heart-o fa-lg mr-2" />}
                                     {post.likes}
                                 </a> */}
-                                <a class="facebook-reaction">
-                                    <span class="like-btn">
-                                        <span class="like-btn-emo like-btn-default"></span>
-                                        <span class="like-btn-text">Like</span>
-                                        <ul class="reactions-box">
-                                            <li class="reaction reaction-like" data-reaction="Like"></li>
-                                            <li class="reaction reaction-love" data-reaction="Love"></li>
-                                            <li class="reaction reaction-haha" data-reaction="HaHa"></li>
-                                            <li class="reaction reaction-wow" data-reaction="Wow"></li>
-                                            <li class="reaction reaction-sad" data-reaction="Sad"></li>
-                                            <li class="reaction reaction-angry" data-reaction="Angry"></li>
-                                        </ul>
-                                    </span>
-                                    <div class="like-stat">
-                                        <span class="like-emo">
-                                            <span class="like-btn-like"></span>
-                                        </span>
-                                        <span class="like-details">Arkaprava Majumder and 1k others</span>
-                                    </div>
-                                </a>
-                            {/* </span> */}
+                        <a class="facebook-reaction">
+                            <span class="like-btn">
+                                <span class="like-btn-emo like-btn-default"></span>
+                                <span class="like-btn-text">Like</span>
+                                <ul class="reactions-box">
+                                    <li class="reaction reaction-like" data-reaction="Like"></li>
+                                    <li class="reaction reaction-love" data-reaction="Love"></li>
+                                    <li class="reaction reaction-haha" data-reaction="HaHa"></li>
+                                    <li class="reaction reaction-wow" data-reaction="Wow"></li>
+                                    <li class="reaction reaction-sad" data-reaction="Sad"></li>
+                                    <li class="reaction reaction-angry" data-reaction="Angry"></li>
+                                </ul>
+                            </span>
+                            <div class="like-stat">
+                                <span class="like-emo">
+                                    <span class="like-btn-like"></span>
+                                </span>
+                                <span class="like-details">Arkaprava Majumder and 1k others</span>
+                            </div>
+                        </a>
+                        {/* </span> */}
                         {/* </div> */}
                     </div>
                 </div>
