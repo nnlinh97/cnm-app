@@ -7,14 +7,14 @@ class RightSidebar extends Component {
                 <div className="bg-white p-3 mb-3">
                     <div>
                         <span className="text-lg font-bold">Who to follow</span>
-                        <span>·</span>
+                        {/* <span>·</span>
                         <span>
                             <a href="#" className="text-teal text-xs">Refresh</a>
                         </span>
                         <span>·</span>
                         <span>
                             <a href="#" className="text-teal text-xs">View All</a>
-                        </span>
+                        </span> */}
                     </div>
                     <div className="flex border-b border-solid border-grey-light">
                         <div className="py-2">
@@ -25,8 +25,8 @@ class RightSidebar extends Component {
                         <div className="pl-2 py-2 w-full">
                             <div className="flex justify-between mb-1">
                                 <div>
-                                    <a href="#" className="font-bold text-black">Nuxt.js</a>
-                                    <a href="#" className="text-grey-dark">@nuxt_js</a>
+                                    <a href="#" className="font-bold text-black word-break" style={{wordBreak: 'break-all'}}>GA6IW2JOWMP4WGI6LYAZ76ZPMFQSJAX4YLJLOQOWFC5VF5C6IGNV2IW7</a>
+                                    {/* <a href="#" className="text-grey-dark">@nuxt_js</a> */}
                                 </div>
                                 <div>
                                     <a href="#" className="text-grey hover:text-grey-dark">
@@ -50,8 +50,8 @@ class RightSidebar extends Component {
                         <div className="pl-2 py-2 w-full">
                             <div className="flex justify-between mb-1">
                                 <div>
-                                    <a href="#" className="font-bold text-black">Laracon EU</a>
-                                    <a href="#" className="text-grey-dark">@LaraconEU</a>
+                                    <a href="#" className="font-bold text-black" style={{wordBreak: 'break-all'}}>GA6IW2JOWMP4WGI6LYAZ76ZPMFQSJAX4YLJLOQOWFC5VF5C6IGNV2IW7</a>
+                                    {/* <a href="#" className="text-grey-dark">@LaraconEU</a> */}
                                 </div>
                                 <div>
                                     <a href="#" className="text-grey hover:text-grey-dark">
@@ -75,8 +75,8 @@ class RightSidebar extends Component {
                         <div className="pl-2 py-2 w-full">
                             <div className="flex justify-between mb-1">
                                 <div>
-                                    <a href="#" className="font-bold text-black">Laracon US</a>
-                                    <a href="#" className="text-grey-dark">@LaraconUS</a>
+                                    <a href="#" className="font-bold text-black" style={{wordBreak: 'break-all'}}>GA6IW2JOWMP4WGI6LYAZ76ZPMFQSJAX4YLJLOQOWFC5VF5C6IGNV2IW7</a>
+                                    {/* <a href="#" className="text-grey-dark">@LaraconUS</a> */}
                                 </div>
                                 <div>
                                     <a href="#" className="text-grey hover:text-grey-dark">
@@ -91,21 +91,22 @@ class RightSidebar extends Component {
                             </div>
                         </div>
                     </div>
-                    <div className="flex border-b border-solid border-grey-light">
-                        <div className="py-4">
+                    <div className="flex border-b border-solid border-grey-light"  >
+                        {/* <div className="py-4">
                             <a href="#" className=" p-1">
                                 <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/195612/tt_outlook.png" alt="follow1" className="rounded h-6 w-6" />
                             </a>
-                        </div>
-                        <div className="pl-2 py-2 w-full">
-                            <div className="flex justify-between">
-                                <div>
-                                    <a href="#" className="font-bold text-black">Find people you know</a>
-                                </div>
+                        </div> */}
+                        <div className="pl-2 py-2 w-full" style={{textAlign:'center', marginLeft:'20%'}}>
+                            <div className="flex justify-between" >
+                            <button  className="bg-teal hover:bg-teal-dark text-white font-medium py-2 px-4 rounded-full" style={{textAlign:'center'}}>
+                                Loadmore
+                            </button>
+                                {/* <div>
+                                    <a href="#" className="font-bold text-black" >Load more</a>
+                                </div> */}
                             </div>
-                            <div className="text-xs">
-                                Import your contacts from Outlook
-                                </div>
+                            
                         </div>
                     </div>
                     <div className="pt-2">
