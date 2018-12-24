@@ -10,6 +10,7 @@ import Info from '../components/Info';
 import Posts from '../components/Posts';
 import RightSidebar from '../components/RightSidebar';
 import InfoNF from '../components/InfoNF';
+import PostsNF from '../components/PostsNF';
 
 class Profile extends Component {
     componentDidMount() {
@@ -38,7 +39,7 @@ class Profile extends Component {
                 </div>
                 <div className="container mx-auto flex flex-col lg:flex-row mt-3 text-sm leading-normal">
                     <InfoNF />
-                    <Posts />
+                    <PostsNF />
                     <RightSidebar />
                 </div>
             </div>

@@ -3,38 +3,63 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import Post from './Post';
 import axios from 'axios';
+import PostNF from './PostNF';
 
 class PostsNF extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            posts: null
+            listTx: [],
+            page: 1
         }
     }
     componentDidMount() {
         const idPost = this.props.match.params.id;
         const publicKey = localStorage.getItem('PUBLIC_KEY');
 
-        
-        axios.get(`http://localhost:4200/post/get-list-posts?idKey=${idPost}`).then((posts) => {
-            if(posts.data.result){
-                this.setState({
-                    posts: posts.data.result
+        axios.get(`http://localhost:4200/follow/followingID?idKey=${publicKey}`).then((res) => {
+            if (res.data.status == 200) {
+                const list = res.data.result;
+                let promise = [];
+                list.forEach(item => {
+                    promise.push(axios.get(`http://localhost:4200/transactions?idKey=${item}`));
                 });
+                Promise.all(promise).then((result) => {
+                    let listTx = [];
+                    result.forEach(item => {
+                        listTx = listTx.concat(item.data.result)
+                    });
+                    listTx.sort(function(a, b){
+                       return a.createAt > b.createAt;
+                    });
+                    this.setState({
+                        listTx: listTx
+                    });
+                })
             }
         })
+        // axios.get(`http://localhost:4200/post/get-list-posts?idKey=${idPost}`).then((posts) => {
+        //     if(posts.data.result){
+        //         this.setState({
+        //             posts: posts.data.result
+        //         });
+        //     }
+        // })
     }
-    
+
     render() {
         // console.log(this.props.posts);
-        const {posts} = this.state;
+        const { listTx } = this.state;
+        let limit = 10;
+        let offset = (this.state.page - 1) * limit;
+        let list = listTx.slice(0, limit + offset);
         let listPosts = '';
-        if(posts){
-            listPosts = posts.map((post, index) => {
+        if (list.length) {
+            listPosts = list.map((tx, index) => {
                 return (
-                    <Post
+                    <PostNF
                         key={index}
-                        post={post}
+                        tx={tx}
                     />
                 )
             })

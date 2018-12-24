@@ -8,30 +8,18 @@ import PostDetail from './PostDetail';
 import { withRouter } from 'react-router-dom';
 import $ from 'jquery';
 
-class Post extends Component {
+class PostNF extends Component {
     constructor(props) {
         super(props);
         this.state = {
             detail: false,
-            user: null,
-            react: "like-btn-em like-btn-default",
-            btnText: "like-btn-text",
-            txtLike: "Like",
+            page: 1
         }
     }
 
     componentDidMount() {
-
         document.addEventListener('mousedown', this.handleClickOutside);
         document.removeEventListener('mousedown', this.handleClickOutside);
-        const publicKey = this.props.match.params.id;
-        axios.get(`http://localhost:4200/users/get-info?idKey=${publicKey}`).then((user) => {
-            if (user.data.status == 200) {
-                this.setState({
-                    user: user.data.result
-                });
-            }
-        })
     }
 
 
@@ -71,67 +59,39 @@ class Post extends Component {
             this.removeModal();
         }
     }
-    onReactLike = (e) => {
-        e.preventDefault(e);
-        this.setState({
-            react: "like-btn-emo like-btn-like",
-            btnText: "like-btn-text like-btn-text-like active",
-            txtLike: 'Like'
-        })
-    }
-    onReactLove = (e) => {
-        e.preventDefault(e);
-        this.setState({
-            react: "like-btn-emo like-btn-love",
-            btnText: "like-btn-text like-btn-text-love active",
-            txtLike: 'Love'
-        })
-    }
-    onReactHaha = (e) => {
-        e.preventDefault(e);
-        this.setState({
-            react: "like-btn-emo like-btn-haha",
-            btnText: "like-btn-text like-btn-text-haha active",
-            txtLike: 'HaHa'
-        })
-    }
-    onReactWow = (e) => {
-        e.preventDefault(e);
-        this.setState({
-            react: "like-btn-emo like-btn-wow",
-            btnText: "like-btn-text like-btn-text-wow active",
-            txtLike: 'Wow'
-        })
-    }
-    onReactSad = (e) => {
-        e.preventDefault(e);
-        this.setState({
-            react: "like-btn-emo like-btn-sad",
-            btnText: "like-btn-text like-btn-text-sad active",
-            txtLike: 'Sad'
-        })
-    }
-    onReactAngry = (e) => {
-        e.preventDefault(e);
-        this.setState({
-            react: "like-btn-emo like-btn-angry",
-            btnText: "like-btn-text like-btn-text-angry active",
-            txtLike: 'Angry'
-        })
-    }
-    onDislike = (e) => {
-        e.preventDefault(e);
-        this.setState({
-            react: "like-btn-emo like-btn-default",
-            btnText: "like-btn-text",
-            txtLike: 'Like'
-        })
-    }
     render() {
+
+        $(document).ready(function () {
+            $(".reaction").on("click", function () {   // like click
+                var data_reaction = $(this).attr("data-reaction");
+                $(".like-details").html("You, Arkaprava Majumder and 1k others");
+                $(".like-btn-emo").removeClass().addClass('like-btn-emo').addClass('like-btn-' + data_reaction.toLowerCase());
+                $(".like-btn-text").text(data_reaction).removeClass().addClass('like-btn-text').addClass('like-btn-text-' + data_reaction.toLowerCase()).addClass("active");;
+
+                if (data_reaction == "Like")
+                    $(".like-emo").html('<span class="like-btn-like"></span>');
+                else
+                    $(".like-emo").html('<span class="like-btn-like"></span><span class="like-btn-' + data_reaction.toLowerCase() + '"></span>');
+            });
+
+            $(".like-btn-text").on("click", function () { // undo like click
+                if ($(this).hasClass("active")) {
+                    $(".like-btn-text").text("Like").removeClass().addClass('like-btn-text');
+                    $(".like-btn-emo").removeClass().addClass('like-btn-emo').addClass("like-btn-default");
+                    $(".like-emo").html('<span class="like-btn-like"></span>');
+                    $(".like-details").html("Arkaprava Majumder and 1k others");
+
+                }
+            })
+
+
+        });
         const { user } = this.state;
-        console.log(user);
+        // console.log(user);
+        console.log(this.props.tx);
 
         // const {user} = this.state;
+
         const { post } = this.props;
         const cssModal = this.state.detail ? "block" : "none";
         let avatar = "https://tinyurl.com/yapenv5f";
@@ -205,7 +165,7 @@ class Post extends Component {
                             </span>
                             {/* <span className="text-grey-dark">&nbsp;@{post.username}&nbsp;</span> */}
                             <span className="text-grey-dark">·</span>
-                            <span className="text-grey-dark">&nbsp;{moment(post.createAt).format('ll')} </span>
+                            {/* <span className="text-grey-dark">&nbsp;{moment(post.createAt).format('ll')} </span> */}
                         </div>
 
                         {/* start post detail */}
@@ -307,7 +267,7 @@ class Post extends Component {
                     <div>
                         <div className="mb-4">
                             <p className="mb-6">🎉 {user ? user.idKey : ''}</p>
-                            <p style={{ cursor: 'pointer', whiteSpace: 'pre-wrap' }} onClick={(e) => this.getPost(post, e)} className="mb-4">{post.content}</p>
+                            {/* <p style={{ cursor: 'pointer', whiteSpace: 'pre-wrap' }} onClick={(e) => this.getPost(post, e)} className="mb-4">{post.content}</p> */}
                             {/* <p>
                                 {post.image == "" ? "" :
                                     <a onClick={(e) => this.getPost(post, e)} href="#">
@@ -333,17 +293,17 @@ class Post extends Component {
                                     {post.liked ? <i className="fa fa-heart fa-lg mr-2" /> : <i className="fa fa-heart-o fa-lg mr-2" />}
                                     {post.likes}
                                 </a> */}
-                        <a class="facebook-reaction">
-                            <span class="like-btn">
-                                <span onClick={(e) => this.onDislike(e)} class={this.state.react}></span>
-                                <span class={this.state.btnText}>{this.state.txtLike}</span>
-                                <ul class="reactions-box">
-                                    <li onClick={(e) => this.onReactLike(e)} class="reaction reaction-like" data-reaction="Like"></li>
-                                    <li onClick={(e) => this.onReactLove(e)} class="reaction reaction-love" data-reaction="Love"></li>
-                                    <li onClick={(e) => this.onReactHaha(e)} class="reaction reaction-haha" data-reaction="HaHa"></li>
-                                    <li onClick={(e) => this.onReactWow(e)} class="reaction reaction-wow" data-reaction="Wow"></li>
-                                    <li onClick={(e) => this.onReactSad(e)} class="reaction reaction-sad" data-reaction="Sad"></li>
-                                    <li onClick={(e) => this.onReactAngry(e)} class="reaction reaction-angry" data-reaction="Angry"></li>
+                        <a className="facebook-reaction">
+                            <span className="like-btn">
+                                <span className="like-btn-emo like-btn-default"></span>
+                                <span className="like-btn-text">Like</span>
+                                <ul className="reactions-box">
+                                    <li className="reaction reaction-like" data-reaction="Like"></li>
+                                    <li className="reaction reaction-love" data-reaction="Love"></li>
+                                    <li className="reaction reaction-haha" data-reaction="HaHa"></li>
+                                    <li className="reaction reaction-wow" data-reaction="Wow"></li>
+                                    <li className="reaction reaction-sad" data-reaction="Sad"></li>
+                                    <li className="reaction reaction-angry" data-reaction="Angry"></li>
                                 </ul>
                             </span>
                             {/* <div class="like-stat">
@@ -397,4 +357,4 @@ const mapDispatchToProps = (dispatch, action) => {
         updateLikePost: (post) => dispatch(Actions.updateLikePost(post))
     }
 }
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Post));
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(PostNF));

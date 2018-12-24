@@ -42,28 +42,23 @@ class Register extends Component {
                             <div className="form-group">
                                 <div className="">
                                     <label htmlFor="" className="text-uppercase">Private Key</label><br /><br />
-                                    <textarea className="input100 text-uppercase" value={this.state.privateKey} readOnly></textarea>
-
+                                    <textarea style={{background: '#fff'}} className="input100 text-uppercase" value={this.state.privateKey} readOnly></textarea>
                                 </div>
                                 <div>
                                     <br />
                                 </div>
                                 <div className="">
                                     <label htmlFor="" className="text-uppercase">Public Key</label><br /><br />
-                                    <textarea className="input100 text-uppercase" value={this.state.publicKey} readOnly></textarea>
-
+                                    <textarea style={{background: '#fff'}} className="input100 text-uppercase" value={this.state.publicKey} readOnly></textarea>
                                 </div>
                             </div>
-
-
                             <br />
-
                             <div>
                                 <br />
                             </div>
                             <div className="flex-col-c p-t-30 p-b-40">
                                 <span className="txt1 p-b-9">
-                                    Please give your Public key to your friend to create account &nbsp;
+                                    Please give Public key to your friend to create account &nbsp;
                                 </span>
                                 <a onClick={(e) => this.clickToSignIn(e)} href="" className="txt3">
                                     Sign in
