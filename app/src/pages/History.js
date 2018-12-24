@@ -38,13 +38,14 @@ class History extends Component {
                                     <th>Height</th>
                                     <th>Time</th>
                                     <th>Hash</th>
-                                    <th>Bytes</th>
-                                    <th>Operation</th>
+                                    <th>Người gửi</th>
+                                    <th>Người nhận</th>
+                                    <th>Số tiền</th>
                                 </tr>
                                 <tr>
                                     <td>
                                         <span>
-                                            <a href="/blocks/182" class="" style={{color:"#3273dc"}}>
+                                            <a href="/blocks/182" class="" style={{ color: "#3273dc" }}>
                                                 182
                                             </a>
                                         </span>
@@ -53,25 +54,27 @@ class History extends Component {
                                     <td >
                                         <span>
                                             <a style={{ width: "300px" }} href="/transactions/73A9675CDD0CCE0D7ECD46E2263B2AE4D2D8B3CA4BF4C0C38AA2DBA01BDAC599" class="" >
-                                                <p  title = "F8F5D98CF83B03F68C5E2E04CE409804B57EAD1D0BAB24531E769D4A267A45A1"style={{ width:"350px" ,color: "#3273dc", cursor: "pointer", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
-                                                F8F5D98CF83B03F68C5E2E04CE409804B57EAD1D0BAB24531E769D4A267A45A1
+                                                <p title="F8F5D98CF83B03F68C5E2E04CE409804B57EAD1D0BAB24531E769D4A267A45A1" style={{ width: "100px", color: "#3273dc", cursor: "pointer", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
+                                                    F8F5D98CF83B03F68C5E2E04CE409804B57EAD1D0BAB24531E769D4A267A45A1
                                                 </p>
-                                        </a>
+                                            </a>
                                         </span>
                                     </td>
-                                    <td>163</td>
-                                    <td>create_account</td>
+                                    <td >
+                                        <p title ="GCD6DHTSLKVMQWOXE4T4S72ZO3T2AMHXZ3DNKMQFSCFQNDYQ5A5VNHTM"
+                                        style={{ width: "100px", color: "#3273dc", cursor: "pointer", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
+                                            GCD6DHTSLKVMQWOXE4T4S72ZO3T2AMHXZ3DNKMQFSCFQNDYQ5A5VNHTM
+                                        </p>
+                                    </td>
+                                    <td>
+                                        <p title ="GCD6DHTSLKVMQWOXE4T4S72ZO3T2AMHXZ3DNKMQFSCFQNDYQ5A5VNHTM"
+                                        style={{ width: "100px", color: "#3273dc", cursor: "pointer", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
+                                            GCD6DHTSLKVMQWOXE4T4S72ZO3T2AMHXZ3DNKMQFSCFQNDYQ5A5VNHTM
+                                        </p>
+                                    </td>
+                                    <td>100000000</td>
                                 </tr>
-                                <tr>
-                                    <td>Eve</td>
-                                    <td>Jackson</td>
-                                    <td>94</td>
-                                </tr>
-                                <tr>
-                                    <td>Adam</td>
-                                    <td>Johnson</td>
-                                    <td>67</td>
-                                </tr>
+
                             </table>
                         </div>
                     </div>
