@@ -30,7 +30,7 @@ class transactionDetail extends Component {
                 
                     
                 <section className="section" >
-                    <div className="container" >
+                    <div className="containertra" >
                         <h1 className="title" style={{marginTop:'30px'}}>Transaction</h1>
                         <h2 className="subtitle has-text-grey">76533DA255CD8BC34009CF71587EC01B0D7E3D6747DFE197C10263D215171921</h2>
                         <h6 className="title is-6"><span className="has-text-success">Comfirmed</span> at <a href="/blocks/138" className="">#138</a></h6>
