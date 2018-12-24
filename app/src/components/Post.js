@@ -97,7 +97,7 @@ class Post extends Component {
         const { user } = this.state;
         console.log(user);
 
-        const {user} = this.state;
+        // const {user} = this.state;
 
         const { post } = this.props;
         const cssModal = this.state.detail ? "block" : "none";
@@ -313,37 +313,37 @@ class Post extends Component {
                                     <li class="reaction reaction-angry" data-reaction="Angry"></li>
                                 </ul>
                             </span>
-                            <div class="like-stat">
+                            {/* <div class="like-stat">
                                 <span class="like-emo">
                                     <span class="like-btn-like"></span>
                                 </span>
                                 <span class="like-details">Arkaprava Majumder and 1k others</span>
-                            </div>
+                            </div> */}
                         </a>
                         {/* </span> */}
-                                <a className="facebook-reaction">
-                                    <span className="like-btn">
-                                        <span className="like-btn-emo like-btn-default"></span>
-                                        <span className="like-btn-text">Like</span>
-                                        <ul className="reactions-box">
-                                            <li className="reaction reaction-like" data-reaction="Like"></li>
-                                            <li className="reaction reaction-love" data-reaction="Love"></li>
-                                            <li className="reaction reaction-haha" data-reaction="HaHa"></li>
-                                            <li className="reaction reaction-wow" data-reaction="Wow"></li>
-                                            <li className="reaction reaction-sad" data-reaction="Sad"></li>
-                                            <li className="reaction reaction-angry" data-reaction="Angry"></li>
-                                        </ul>
-                                    </span>
+                        {/* <a className="facebook-reaction">
+                            <span className="like-btn">
+                                <span className="like-btn-emo like-btn-default"></span>
+                                <span className="like-btn-text">Like</span>
+                                <ul className="reactions-box">
+                                    <li className="reaction reaction-like" data-reaction="Like"></li>
+                                    <li className="reaction reaction-love" data-reaction="Love"></li>
+                                    <li className="reaction reaction-haha" data-reaction="HaHa"></li>
+                                    <li className="reaction reaction-wow" data-reaction="Wow"></li>
+                                    <li className="reaction reaction-sad" data-reaction="Sad"></li>
+                                    <li className="reaction reaction-angry" data-reaction="Angry"></li>
+                                </ul>
+                            </span>
 
-                                    
-                                    {/* <div className="like-stat">
-                                        <span className="like-emo">
-                                            <span className="like-btn-like"></span>
-                                        </span>
-                                        <span class="like-details">Arkaprava Majumder and 1k others</span>
-                                    </div> */}
-                                </a>
-                            {/* </span> */}
+
+                            <div className="like-stat">
+                                <span className="like-emo">
+                                    <span className="like-btn-like"></span>
+                                </span>
+                                <span class="like-details">Arkaprava Majumder and 1k others</span>
+                            </div>
+                        </a> */}
+                        {/* </span> */}
                         {/* </div> */}
                     </div>
                 </div>
