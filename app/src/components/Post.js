@@ -283,6 +283,8 @@ class Post extends Component {
                                             <li className="reaction reaction-angry" data-reaction="Angry"></li>
                                         </ul>
                                     </span>
+
+                                    
                                     {/* <div className="like-stat">
                                         <span className="like-emo">
                                             <span className="like-btn-like"></span>

@@ -49,13 +49,19 @@ class MenuTop extends Component {
         let pHistory = axios.get(`http://localhost:4200/transactions?idKey=${publicKey}`);
         Promise.all([pAccount, pFollower, pFollowing, pTweet, pHistory, pFollowingCurrent]).then(([account, follower, following, tweet, history, currentFollowing]) => {
             if (account && follower && following && tweet && history && currentFollowing) {
+                let count = 0;
+                history.data.result.forEach(item => {
+                    if(item.tx.operation == 'payment'){
+                        count += 1;
+                    }
+                });
                 this.setState({
                     displayName: account.data.status == 200 ? account.data.result.displayName : "",
                     avatar: account.data.status == 200 ? account.data.result.avatar : "",
                     followers: follower.data.count,
                     followings: following.data.count,
                     tweets: tweet.data.count,
-                    history: history.data.count,
+                    history: count,
                     listFollowings: following.data.result,
                     followingOfCurrentUser: currentFollowing.data.result,
                     visitor: publicKey == current ? false : true
@@ -75,13 +81,19 @@ class MenuTop extends Component {
         let pHistory = axios.get(`http://localhost:4200/transactions?idKey=${publicKey}`);
         Promise.all([pAccount, pFollower, pFollowing, pTweet, pHistory, pFollowingCurrent]).then(([account, follower, following, tweet, history, currentFollowing]) => {
             if (account && follower && following && tweet && history && currentFollowing) {
+                let count = 0;
+                history.data.result.forEach(item => {
+                    if(item.tx.operation == 'payment'){
+                        count += 1;
+                    }
+                });
                 this.setState({
                     displayName: account.data.status == 200 ? account.data.result.displayName : "",
                     avatar: account.data.status == 200 ? account.data.result.avatar : "",
                     followers: follower.data.count,
                     followings: following.data.count,
                     tweets: tweet.data.count,
-                    history: history.data.count,
+                    history: count,
                     listFollowings: following.data.result,
                     followingOfCurrentUser: currentFollowing.data.result,
                     visitor: publicKey == current ? false : true
@@ -352,7 +364,7 @@ class MenuTop extends Component {
                             </li>
                             <li className={`text-center py-3 px-4 border-b-2 border-solid border-transparent${tab4}`}>
                                 <a onClick={(e) => this.toHistory(e)} href="" className="text-grey-darker no-underline hover:no-underline">
-                                    <div className="text-sm font-bold tracking-tight mb-1">History</div>
+                                    <div className="text-sm font-bold tracking-tight mb-1">Payment</div>
                                     <div className={`text-lg tracking-tight font-bold${text4}`}>{count.history}</div>
                                 </a>
                             </li>
