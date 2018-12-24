@@ -24,9 +24,7 @@ class Followings extends Component {
             
         }
     }
-    componentWillReceiveProps(nextProps){
-
-    }
+    
     componentDidMount() {
         if(localStorage.getItem('token') == 'false'){
             this.props.history.push('/');

@@ -93,11 +93,11 @@ class InfoNF extends Component {
         return (
             <div className="w-full lg:w-1/4 pl-4 lg:pl-0 pr-6 mb-4">
                 <div className="ProfileCard" style={{ marginTop: "0px" }}>
-                    <a className="ProfileCard-bg js-nav" href="#" tabindex="-1" aria-hidden="true">
+                    <a className="ProfileCard-bg js-nav" href="#" tabIndex="-1" aria-hidden="true">
                         <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/195612/tt_tailwind_bg.jpg" alt="" />
                     </a>
                     <div className="ProfileCard-content">
-                        <a className="ProfileCard-avatarLink js-nav js-tooltip" href="/nnlinh971" title="nnlinh97" tabindex="-1" aria-hidden="true">
+                        <a className="ProfileCard-avatarLink js-nav js-tooltip" href="/nnlinh971" title="nnlinh97" tabIndex="-1" aria-hidden="true">
                             <img className="ProfileCard-avatarImage js-action-profile-avatar" 
                             src={profileNF.avatar !== '' ? profileNF.avatar : avatar}
                                 alt="" />
@@ -121,28 +121,28 @@ class InfoNF extends Component {
                             </span> */}
                         </div>
                     </div>
-                    <div class="ProfileCardStats">
-                        <div class="ProfileCardStats">
+                    <div className="ProfileCardStats">
+                        <div className="ProfileCardStats">
                             <ul className="list-reset flex">
-                                <li class="text-center py-3 px-4 border-b-2 border-solid border-transparent border-teal">
-                                    <a onClick={this.toProfile} href="" class="text-grey-darker no-underline hover:no-underline">
-                                        <div class="text-sm font-bold tracking-tight mb-1">Tweets</div>
-                                        <div class="text-lg tracking-tight font-bold text-teal">{profileNF.tweets}</div>
+                                <li className="text-center py-3 px-4 border-b-2 border-solid border-transparent border-teal">
+                                    <a onClick={this.toProfile} href="" className="text-grey-darker no-underline hover:no-underline">
+                                        <div className="text-sm font-bold tracking-tight mb-1">Tweets</div>
+                                        <div className="text-lg tracking-tight font-bold text-teal">{profileNF.tweets}</div>
                                     </a>
                                 </li>
 
-                                <li class="text-center py-3 px-4 border-b-2 border-solid border-transparent hover:border-teal"
+                                <li className="text-center py-3 px-4 border-b-2 border-solid border-transparent hover:border-teal"
                                     onClick={(e) => this.toFollowing(e)}>
-                                    <a href="#" class="text-grey-darker no-underline hover:no-underline">
-                                        <div class="text-sm font-bold tracking-tight mb-1" >Following</div>
-                                        <div class="text-lg tracking-tight font-bold hover:text-teal">{profileNF.followings}</div>
+                                    <a href="#" className="text-grey-darker no-underline hover:no-underline">
+                                        <div className="text-sm font-bold tracking-tight mb-1" >Following</div>
+                                        <div className="text-lg tracking-tight font-bold hover:text-teal">{profileNF.followings}</div>
                                     </a>
                                 </li>
-                                <li class="text-center py-3 px-4 border-b-2 border-solid border-transparent hover:border-teal"
+                                <li className="text-center py-3 px-4 border-b-2 border-solid border-transparent hover:border-teal"
                                      onClick={(e) => this.toFollower(e)}>
-                                    <a href="#" class="text-grey-darker no-underline hover:no-underline">
-                                        <div class="text-sm font-bold tracking-tight mb-1">Follower</div>
-                                        <div class="text-lg tracking-tight font-bold hover:text-teal">{profileNF.followers}</div>
+                                    <a href="#" className="text-grey-darker no-underline hover:no-underline">
+                                        <div className="text-sm font-bold tracking-tight mb-1">Follower</div>
+                                        <div className="text-lg tracking-tight font-bold hover:text-teal">{profileNF.followers}</div>
                                     </a>
                                 </li>
                             </ul>

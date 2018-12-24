@@ -75,6 +75,7 @@ class Login extends Component {
 
     onGenerateKey = (e) => {
         e.preventDefault();
+        this.props.history.push('/generate')
     }
     render() {
         if (this.state.error !== '') {

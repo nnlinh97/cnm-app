@@ -28,6 +28,7 @@ class App extends Component {
             <Route exact path='/followings/:id' component={Following} />
             <Route exact path='/followers/:id' component={Followers} />
             <Route exact path='/history/:id' component={History} />
+            <Route exact path='/generate' component={Register} />
 
             {/* <Route exact path='/:username' component={Profile} />
             <Route exact path='/:username/followers' component={Followers} />
