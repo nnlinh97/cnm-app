@@ -56,7 +56,6 @@ class Post extends Component {
 
     componentWillUnmount() {
         document.removeEventListener('mousedown', this.handleClickOutside);
-
     }
 
     setWrapperRef = (node) => {
@@ -69,6 +68,7 @@ class Post extends Component {
         }
     }
     render() {
+
         $(document).ready(function () {
             $(".reaction").on("click", function () {   // like click
                 var data_reaction = $(this).attr("data-reaction");
@@ -96,6 +96,9 @@ class Post extends Component {
         });
         const { user } = this.state;
         console.log(user);
+
+        const {user} = this.state;
+
         const { post } = this.props;
         const cssModal = this.state.detail ? "block" : "none";
         let avatar = "https://tinyurl.com/yapenv5f";
@@ -297,6 +300,7 @@ class Post extends Component {
                                     {post.liked ? <i className="fa fa-heart fa-lg mr-2" /> : <i className="fa fa-heart-o fa-lg mr-2" />}
                                     {post.likes}
                                 </a> */}
+<<<<<<< HEAD
                         <a class="facebook-reaction">
                             <span class="like-btn">
                                 <span class="like-btn-emo like-btn-default"></span>
@@ -318,6 +322,29 @@ class Post extends Component {
                             </div>
                         </a>
                         {/* </span> */}
+=======
+                                <a className="facebook-reaction">
+                                    <span className="like-btn">
+                                        <span className="like-btn-emo like-btn-default"></span>
+                                        <span className="like-btn-text">Like</span>
+                                        <ul className="reactions-box">
+                                            <li className="reaction reaction-like" data-reaction="Like"></li>
+                                            <li className="reaction reaction-love" data-reaction="Love"></li>
+                                            <li className="reaction reaction-haha" data-reaction="HaHa"></li>
+                                            <li className="reaction reaction-wow" data-reaction="Wow"></li>
+                                            <li className="reaction reaction-sad" data-reaction="Sad"></li>
+                                            <li className="reaction reaction-angry" data-reaction="Angry"></li>
+                                        </ul>
+                                    </span>
+                                    {/* <div className="like-stat">
+                                        <span className="like-emo">
+                                            <span className="like-btn-like"></span>
+                                        </span>
+                                        <span class="like-details">Arkaprava Majumder and 1k others</span>
+                                    </div> */}
+                                </a>
+                            {/* </span> */}
+>>>>>>> b14212b32bc398cefd4903100cbc4c0f556fb2c5
                         {/* </div> */}
                     </div>
                 </div>

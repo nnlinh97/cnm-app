@@ -166,12 +166,12 @@ class MenuTop extends Component {
                 axios.post('http://localhost:4200/request', { tx: txEncode }).then((response) => {
                     if (response.status === 200) {
                         this.setState({
-                            success: 'SUCCESS: Create successfully!'
+                            success: 'SUCCESS: Upload successfully!'
                         });
                         return;
                     } else {
                         this.setState({
-                            error: 'ERROR: Request fail!'
+                            error: 'ERROR: Upload fail fail!'
                         });
                         this.removeEditModal();
                         return;
@@ -242,6 +242,14 @@ class MenuTop extends Component {
         })
     }
     render() {
+
+        if(this.state.error !== ''){
+            alert(this.state.error)
+        }
+        if(this.state.success){
+            alert(this.state.success)
+        }
+
         const count = this.state;
         let avatar = "https://tinyurl.com/yapenv5f";
         const publicKey = localStorage.getItem('PUBLIC_KEY');
