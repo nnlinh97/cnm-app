@@ -25,6 +25,7 @@ class PostsNF extends Component {
                     promise.push(axios.get(`http://localhost:4200/transactions?idKey=${item}`));
                 });
                 Promise.all(promise).then((result) => {
+                    console.log(result);
                     let listTx = [];
                     result.forEach(item => {
                         listTx = listTx.concat(item.data.result)
@@ -50,7 +51,7 @@ class PostsNF extends Component {
     render() {
         // console.log(this.props.posts);
         const { listTx } = this.state;
-        let limit = 10;
+        let limit = 20;
         let offset = (this.state.page - 1) * limit;
         let list = listTx.slice(0, limit + offset);
         let listPosts = '';

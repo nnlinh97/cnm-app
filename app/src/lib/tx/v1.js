@@ -52,6 +52,10 @@ const PlainTextContent = vstruct([
 const Followings = vstruct([
   { name: 'addresses', type: vstruct.VarArray(vstruct.UInt16BE, vstruct.Buffer(35)) },
 ]);
+const ReactContent = vstruct([
+  { name: 'type', type: vstruct.UInt8 },
+  { name: 'reaction', type: vstruct.UInt8 },
+]);
 
 function decodePost(tx) {
   return PlainTextContent.decode(tx);
@@ -116,10 +120,18 @@ function encode(tx) {
       operation = 4;
       break;
 
+    // case 'interact':
+    //   params = InteractParams.encode({
+    //     ...tx.params,
+    //     object: Buffer.from(tx.params.object, 'hex'),
+    //   });
+    //   operation = 5;
+    //   break;
     case 'interact':
       params = InteractParams.encode({
         ...tx.params,
         object: Buffer.from(tx.params.object, 'hex'),
+        content: tx.params.content.type === 1 ? PlainTextContent.encode(tx.params.content) : ReactContent.encode(tx.params.content)
       });
       operation = 5;
       break;

@@ -36,15 +36,15 @@ class InfoNF extends Component {
         Promise.all([pAccount, pFollower, pFollowing, pTweet]).then(([account, follower, following, tweet]) => {
             if (account && follower && following && tweet) {
                 this.props.getProfileNF({
-                    avatar: account.data.result.avatar,
-                    displayName: account.data.result.displayName,
+                    avatar: account.data.result ? account.data.result.avatar : '',
+                    displayName: account.data.result ? account.data.result.displayName : "",
                     followers: follower.data.count,
                     followings: following.data.count,
                     tweets: tweet.data.count
                 })
                 this.setState({
-                    avatar: account.data.result.avatar,
-                    displayName: account.data.result.displayName,
+                    avatar: account.data.result ? account.data.result.avatar : '',
+                    displayName: account.data.result ? account.data.result.displayName : "",
                     followers: follower.data.count,
                     followings: following.data.count,
                     tweets: tweet.data.count

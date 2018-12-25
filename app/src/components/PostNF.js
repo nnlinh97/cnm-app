@@ -6,6 +6,7 @@ import './../styles/ModalPost.css';
 import axios from 'axios';
 import PostDetail from './PostDetail';
 import { withRouter } from 'react-router-dom';
+import v1 from '../lib/tx/v1';
 import $ from 'jquery';
 
 class PostNF extends Component {
@@ -13,13 +14,51 @@ class PostNF extends Component {
         super(props);
         this.state = {
             detail: false,
-            page: 1
+            page: 1,
+
+            account: '',
+            address: null,
+            operation: '',
+            post: null,
+            amount: null,
+            follow: null,
+            avatar: null
         }
     }
 
     componentDidMount() {
         document.addEventListener('mousedown', this.handleClickOutside);
         document.removeEventListener('mousedown', this.handleClickOutside);
+        // console.log(this.props.tx);
+        let { tx } = this.props;
+        console.log(tx.tx);
+        switch (tx.tx.operation) {
+            case 'create_account':
+                // console.log('create_account');
+                // axios.get(`http://localhost:4200/users/get-user?idKey=${publicKey}`)
+                break;
+            case 'payment':
+                // console.log('payment');
+                break;
+            case 'update_account':
+                // console.log('update_account');
+                switch (tx.tx.params.key) {
+                    case 'name':
+                        // console.log('name');
+                        break;
+                    case 'picture':
+                        // console.log('picture');
+                        break;
+                    case 'followings':
+                        // console.log('followings');
+                        break;
+                }
+                axios.get(`http://localhost:4200/users/get-user?idKey=${tx.account}`)
+                break;
+            case 'post':
+                console.log('post');
+                break;
+        }
     }
 
 
@@ -88,7 +127,10 @@ class PostNF extends Component {
         });
         const { user } = this.state;
         // console.log(user);
-        console.log(this.props.tx);
+        // console.log(this.props.tx);
+        // if(this.props.tx.tx.operation == 'post'){
+        //     console.log(v1.decodePost(this.props.tx.tx.params.content));
+        // }
 
         // const {user} = this.state;
 
@@ -268,6 +310,7 @@ class PostNF extends Component {
                         <div className="mb-4">
                             <p className="mb-6">🎉 {user ? user.idKey : ''}</p>
                             {/* <p style={{ cursor: 'pointer', whiteSpace: 'pre-wrap' }} onClick={(e) => this.getPost(post, e)} className="mb-4">{post.content}</p> */}
+                            <img src={this.state.avatar} />
                             {/* <p>
                                 {post.image == "" ? "" :
                                     <a onClick={(e) => this.getPost(post, e)} href="#">
