@@ -31,7 +31,8 @@ class Header extends Component {
 
             error: '',
             success: '',
-            avatar: ''
+            avatar: '',
+            searchName: ''
         }
     }
     
@@ -219,6 +220,29 @@ class Header extends Component {
         const publicKey = localStorage.getItem('PUBLIC_KEY');
         this.props.history.push(`/tweets/${publicKey}`);
     }
+    onHandleChange = (e) => {
+        let target = e.target;
+        let name = target.name;
+        let value = target.value;
+        this.setState({
+            [name]: value,
+            error: '',
+            success: ''
+        });
+    }
+
+    onSearch = (e) => {
+        e.preventDefault();
+        axios.get(`http://localhost:4200/users/get-user?idKey=${this.state.searchName}`).then((res) => {
+            if(res.data.status == 200){
+                this.props.history.push(`/tweets/${res.data.result.idKey}`);
+                this.setState({
+                    searchName: ''
+                });
+            }
+        })
+    }
+    
     render() {
         const { profile } = this.props;
         let avatar = "https://tinyurl.com/yapenv5f";
@@ -258,8 +282,8 @@ class Header extends Component {
                     </div>
                     <div className="w-full lg:w-2/5 flex lg:justify-end">
                         <div className="mr-4 relative">
-                            <input type="text" className="bg-grey-lighter h-8 px-4 py-2 text-xs w-48 rounded-full" placeholder="Search Twitter" />
-                            <span style={{ bottom: '6px' }} className="flex items-center absolute pin-r pin-y mr-3">
+                            <input onChange={this.onHandleChange} name="searchName" type="text" value={this.state.searchName} className="bg-grey-lighter h-8 px-4 py-2 text-xs w-48 rounded-full" placeholder="Search Twitter" />
+                            <span onClick={this.onSearch} style={{ bottom: '6px', cursor: 'pointer' }} className="flex items-center absolute pin-r pin-y mr-3">
                                 <i className="fa fa-search text-grey" />
                             </span>
                         </div>
