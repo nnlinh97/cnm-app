@@ -43,7 +43,7 @@ class Header extends Component {
             modal: 'block',
             isModal: true,
         })
-        document.getElementById('body').style.overflow = 'hidden';
+        document.getElementById('html').style.overflow = 'hidden';
     }
 
     removeModal = () => {
@@ -53,17 +53,20 @@ class Header extends Component {
             error: '',
             success: ''
         })
-        document.getElementById('body').style.overflow = 'auto';
+        document.getElementById('html').style.overflow = 'auto';
     }
     toggleAccountModal = () => {
         this.props.openModalAcc()
-        document.getElementById('body').style.overflow = 'hidden';
+        //document.getElementById('body').style.overflow = 'hidden';
+        console.log( document.getElementById('html'))
+        document.getElementById('html').style.overflow = 'hidden';
     }
     removeAccountModal = () => {
         this.setState({
             isAccount: false
         })
-        document.getElementById('body').style.overflow = 'auto';
+        //document.getElementById('body').style.overflow = 'auto';
+         document.getElementById('html').style.overflow = 'auto';
     }
     preventDefault = (e) => {
         e.preventDefault();
@@ -169,6 +172,7 @@ class Header extends Component {
 
     componentWillUnmount() {
         document.removeEventListener('mousedown', this.handleClickOutside);
+        document.getElementById('html').style.overflow = 'auto';
     }
 
     setWrapperRef = (node) => {
