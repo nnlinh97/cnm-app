@@ -213,9 +213,11 @@ class MenuTop extends Component {
     onHandleFollow = () => {
         let follow = this.state.followingOfCurrentUser;
         let index = -1;
+        console.log(follow)
         index = _.findIndex(follow, (item) => {
             return this.props.match.params.id == item;
         });
+        console.log(index)
         if (index !== -1) {
             follow.splice(index, 1);
         } else {
