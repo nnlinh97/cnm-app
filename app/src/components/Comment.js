@@ -28,15 +28,19 @@ class Comment extends Component {
             }
         })
     }
+    toProfile = (e, idKey) => {
+        e.preventDefault();
+        this.props.history.push(`/tweets/${idKey}`)
+    }
     render() {
         const {account} = this.state;
-        console.log(account)
         let {comment} = this.props;
         let avatar = "https://tinyurl.com/yapenv5f";
+        let idKey = account ? account.idKey : '';
         return (
                         <div  className="flex border-b border-solid border-grey-light">
                         <div className="headerPost-left w-1/8 text-right pl-3 pt-3">
-                            <a href="#">
+                            <a  onClick={(e) => this.toProfile(e, idKey)} href="#">
                                 <img src={account && account.avatar !== '' ? account.avatar : avatar} alt="avatar" className="rounded-full h-12 w-12 mr-2" />
                             </a>
                         </div>
@@ -44,7 +48,7 @@ class Comment extends Component {
                             <div className="flex justify-between">
                                 <div>
                                     <span className="font-bold">
-                                        <a href="#" className="text-black">{account && account.displayName !== "" ? account.displayName : (account ? account.idKey : "")}</a>
+                                        <a onClick={(e) => this.toProfile(e, idKey)} href="#" className="text-black">{account && account.displayName !== "" ? account.displayName : (account ? account.idKey : "")}</a>
                                     </span>
                                     <br/>
                                     <span className="text-grey-dark">&nbsp;{moment(comment.createAt).format('ll')}&nbsp;</span>

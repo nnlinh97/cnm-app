@@ -42,8 +42,13 @@ class Posts extends Component {
         })
         axios.get(`http://localhost:4200/post/get-list-posts?idKey=${idPost}`).then((posts) => {
             if (posts.data.result) {
+                let page = Math.floor(posts.data.result.length / 10);
+                if(posts.data.result.length % 10 > 0){
+                    page += 1;
+                }
                 this.setState({
-                    posts: posts.data.result
+                    posts: posts.data.result,
+                    countPage: page
                 });
             }
         })

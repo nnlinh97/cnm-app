@@ -105,9 +105,9 @@ class Post extends Component {
 
     onComment = (e) => {
         e.preventDefault();
-        if(this.state.reply == ''){
+        if (this.state.reply == '') {
             return;
-        }    
+        }
         const hash = this.props.post.id;
         const publicKey = localStorage.getItem('PUBLIC_KEY');
         axios.get(`http://localhost:4200/users/get-user?idKey=${publicKey}`).then(res => {
@@ -136,7 +136,7 @@ class Post extends Component {
                         this.setState({
                             reply: ''
                         })
-                    
+
                     } else {
                         console.log('error');
                     }
@@ -186,7 +186,7 @@ class Post extends Component {
     }
 
     onReaction = (e, type) => {
-        e.preventDefault(e);
+        e.preventDefault();
         const hash = this.props.post.id;
         const publicKey = localStorage.getItem('PUBLIC_KEY');
         axios.get(`http://localhost:4200/users/get-user?idKey=${publicKey}`).then((res) => {
@@ -274,9 +274,9 @@ class Post extends Component {
         if (listComment.length > 0) {
             comments = listComment.map((comment, index) => {
                 return (
-                    <Comment 
-                    key={index}
-                    comment={comment}
+                    <Comment
+                        key={index}
+                        comment={comment}
                     />
                 )
             })
@@ -307,9 +307,6 @@ class Post extends Component {
                                 <i className="fa fa-chevron-down" />
                             </a>
                             <div className="modal4 fade" id="myModal4" role="dialog" style={{ display: 'block' }}>
-                                {/* <button onClick={this.removeModal} type="button" className="close" data-dismiss="modal">
-                                    <i className="fa fa-times-circle"></i>
-                                </button> */}
                                 <div className="modal4-dialog">
                                     <div className="modal4-content" ref={this.state.detail ? this.setWrapperRef : ""}>
                                         <div className="flex border-b border-solid border-grey-light">
@@ -322,76 +319,69 @@ class Post extends Component {
                                                 <div className="flex justify-between">
                                                     <div>
                                                         <span className="font-bold">
-                                                            <a href="#" className="text-black">{user && user.displayName!== '' ? user.displayName : (user ? user.idKey : "")}</a>
+                                                            <a href="#" className="text-black">{user && user.displayName !== '' ? user.displayName : (user ? user.idKey : "")}</a>
                                                         </span><br />
                                                         <span className="text-grey-dark">&nbsp;{moment(post.createAt).format('ll')}</span>
                                                     </div>
                                                     <div>
                                                         <a onClick={this.removeModal} href="#" className="text-grey-dark hover:text-teal">
-                                                            <i style={{fontSize: '30px', marginTop: '-9px', marginRight: '-7px'}} className="fa fa-times-circle" />
+                                                            <i style={{ fontSize: '30px', marginTop: '-9px', marginRight: '-7px' }} className="fa fa-times-circle" />
                                                         </a>
                                                     </div>
                                                 </div>
                                                 <div className="mb-4">
-                                                    <p style={{ fontSize: '20px', fontWeight: "bold", whiteSpace: 'pre-wrap'  }}>{post.content}</p>
+                                                    <p style={{ fontSize: '20px', fontWeight: "bold", whiteSpace: 'pre-wrap' }}>{post.content}</p>
                                                     <br />
                                                 </div>
                                                 <hr className="line-hr" />
-                                                {/* <div className="mb-4 text-grey-dark" style={{ marginTop: '10px' }}>
-                                                    <span className="mr-8">aaaaaaaaaaa Reweets</span>
-                                                    <span className="mr-8">{post.likes} Likes</span>
-                                                </div> */}
                                                 <div className="mb-4" style={{ marginTop: '20px' }}>
                                                     <div className="pb-2">
-                                                        
-                                                        <span title="comments" style={{ cursor: 'pointer' ,fontSize: '14px', marginRight: '19px', fontFamily: 'Ubuntu-Regular', fontWeight: 'bold', color: '#7f7f7f' }} >
+
+                                                        <span title="comments" style={{ cursor: 'pointer', fontSize: '14px', marginRight: '19px', fontFamily: 'Ubuntu-Regular', fontWeight: 'bold', color: '#7f7f7f' }} >
                                                             <i style={{ fontSize: '19px' }} className="fa fa-comments"></i>&nbsp;&nbsp;
-                            {this.state.comment.length}
-                        </span>
+                                                            {this.state.comment.length}
+                                                        </span>
 
-                <a className="facebook-reaction">
-                            <span className="like-btn">
-                                {!like ? ''
-                                    :
-                                    <span className="like-btn-emo like-btn-like"></span>
-                                }
-                                {!love ? ''
-                                    :
-                                    <span className="like-btn-emo like-btn-love"></span>
-                                }
-                                {!haha ? ''
-                                    :
-                                    <span className="like-btn-emo like-btn-haha"></span>
-                                }
-                                {!wow ? ''
-                                    :
-                                    <span className="like-btn-emo like-btn-wow"></span>
-                                }
-                                {!sad ? ''
-                                    :
-                                    <span className="like-btn-emo like-btn-sad"></span>
-                                }
-                                {!angry ? ''
-                                    :
-                                    <span className="like-btn-emo like-btn-angry"></span>
-                                }
+                                                        <a className="facebook-reaction">
+                                                            <span className="like-btn">
+                                                                {!like ? ''
+                                                                    :
+                                                                    <span className="like-btn-emo like-btn-like"></span>
+                                                                }
+                                                                {!love ? ''
+                                                                    :
+                                                                    <span className="like-btn-emo like-btn-love"></span>
+                                                                }
+                                                                {!haha ? ''
+                                                                    :
+                                                                    <span className="like-btn-emo like-btn-haha"></span>
+                                                                }
+                                                                {!wow ? ''
+                                                                    :
+                                                                    <span className="like-btn-emo like-btn-wow"></span>
+                                                                }
+                                                                {!sad ? ''
+                                                                    :
+                                                                    <span className="like-btn-emo like-btn-sad"></span>
+                                                                }
+                                                                {!angry ? ''
+                                                                    :
+                                                                    <span className="like-btn-emo like-btn-angry"></span>
+                                                                }
 
-                                {!totalReaction ? ''
-                                    :
-                                    <span>{totalReaction}</span>
-                                }
+                                                                {!totalReaction ? ''
+                                                                    :
+                                                                    <span>{totalReaction}</span>
+                                                                }
 
-                            </span>
-                        </a>
+                                                            </span>
+                                                        </a>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
                                         <div className="flex border-b border-solid border-grey-light backgr">
                                             <div className="headerPost-left w-1/8 text-right pl-3 pt-3">
-                                                {/* <a href="#">
-                                                    <img src={post.avatarURL} alt="avatar" className="rounded-full h-12 w-12 mr-2 circlePost" />
-                                                </a> */}
                                             </div>
                                             <div className="w-7/8 p-3 pl-0">
                                                 <textarea onChange={this.onHandleChange} value={this.state.reply} name="reply" placeholder="Tweet your reply" className="form-control user" row="2" ></textarea>
@@ -443,7 +433,7 @@ class Post extends Component {
                                     {post.likes}
                                 </a> */}
 
-                        <span  onClick={(e) => this.getPost(post, e)}  title="comments" style={{ cursor: 'pointer' ,fontSize: '14px', marginRight: '19px', fontFamily: 'Ubuntu-Regular', fontWeight: 'bold', color: '#7f7f7f' }} >
+                        <span onClick={(e) => this.getPost(post, e)} title="comments" style={{ cursor: 'pointer', fontSize: '14px', marginRight: '19px', fontFamily: 'Ubuntu-Regular', fontWeight: 'bold', color: '#7f7f7f' }} >
                             <i style={{ fontSize: '19px' }} className="fa fa-comments"></i>&nbsp;&nbsp;
                             {this.state.comment.length}
                         </span>
@@ -461,12 +451,6 @@ class Post extends Component {
                                     <li onClick={(e) => this.onReaction(e, 6)} className="reaction reaction-angry" data-reaction="Angry"></li>
                                 </ul>
                             </span>
-                            {/* <div class="like-stat">
-                                <span class="like-emo">
-                                    <span class="like-btn-like"></span>
-                                </span>
-                                <span class="like-details">Arkaprava Majumder and 1k others</span>
-                            </div> */}
                         </a>
                         <a className="facebook-reaction">
                             <span className="like-btn">

@@ -5,6 +5,7 @@ import Post from './Post';
 import axios from 'axios';
 import PostNF from './PostNF';
 
+
 class PostsNF extends Component {
     constructor(props) {
         super(props);
@@ -14,18 +15,20 @@ class PostsNF extends Component {
         }
     }
     componentDidMount() {
+        window.addEventListener('scroll', this.onScroll);
         const idPost = this.props.match.params.id;
         const publicKey = localStorage.getItem('PUBLIC_KEY');
 
         axios.get(`http://localhost:4200/follow/followingID?idKey=${publicKey}`).then((res) => {
             if (res.data.status == 200) {
-                const list = res.data.result;
+                let list = res.data.result;
+                list.push(publicKey);
                 let promise = [];
                 list.forEach(item => {
                     promise.push(axios.get(`http://localhost:4200/transactions?idKey=${item}`));
                 });
                 Promise.all(promise).then((result) => {
-                    console.log(result);
+                    // console.log(result);
                     let listTx = [];
                     result.forEach(item => {
                         listTx = listTx.concat(item.data.result)
@@ -33,30 +36,52 @@ class PostsNF extends Component {
                     listTx.sort(function(a, b){
                        return a.createAt > b.createAt;
                     });
+                    let countPage = Math.floor(listTx.length / 20);
+                    if(listTx.length % 10 > 0){
+                        countPage += 1;
+                    }
                     this.setState({
-                        listTx: listTx
+                        listTx: listTx,
+                        countPage: countPage
                     });
                 })
             }
-        })
-        // axios.get(`http://localhost:4200/post/get-list-posts?idKey=${idPost}`).then((posts) => {
-        //     if(posts.data.result){
-        //         this.setState({
-        //             posts: posts.data.result
-        //         });
-        //     }
-        // })
+        });
+    }
+
+    componentWillUnmount() {
+        window.removeEventListener('scroll', this.onScroll);
+    }
+    onScroll = () => {
+        var scrollTop = (document.documentElement && document.documentElement.scrollTop) || document.body.scrollTop;
+        var scrollHeight = (document.documentElement && document.documentElement.scrollHeight) || document.body.scrollHeight;
+        var clientHeight = document.documentElement.clientHeight || window.innerHeight;
+        var scrolledToBottom = Math.ceil(scrollTop + clientHeight) >= scrollHeight;
+
+        if (scrolledToBottom) {
+            let page = this.state.page + 1;
+            if(page > this.state.countPage){
+                return;
+            } else {
+                this.setState({
+                    page: page
+                })
+            }
+        }
     }
 
     render() {
         // console.log(this.props.posts);
-        const { listTx } = this.state;
+        let { listTx } = this.state;
         let limit = 20;
         let offset = (this.state.page - 1) * limit;
-        let list = listTx.slice(0, limit + offset);
+        if(listTx.length){
+            listTx = listTx.slice(0, limit + offset)
+        }
+        // let list = listTx.slice(0, limit + offset);
         let listPosts = '';
-        if (list.length) {
-            listPosts = list.map((tx, index) => {
+        if (listTx.length) {
+            listPosts = listTx.map((tx, index) => {
                 return (
                     <PostNF
                         key={index}
@@ -68,7 +93,7 @@ class PostsNF extends Component {
         return (
             <div className="w-full lg:w-1/2 bg-white mb-4">
                 <div className="p-3 text-lg font-bold border-b border-solid border-grey-light">
-                    <a href="#" className="text-black mr-6 no-underline hover-underline">Tweets</a>
+                    <a href="#" className="text-black mr-6 no-underline hover-underline">Newfeed</a>
                     {/* <a href="#" className="mr-6 text-teal no-underline hover:underline">Tweets &amp; Replies</a>
                     <a href="#" className="text-teal no-underline hover:underline">Media</a> */}
                 </div>

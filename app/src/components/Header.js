@@ -276,14 +276,6 @@ class Header extends Component {
                                     <i className="fa fa-money"></i>
                                     &nbsp;&nbsp;&nbsp;Payment
                                 </a>
-                                <a onClick={(e) => this.toggleEditModal(profile, e)} className="linh-a" href="#">
-                                    <i className="fa fa-user"></i>
-                                    &nbsp;&nbsp;&nbsp;Edit Profile
-                                </a>
-                                <a onClick={(e) => this.toggleAccountModal(profile, e)} className="linh-a" href="#">
-                                    <i className="fa fa-user-plus"></i>
-                                    &nbsp;New User
-                                </a>
                                 <a onClick={(e) => this.signOut(e)} className="linh-a" href="">
                                     <i className="fa fa-sign-out"></i>
                                     &nbsp;&nbsp;Sign Out
