@@ -10,34 +10,48 @@ class transactionDetail extends Component {
     constructor(props) {
         super(props);
         this.state={
-            data:''
+            tx: null
         }
     }
     
     componentDidMount(){
-        axios.get('https://komodo.forest.network/tx?hash=0x76533DA255CD8BC34009CF71587EC01B0D7E3D6747DFE197C10263D215171921').then(res=>{
-            this.setState({
-                data: res.data.result.tx
-            })
+        // console.log(this.props.match.params.id);
+        const hash = this.props.match.params.id;
+        axios.get(`http://localhost:4200/transactions/detail?hash=${hash}`).then((res) => {
+            if(res.data.status == 200){
+                const tx = res.data.result;
+                this.setState({
+                    tx: tx
+                })
+            }
         })
+        // axios.get('https://komodo.forest.network/tx?hash=0x76533DA255CD8BC34009CF71587EC01B0D7E3D6747DFE197C10263D215171921').then(res=>{
+        //     this.setState({
+        //         data: res.data.result.tx
+        //     })
+        // })
+    }
+    toProfile = (e, idKey) => {
+        e.preventDefault();
+        this.props.history.push(`/tweets/${idKey}`);
     }
     render() {
-        let tx = this.state.data? transaction.decode(Buffer.from(this.state.data, 'base64')):'';
+        // let tx = this.state.data ? transaction.decode(Buffer.from(this.state.data, 'base64')) :'';
+        let {tx} = this.state;
         
         return (
             <div>
                 <Header />
-                
-                    
                 <section className="section" >
                     <div className="containertra" >
                         <h1 className="title" style={{marginTop:'30px'}}>Transaction</h1>
-                        <h2 className="subtitle has-text-grey">76533DA255CD8BC34009CF71587EC01B0D7E3D6747DFE197C10263D215171921</h2>
-                        <h6 className="title is-6"><span className="has-text-success">Comfirmed</span> at <a href="/blocks/138" className="">#138</a></h6>
+                        <h2 className="subtitle has-text-grey">{tx ? tx.hash : ""}</h2>
+                        <h6 className="title is-6"><span className="has-text-success">Comfirmed</span> at <a href="" className="">#{tx ? tx.height : ""}</a></h6>
                         <article className="message is-success"><div className="message-header"><p>Successful</p></div></article>
                         <div className="columns">
-                            <div className="column"><p><strong>Operation</strong>: create_account</p><p><strong>Memo</strong>: CTT522-CQ2015/32</p>
-                                <p><strong>Tags</strong>: 2</p>
+                            <div className="column"><p><strong>Operation</strong>: {tx ? tx.operation : ""}</p>
+                            {/* <p><strong>Memo</strong>: CTT522-CQ2015/32</p> */}
+                                {/* <p><strong>Tags</strong>: 2</p> */}
                             </div>
                         </div>
                         <div className="b-table">
@@ -57,19 +71,27 @@ class transactionDetail extends Component {
                                         <tr className=""> 
                                             <td data-label="Key" className=""><span>account</span></td>
                                             <td data-label="value" className="">
-                                                <span><a href="/accounts/GAO4J5RXQHUVVONBDQZSRTBC42E3EIK66WZA5ZSGKMFCS6UNYMZSIDBI" className="">GAO4J5RXQHUVVONBDQZSRTBC42E3EIK66WZA5ZSGKMFCS6UNYMZSIDBI</a></span>
+                                                <span><a onClick={(e) => this.toProfile(e, tx.account)} href="" className="">{tx ? tx.account : ""}</a></span>
                                             </td>
                                         </tr> 
-                                        <tr className=""> 
-                                            <td data-label="Key" className=""><span>account</span></td>
-                                            <td data-label="value" className="">
-                                                <span><a href="/accounts/GCWHALH3HH6SRSRSUKVIXMU5SQKUY46ZQNDHIJC2GJK6RGIYTF7JEB3E" className="">GCWHALH3HH6SRSRSUKVIXMU5SQKUY46ZQNDHIJC2GJK6RGIYTF7JEB3E</a></span>
-                                            </td>
-                                        </tr> 
+                                        {tx && tx.address.length 
+                                            ? 
+                                            <tr className=""> 
+                                                <td data-label="Key" className="">
+                                                <span>address</span>
+                                                </td>
+                                                <td data-label="value" className="">
+                                                    <span><a onClick={(e) => this.toProfile(e, tx.address)} href="" className="">{tx.address}</a></span>
+                                                </td>
+                                            </tr> 
+                                            :
+                                            ""
+                                            }
+                                        
                                     </tbody> 
                                 </table>
                             </div> 
-                            <pre>{JSON.stringify(tx, null, 2)} </pre> {/*transaction */}
+                            <pre>{ tx ? JSON.stringify(JSON.parse(tx.tx), null, 2) : ""} </pre> {/*transaction */}
                         </div>
                     </div>
                 </section>
@@ -78,4 +100,4 @@ class transactionDetail extends Component {
                     }
                 }
                 
-export default transactionDetail;
+export default withRouter(transactionDetail);

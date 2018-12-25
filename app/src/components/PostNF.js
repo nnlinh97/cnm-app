@@ -260,8 +260,8 @@ class PostNF extends Component {
         });
     }
     onReaction = (e, type) => {
-        console.log(type);
-        console.log(this.props.tx.hash);
+        // console.log(type);
+        // console.log(this.props.tx.hash);
         e.preventDefault();
         const hash = this.props.tx.hash;
         const publicKey = localStorage.getItem('PUBLIC_KEY');
@@ -343,6 +343,9 @@ class PostNF extends Component {
                 });
             }
         })
+    }
+    txDetail = (hash) => {
+        this.props.history.push(`/transactions/${hash}`);
     }
     render() {
         const user = this.state.account;
@@ -429,6 +432,8 @@ class PostNF extends Component {
                             <span className="text-grey-dark">&nbsp;{this.state.createAt ? moment(this.state.createAt).format('ll') : ""}&nbsp;</span>
                             {/* <span className="text-grey-dark">·</span> */}
                             {/* <span className="text-grey-dark">&nbsp;{moment(post.createAt).format('ll')} </span> */}
+                            <br/>
+                            <span onClick={() => this.txDetail(this.props.tx.hash)} style={{cursor: 'pointer'}} className="text-grey-dark">Hash:&nbsp;{this.props.tx.hash} </span>
                         </div>
 
                         {/* start post detail */}
@@ -464,7 +469,7 @@ class PostNF extends Component {
                                                     <p className="mb-6"> {this.state.operation}</p>
                                                     <p style={{whiteSpace: 'pre-wrap'}}>
                                                         <strong>{address && address.displayName !== "" ? address.displayName : (address ? address.idKey : null)}</strong>
-                                                        &nbsp; {this.state.amount ? `${this.state.amount} CEL` : null}
+                                                        {this.state.amount ? `   ${this.state.amount} CEL` : null}
                                                         {listFollow !== "" ? listFollow : null}
                                                         {content ? content : null}
                                                         {displayName ? <strong>{displayName}</strong> : null}
@@ -547,9 +552,9 @@ class PostNF extends Component {
                             <p className="mb-6"> {this.state.operation}</p>
                             {/* <p style={{ cursor: 'pointer', whiteSpace: 'pre-wrap' }} onClick={(e) => this.getPost(post, e)} className="mb-4">{post.content}</p> */}
                             {/* <img src={this.state.avatar} /> */}
-                            <p>
+                            <p style={{ cursor: 'pointer', whiteSpace: 'pre-wrap' }}>
                                 <strong>{address && address.displayName !== "" ? address.displayName : (address ? address.idKey : null)}</strong>
-                                &nbsp; {this.state.amount ? `${this.state.amount} CEL` : null}
+                                {this.state.amount ? `   ${this.state.amount} CEL` : null}
                                 {listFollow !== "" ? listFollow : null}
                                 {content ? content : null}
                                 {displayName ? <strong>{displayName}</strong> : null}

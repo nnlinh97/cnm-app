@@ -19,7 +19,7 @@ class History extends Component {
         super(props);
         this.state = {
             history: [],
-
+            currentPage: 1
         }
     }
 
@@ -37,8 +37,17 @@ class History extends Component {
                         history.push(item)
                     }
                 });
+                let countPage = Math.floor(history.length / 10);
+                if(history.length % 10 > 0){
+                    countPage += 1;
+                }
+                let page = [];
+                for(let i = 1; i<= countPage; i++){
+                    page.push(i)
+                }
                 this.setState({
-                    history: history
+                    history: history,
+                    countPage: page
                 })
             }
         })
@@ -47,13 +56,50 @@ class History extends Component {
     toProfile = (idKey) => {
         this.props.history.push(`/tweets/${idKey}`);
     }
+    onChangePage = (e, page)=> {
+        e.preventDefault();
+        // console.log(page);
+        this.setState({
+            currentPage: page
+        })
+    }
+    onNothing = (e) => {
+        e.preventDefault();
+    }
+    onPreviuos = (e) => {
+        e.preventDefault();
+        if(this.state.currentPage - 1 < 1){
+            return;
+        }
+        this.setState({
+            currentPage: this.state.currentPage - 1
+        })     
+    }
+    onNext = (e) => {
+        e.preventDefault();
+        if(this.state.currentPage + 1 > this.state.countPage.length){
+            return;
+        }  
+        this.setState({
+            currentPage: this.state.currentPage + 1
+        })        
+    }
+    txDetail = (e, hash) => {
+        e.preventDefault();
+        this.props.history.push(`/transactions/${hash}`);
+    }
     render() {
-        let totalPayment = this.state.history.length;
-        let totalPage = totalPayment / 1;
-        console.log(this.state.history);
+        let limit = 10;
+        let current = this.state.currentPage;
+        let offset = (current - 1) * limit;
+        let {history} = this.state;
+        if(history.length){
+            history = history.slice(offset, limit + offset);
+        }
+        // console.log(this.state.history);
         let list = '';
-        if (this.state.history.length > 0) {
-            list = this.state.history.map((history, index) => {
+        if (history.length) {
+            list = history.map((history, index) => {
                 return (
                     <tr key={index}>
                         <td>
@@ -66,7 +112,7 @@ class History extends Component {
                         <td>{history.createAt}</td>
                         <td >
                             <span>
-                                <a style={{ width: "300px" }} href="/transactions/73A9675CDD0CCE0D7ECD46E2263B2AE4D2D8B3CA4BF4C0C38AA2DBA01BDAC599"  >
+                                <a onClick={(e) => this.txDetail(e, history.hash)} style={{ width: "300px" }} href=""  >
                                     <p title={history.hash} style={{ width: "100px", color: "#3273dc", cursor: "pointer", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
                                         {history.hash}
                                     </p>
@@ -88,6 +134,15 @@ class History extends Component {
                         <td>{history.tx.params.amount} CEL</td>
                     </tr>
                 )
+            })
+        }
+        let pagination = "";
+        if(this.state.countPage){
+            pagination =   this.state.countPage.map((page, index) => {
+                if(page == this.state.currentPage){
+                    return (<a onClick={this.onNothing} key={index} className="active" href="#">{page}</a>);
+                }
+                return  (<a onClick={(e) => this.onChangePage(e, page)} key={index} href="#">{page}</a>);
             })
         }
 
@@ -122,15 +177,17 @@ class History extends Component {
                             </table>
                         </div>
                         <br />
-                        <div class="pagination">
-                            <a href="#">&laquo;</a>
-                            <a href="#">1</a>
+                        <div className="pagination">
+                            <a onClick={this.onPreviuos} href="#">&laquo;</a>
+                        {pagination}
+                            
+                            {/* <a href="#">1</a>
                             <a href="#" class="active">2</a>
                             <a href="#">3</a>
                             <a href="#">4</a>
                             <a href="#">5</a>
-                            <a href="#">6</a>
-                            <a href="#">&raquo;</a>
+                            <a href="#">6</a> */}
+                            <a onClick={this.onNext} href="#">&raquo;</a>
                         </div>
                         <br />
                     </div>
