@@ -18,7 +18,8 @@ class History extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            history: []
+            history: [],
+
         }
     }
 
@@ -41,16 +42,20 @@ class History extends Component {
                 })
             }
         })
+
     }
     toProfile = (idKey) => {
         this.props.history.push(`/tweets/${idKey}`);
     }
     render() {
+        let totalPayment = this.state.history.length;
+        let totalPage = totalPayment / 1;
+        console.log(this.state.history);
         let list = '';
         if (this.state.history.length > 0) {
             list = this.state.history.map((history, index) => {
                 return (
-                    <tr key = {index}>
+                    <tr key={index}>
                         <td>
                             <span>
                                 <a href="/blocks/182" style={{ color: "#3273dc" }}>
@@ -63,7 +68,7 @@ class History extends Component {
                             <span>
                                 <a style={{ width: "300px" }} href="/transactions/73A9675CDD0CCE0D7ECD46E2263B2AE4D2D8B3CA4BF4C0C38AA2DBA01BDAC599"  >
                                     <p title={history.hash} style={{ width: "100px", color: "#3273dc", cursor: "pointer", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
-                                    {history.hash}
+                                        {history.hash}
                                     </p>
                                 </a>
                             </span>
@@ -72,7 +77,7 @@ class History extends Component {
                             <p onClick={() => this.toProfile(history.account)} title={history.account}
                                 style={{ width: "100px", color: "#3273dc", cursor: "pointer", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
                                 {history.account}
-                                        </p>
+                            </p>
                         </td>
                         <td>
                             <p onClick={() => this.toProfile(history.address)} title={history.address}
@@ -116,6 +121,18 @@ class History extends Component {
                                 </tbody>
                             </table>
                         </div>
+                        <br/>
+                        <div class="pagination">
+                            <a href="#">&laquo;</a>
+                            <a href="#">1</a>
+                            <a href="#">2</a>
+                            <a href="#">3</a>
+                            <a href="#">4</a>
+                            <a href="#">5</a>
+                            <a href="#">6</a>
+                            <a href="#">&raquo;</a>
+                        </div>
+                        <br/>
                     </div>
 
                 </div>
