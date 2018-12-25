@@ -11,7 +11,7 @@ import Payment from './pages/Payment';
 import NewFeed from './pages/NewFeed';
 import History from './pages/History';
 import Visit from './pages/Visit';
-
+import Transaction from './pages/transactionDetail';
 
 class App extends Component {
   render() {
@@ -28,8 +28,10 @@ class App extends Component {
             <Route exact path='/followings/:id' component={Following} />
             <Route exact path='/followers/:id' component={Followers} />
             <Route exact path='/history/:id' component={History} />
+            <Route exact path='/transaction/:id' component={Transaction}/>
             <Route exact path='/generate' component={Register} />
             <Route exact path='/register' component={Register} />
+
             {/* <Route exact path='/:username' component={Profile} />
             <Route exact path='/:username/followers' component={Followers} />
             <Route exact path='/:username/followings' component={Following} />

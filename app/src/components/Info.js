@@ -263,6 +263,7 @@ class Info extends Component {
                             cursor: "pointer",
                             overflow: "hidden",
                             textOverflow: "ellipsis",
+                            wordBreak: 'break-all',
                         }}>
 
                         {info.publicKey}
