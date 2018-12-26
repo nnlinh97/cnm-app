@@ -1,21 +1,30 @@
 import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
+import moment from 'moment';
+
+const SIZE_LIMITED = 22020096;
+const BANDWIDTH_PERIOD = 86400;
+const MAX_CELLULOSE = 9007199254740991;
+const NETWORK_BANDWIDTH = BANDWIDTH_PERIOD * SIZE_LIMITED;
+
 
 class Follower extends Component {
-   
+
     toProFile = (idKey, e) => {
         e.preventDefault();
         this.props.history.push(`/tweets/${idKey}`);
     }
     render() {
-        const {follower} = this.props;
+        const { follower } = this.props;
         let avatar = "https://tinyurl.com/yapenv5f";
-        const displayName = follower.displayName ? follower.displayName : follower.idKey;
-        // let btnClass = "btn1 bg-white hover:bg-blue-lightest text-blue font-medium py-2 px-4 rounded-full";
-        // let descBtn = "Follow";
-        // if(follower.following){
-        //     btnClass = "btn1 bg-blue-light hover:bg-yellow-darker text-white font-medium py-2 px-4 rounded-full";
-        //     descBtn = "Following";
+        const displayName = follower.displayName ? (new Buffer(follower.displayName, "base64")).toString('utf8') : follower.idKey;
+
+        let now = moment();
+        let duration = moment.duration(now.diff(follower.bandwidthTime));
+        let diff = duration.asSeconds();
+        let used = Math.ceil(Math.max(0, (BANDWIDTH_PERIOD - diff) / BANDWIDTH_PERIOD) * (+follower.bandwidth))
+        let oxy = +follower.bandwidthLimit - used;
+        
         return (
             <div className="w-full mb-4">
                 <div className="ProfileCard">
@@ -55,14 +64,14 @@ class Follower extends Component {
                                         Sequence: {follower.sequence}
                                     </div>
                                     <div style={{ fontSize: '12px' }} className="ProfileNameTruncated-link u-textTruncate js-nav" data-aria-label-part="">
-                                        Balance: {follower.balance} CEL
-                                        </div>
-                                    {/* <div style={{ fontSize: '12px' }} className="fullname ProfileNameTruncated-link u-textTruncate js-nav" data-aria-label-part="">
-                                        Energy: {following.bandwidth} OXY
+                                        Balance: {follower.balance / 100000000} TRE
                                         </div>
                                     <div style={{ fontSize: '12px' }} className="fullname ProfileNameTruncated-link u-textTruncate js-nav" data-aria-label-part="">
-                                        BandwidthTime: {bandwidthTime}
-                                    </div> */}
+                                        Energy: {Math.floor(oxy)} OXY
+                                        </div>
+                                    <div style={{ fontSize: '12px' }} className="fullname ProfileNameTruncated-link u-textTruncate js-nav" data-aria-label-part="">
+                                        Last: {follower.bandwidthTime}
+                                    </div>
 
                                 </div>
                                 <span className="UserBadges"></span>

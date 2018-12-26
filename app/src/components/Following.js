@@ -6,6 +6,12 @@ import _ from 'lodash';
 import v1 from '../lib/tx/v1';
 import transaction from '../lib/tx/index';
 import base32 from 'base32.js';
+
+
+const SIZE_LIMITED = 22020096;
+const BANDWIDTH_PERIOD = 86400;
+const MAX_CELLULOSE = 9007199254740991;
+const NETWORK_BANDWIDTH = BANDWIDTH_PERIOD * SIZE_LIMITED;
 class Following extends Component {
     constructor(props) {
         super(props);
@@ -21,7 +27,15 @@ class Following extends Component {
     render() {
         let avatar = "https://tinyurl.com/yapenv5f";
         const { following } = this.props;
-        const displayName = following.displayName ? following.displayName : following.idKey;
+        console.log(following);
+
+        let now = moment();
+        let duration = moment.duration(now.diff(following.bandwidthTime));
+        let diff = duration.asSeconds();
+        let used = Math.ceil(Math.max(0, (BANDWIDTH_PERIOD - diff) / BANDWIDTH_PERIOD) * (+following.bandwidth))
+        let oxy = +following.bandwidthLimit - used;
+
+        const displayName = following.displayName ? (new Buffer(following.displayName, "base64")).toString('utf8')  : following.idKey;
         const bandwidthTime = moment(following.bandwidthTime).format('DD-MM-YYYY');;
         //const bandwidthDate = moment(bandwidthTime).format('DD-MM-YYYY');
         let btnClass = "btn1 bg-blue-light hover:bg-yellow-darker text-white font-medium py-2 px-4 rounded-full";
@@ -66,14 +80,14 @@ class Following extends Component {
                                         Sequence: {following.sequence}
                                     </div>
                                     <div style={{ fontSize: '12px' }} className="ProfileNameTruncated-link u-textTruncate js-nav" data-aria-label-part="">
-                                        Balance: {following.balance} CEL
-                                        </div>
-                                    {/* <div style={{ fontSize: '12px' }} className="fullname ProfileNameTruncated-link u-textTruncate js-nav" data-aria-label-part="">
-                                        Energy: {following.bandwidth} OXY
+                                        Balance: {following.balance / 100000000} TRE
                                         </div>
                                     <div style={{ fontSize: '12px' }} className="fullname ProfileNameTruncated-link u-textTruncate js-nav" data-aria-label-part="">
-                                        BandwidthTime: {bandwidthTime}
-                                    </div> */}
+                                        Energy: {Math.floor(oxy)} OXY
+                                        </div>
+                                    <div style={{ fontSize: '12px' }} className="fullname ProfileNameTruncated-link u-textTruncate js-nav" data-aria-label-part="">
+                                        Last: {following.bandwidthTime}
+                                    </div>
 
                                 </div>
                                 <span className="UserBadges"></span>

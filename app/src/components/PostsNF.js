@@ -4,6 +4,9 @@ import { withRouter } from 'react-router-dom';
 import Post from './Post';
 import axios from 'axios';
 import PostNF from './PostNF';
+import _ from 'lodash';
+import v1 from '../lib/tx/v1';
+
 
 
 class PostsNF extends Component {
@@ -33,17 +36,21 @@ class PostsNF extends Component {
                     result.forEach(item => {
                         listTx = listTx.concat(item.data.result)
                     });
+                    listTx = _.uniqBy(listTx, 'hash');
                     listTx.sort(function(a, b){
-                       return a.createAt > b.createAt;
-                    });
-                    let countPage = Math.floor(listTx.length / 20);
-                    if(listTx.length % 10 > 0){
-                        countPage += 1;
-                    }
-                    this.setState({
-                        listTx: listTx,
-                        countPage: countPage
-                    });
+                        return +b.height - a.height;
+                     });
+
+                     let countPage = Math.floor(listTx.length / 20);
+                        if(listTx.length % 10 > 0){
+                            countPage += 1;
+                         }
+                        this.setState({
+                            listTx: listTx,
+                            countPage: countPage
+                        });
+                    
+                    
                 })
             }
         });
@@ -71,6 +78,8 @@ class PostsNF extends Component {
     }
 
     render() {
+        // let a = new Buffer("AQAOcndnYXJmZ2ZkZ3NkZ2Q=", "base64");
+        // console.log(v1.decodePost(new Buffer("AQAOcndnYXJmZ2ZkZ3NkZ2Q=", "base64")).text);
         // console.log(this.props.posts);
         let { listTx } = this.state;
         let limit = 20;

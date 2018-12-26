@@ -1,10 +1,16 @@
 import React, { Component } from 'react';
-import moment from 'moment';
 import axios from 'axios';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import transaction from '../lib/tx/index';
 import * as actions from '../actions/index';
+import moment from 'moment';
+
+
+const SIZE_LIMITED = 22020096;
+const BANDWIDTH_PERIOD = 86400;
+const MAX_CELLULOSE = 9007199254740991;
+const NETWORK_BANDWIDTH = BANDWIDTH_PERIOD * SIZE_LIMITED;
 
 
 
@@ -47,11 +53,12 @@ class Info extends Component {
                 //     visitor: publicKey == idKey ? false : true
                 // })
                 this.setState({
-                    displayName: user.displayName !== '' ? user.displayName : 'No Name',
+                    displayName: user.displayName !== '' ? (new Buffer(user.displayName, "base64")).toString('utf8') : 'No Name',
                     sequence: user.sequence,
                     balance: user.balance,
-                    bandwithTime: user.bandwithTime,
-                    bandwithLimit: user.bandwithLimit,
+                    bandwidth: user.bandwidth,
+                    bandwidthTime: user.bandwidthTime,
+                    bandwidthLimit: user.bandwidthLimit,
                     publicKey: idKey,
                     visitor: publicKey == idKey ? false : true
                 });
@@ -65,6 +72,7 @@ class Info extends Component {
         axios.get(`http://localhost:4200/users/get-info?idKey=${idKey}`).then((info) => {
             if (info.data.status === 200) {
                 let user = info.data.result;
+                // console.log(user);
                 // this.props.getInfoProfile({
                 //     displayName: user.displayName !== '' ? user.displayName : 'No Name',
                 //     sequence: user.sequence,
@@ -75,11 +83,12 @@ class Info extends Component {
                 //     visitor: publicKey == idKey ? false : true
                 // })
                 this.setState({
-                    displayName: user.displayName !== '' ? user.displayName : 'No Name',
+                    displayName: user.displayName !== '' ? (new Buffer(user.displayName, "base64")).toString('utf8') : 'No Name',
                     sequence: user.sequence,
                     balance: user.balance,
-                    bandwithTime: user.bandwithTime,
-                    bandwithLimit: user.bandwithLimit,
+                    bandwidth: user.bandwidth,
+                    bandwidthTime: user.bandwidthTime,
+                    bandwidthLimit: user.bandwidthLimit,
                     publicKey: idKey,
                     visitor: publicKey == idKey ? false : true
                 });
@@ -188,6 +197,13 @@ class Info extends Component {
         if (this.state.success !== '') {
             alert(this.state.success)
         }
+
+        let now = moment();
+        let duration = moment.duration(now.diff(info.bandwidthTime));
+        let diff = duration.asSeconds();
+        console.log(info.bandwidth);
+        let used = Math.ceil(Math.max(0, (BANDWIDTH_PERIOD - diff) / BANDWIDTH_PERIOD) * (+info.bandwidth))
+        let oxy = +info.bandwidthLimit - used;
         return (
             <div style={{ 'marginTop': '1rem' }} className="w-full lg:w-1/4 pl-4 lg:pl-0 pr-6 mt-8 mb-4">
                 <div className="mb-4">
@@ -271,9 +287,9 @@ class Info extends Component {
                 </div>
                 <div className="mb-4">
                     <p><strong>Sequence</strong>: {info.sequence}</p>
-                    <p><strong>Balance</strong>: {info.balance} CEL</p>
-                    {/* <p><strong>Energy</strong>: 42244 OXY</p>
-                    <p><strong>Transactions</strong>: 4</p> */}
+                    <p><strong>Balance</strong>: {+info.balance / 100000000} TRE</p>
+                    <p><strong>Energy</strong>: {Math.floor(oxy)} OXY</p>
+                    <p><strong>Last</strong>: {info.bandwidthTime}</p>
                 </div>
 
             </div>
