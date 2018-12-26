@@ -70,7 +70,7 @@ class Follower extends Component {
                                         Energy: {Math.floor(oxy)} OXY
                                         </div>
                                     <div style={{ fontSize: '12px' }} className="fullname ProfileNameTruncated-link u-textTruncate js-nav" data-aria-label-part="">
-                                        Last: {follower.bandwidthTime}
+                                        Last: {moment(follower.bandwidthTime).format('LLLL')}
                                     </div>
 
                                 </div>

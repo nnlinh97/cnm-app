@@ -86,7 +86,7 @@ class Following extends Component {
                                         Energy: {Math.floor(oxy)} OXY
                                         </div>
                                     <div style={{ fontSize: '12px' }} className="fullname ProfileNameTruncated-link u-textTruncate js-nav" data-aria-label-part="">
-                                        Last: {following.bandwidthTime}
+                                        Last: {moment(following.bandwidthTime).format('LLLL')}
                                     </div>
 
                                 </div>

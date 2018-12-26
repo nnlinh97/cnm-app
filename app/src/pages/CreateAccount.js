@@ -6,6 +6,8 @@ import { Keypair } from 'stellar-base';
 import axios from 'axios';
 import transaction from '../lib/tx/index';
 import * as actions from './../actions/index';
+import { checkOXY } from '../utils/helper';
+
 
 class CreateAccount extends Component {
     constructor(props) {
@@ -64,6 +66,7 @@ class CreateAccount extends Component {
                 return;
             } else {
                 axios.get(`http://localhost:4200/users/get-user?idKey=${currentPublicKey}`).then(user => {
+                    let check = null;
                     if (user.data.status === 200) {
                         const info = user.data.result;
                         let tx = {
@@ -88,6 +91,16 @@ class CreateAccount extends Component {
                         const privateKey = localStorage.getItem('PRIVATE_KEY');
                         transaction.sign(tx, privateKey);
                         const txEncode = '0x' + transaction.encode(tx).toString('hex');
+                        check = checkOXY(info, transaction.encode(tx).toString('base64'), new Date()) > +info.bandwidthLimit;
+                        // console.log(checkOXY(info, transaction.encode(tx).toString('base64'), new Date()));
+                        // console.log(+info.bandwidthLimit);
+                        // console.log(check);
+                        if (check) {
+                            this.setState({
+                                error: "You don't have enough OXY to create account!"
+                            });
+                            return;
+                        }
                         axios.post('http://localhost:4200/request', { tx: txEncode }).then((response) => {
                             if (response.status === 200) {
                                 this.setState({
@@ -124,7 +137,7 @@ class CreateAccount extends Component {
                 <div className="limiter" >
                     <div className="container-login100" style={{ backgroundColor: "#d4d3d2" }}>
                         <div className="wrap-login100">
-                            <form style={{zIndex: '0'}} className="login100-form validate-form p-l-55 p-r-55 p-t-178">
+                            <form style={{ zIndex: '0' }} className="login100-form validate-form p-l-55 p-r-55 p-t-178">
                                 <span className="login100-form-title">
                                     Create Account
                             </span>

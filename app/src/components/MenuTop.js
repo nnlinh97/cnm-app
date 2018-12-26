@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { getListFollowings } from './../actions/request';
+import { checkOXY } from '../utils/helper';
 import axios from 'axios';
 import * as actions from '../actions/index';
 import _ from 'lodash';
@@ -51,7 +52,7 @@ class MenuTop extends Component {
             if (account && follower && following && tweet && history && currentFollowing) {
                 let count = 0;
                 history.data.result.forEach(item => {
-                    if(item.tx.operation == 'payment'){
+                    if (item.tx.operation == 'payment') {
                         count += 1;
                     }
                 });
@@ -83,7 +84,7 @@ class MenuTop extends Component {
             if (account && follower && following && tweet && history && currentFollowing) {
                 let count = 0;
                 history.data.result.forEach(item => {
-                    if(item.tx.operation == 'payment'){
+                    if (item.tx.operation == 'payment') {
                         count += 1;
                     }
                 });
@@ -157,6 +158,7 @@ class MenuTop extends Component {
     }
     requestToServer = (avatarEncode) => {
         const publicKey = localStorage.getItem('PUBLIC_KEY');
+        let check = null;
         axios.get(`http://localhost:4200/users/get-user?idKey=${publicKey}`).then(user => {
             if (user.data.status === 200) {
                 const info = user.data.result;
@@ -172,14 +174,37 @@ class MenuTop extends Component {
                     },
                     signature: new Buffer(64)
                 }
+                try {
+                    transaction.encode(tx).toString('hex')
+                } catch (error) {
+                    this.setState({
+                        error: "You don't have enough OXY to update this image!"
+                    });
+                    this.removeEditModal();
+                    return;
+                }
                 const privateKey = localStorage.getItem('PRIVATE_KEY');
                 transaction.sign(tx, privateKey);
+                // console.log(check);
                 const txEncode = '0x' + transaction.encode(tx).toString('hex');
-                axios.post('http://localhost:4200/request', { tx: txEncode }).then((response) => {
+                check = checkOXY(info, transaction.encode(tx).toString('base64'), new Date()) > +info.bandwidthLimit;
+                // console.log(checkOXY(info, transaction.encode(tx).toString('base64'), new Date()));
+                // console.log(+info.bandwidthLimit);
+                // console.log(check);
+                if (check) {
+                    this.setState({
+                        error: "You don't have enough OXY to update avatar!"
+                    });
+                    this.removeEditModal();
+                    return;
+                }
+                axios.post('http://localhost:4200/request/image', { tx: txEncode }).then((response) => {
+                    // console.log(response);
                     if (response.status === 200) {
                         this.setState({
                             success: 'SUCCESS: Upload successfully!'
                         });
+                        this.removeEditModal();
                         return;
                     } else {
                         this.setState({
@@ -213,11 +238,11 @@ class MenuTop extends Component {
     onHandleFollow = () => {
         let follow = this.state.followingOfCurrentUser;
         let index = -1;
-        console.log(follow)
+        // console.log(follow)
         index = _.findIndex(follow, (item) => {
             return this.props.match.params.id == item;
         });
-        console.log(index)
+        // console.log(index)
         if (index !== -1) {
             follow.splice(index, 1);
         } else {
@@ -257,10 +282,10 @@ class MenuTop extends Component {
     }
     render() {
 
-        if(this.state.error !== ''){
+        if (this.state.error !== '') {
             alert(this.state.error)
         }
-        if(this.state.success){
+        if (this.state.success !== '') {
             alert(this.state.success)
         }
 
@@ -273,12 +298,16 @@ class MenuTop extends Component {
         }
         const followingOfCurrentUser = count.followingOfCurrentUser;
         let index = -1;
-        let btnFollow = 'Follow';
+        let btnFollow = '';
+        // let btnFollow = 'Follow';
         let colorbtn = 'bg-blue-lighter'
         index = _.findIndex(followingOfCurrentUser, (item) => {
             return item == this.props.match.params.id;
         });
         if (index !== -1) {
+            btnFollow = 'unfollow'
+        } else {
+            btnFollow = 'follow'
             btnFollow = 'Unfollow';
             colorbtn = 'bg-blue-light'
         }
@@ -314,22 +343,22 @@ class MenuTop extends Component {
                     <div className="avatar w-full lg:w-1/4">
                         <img src={count.avatar ? count.avatar : avatar} alt="logo" className="rounded-full h-48 w-48 lg:absolute lg:pin-l lg:pin-t lg:-mt-24" />
 
-                        {this.state.visitor ? '' : 
-                        <div className="overlay rounded-full h-48 w-48 lg:absolute lg:pin-l lg:pin-t lg:-mt-24">
-                            <div style={{ height: "90px" }}></div>
-                            <label style={{ fontSize: '20px' }} onClick={this.handleChangeAvatar.bind(this)}>
-                                <div className="icon">
-                                    <i className="fa fa-camera" title="Add photo" style={{ padding: "30px 10px 10px 10px" }}></i>
-                                </div>
-                            </label>
-                            <input id="image2" type="file" accept="image/*" ref={this.changeAvatar} onChange={(e) => this.onLoadAvatar(e)} />
-                        </div>
+                        {this.state.visitor ? '' :
+                            <div className="overlay rounded-full h-48 w-48 lg:absolute lg:pin-l lg:pin-t lg:-mt-24">
+                                <div style={{ height: "90px" }}></div>
+                                <label style={{ fontSize: '20px' }} onClick={this.handleChangeAvatar.bind(this)}>
+                                    <div className="icon">
+                                        <i className="fa fa-camera" title="Add photo" style={{ padding: "30px 10px 10px 10px" }}></i>
+                                    </div>
+                                </label>
+                                <input id="image2" type="file" accept="image/*" ref={this.changeAvatar} onChange={(e) => this.onLoadAvatar(e)} />
+                            </div>
                         }
 
                         <div className="modal3 " id="myModal3" role="dialog" style={{ display: this.state.previewImage == '' ? 'none' : 'block' }} >
                             <div className="center-parent" style={{ zIndex: 1 }}>
-                                <button onClick={this.removeEditModal} style={{ color: "red" }}>
-                                    <i className="fa fa-times fa-lg" style={{width:"25px",height:"25px"}}></i>
+                                <button onClick={this.removeEditModal} style={{ color: "red", backgroundColor: "antiquewhite" }}>
+                                    <i className="fa fa-times-circle fa-lg"></i>
                                 </button>
                                 <div className="previewImage">
                                     <img src={this.state.previewImage} id="pre" />
@@ -381,7 +410,18 @@ class MenuTop extends Component {
                         :
                         <div className="w-full lg:w-1/4 flex my-4 lg:my-0 lg:justify-end items-center">
                             <div className="mr-6">
-                                <button onClick={this.onHandleFollow} className={`${colorbtn} hover:bg-blue-dark text-white font-medium py-2 px-4 rounded-full`}>{btnFollow}</button>
+                                {index !== -1
+                                    ?
+                                    <button onClick={this.onHandleFollow} className={`${colorbtn} hover:bg-blue-dark text-white font-medium py-2 px-4 rounded-full`}>
+                                        unfollow
+                                    </button>
+                                    :
+                                    <button onClick={this.onHandleFollow} className={`${colorbtn} hover:bg-blue-dark text-white font-medium py-2 px-4 rounded-full`}>
+                                        Follow
+                                    </button>
+                                }
+
+                                {/* <button onClick={this.onHandleFollow} className={`${colorbtn} hover:bg-blue-dark text-white font-medium py-2 px-4 rounded-full`}>{btnFollow}</button> */}
                             </div>
                         </div>
                     }
