@@ -201,7 +201,7 @@ class Info extends Component {
         let now = moment();
         let duration = moment.duration(now.diff(info.bandwidthTime));
         let diff = duration.asSeconds();
-        console.log(info.bandwidth);
+        // console.log(info.bandwidth);
         let used = Math.ceil(Math.max(0, (BANDWIDTH_PERIOD - diff) / BANDWIDTH_PERIOD) * (+info.bandwidth))
         let oxy = +info.bandwidthLimit - used;
         return (
@@ -289,7 +289,7 @@ class Info extends Component {
                     <p><strong>Sequence</strong>: {info.sequence}</p>
                     <p><strong>Balance</strong>: {+info.balance / 100000000} TRE</p>
                     <p><strong>Energy</strong>: {Math.floor(oxy)} OXY</p>
-                    <p><strong>Last</strong>: {info.bandwidthTime}</p>
+                    <p><strong>Last</strong>: {moment(info.bandwidthTime).format('LLLL')}</p>
                 </div>
 
             </div>

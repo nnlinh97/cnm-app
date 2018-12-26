@@ -4,6 +4,7 @@ import { withRouter } from 'react-router-dom';
 
 
 import * as Actions from '../actions/request';
+import moment from 'moment';
 
 import Header from '../components/Header';
 import CoverImage from '../components/CoverImage';
@@ -38,11 +39,11 @@ class History extends Component {
                     }
                 });
                 let countPage = Math.floor(history.length / 10);
-                if(history.length % 10 > 0){
+                if (history.length % 10 > 0) {
                     countPage += 1;
                 }
                 let page = [];
-                for(let i = 1; i<= countPage; i++){
+                for (let i = 1; i <= countPage; i++) {
                     page.push(i)
                 }
                 this.setState({
@@ -56,7 +57,7 @@ class History extends Component {
     toProfile = (idKey) => {
         this.props.history.push(`/tweets/${idKey}`);
     }
-    onChangePage = (e, page)=> {
+    onChangePage = (e, page) => {
         e.preventDefault();
         // console.log(page);
         this.setState({
@@ -68,21 +69,21 @@ class History extends Component {
     }
     onPreviuos = (e) => {
         e.preventDefault();
-        if(this.state.currentPage - 1 < 1){
+        if (this.state.currentPage - 1 < 1) {
             return;
         }
         this.setState({
             currentPage: this.state.currentPage - 1
-        })     
+        })
     }
     onNext = (e) => {
         e.preventDefault();
-        if(this.state.currentPage + 1 > this.state.countPage.length){
+        if (this.state.currentPage + 1 > this.state.countPage.length) {
             return;
-        }  
+        }
         this.setState({
             currentPage: this.state.currentPage + 1
-        })        
+        })
     }
     txDetail = (e, hash) => {
         e.preventDefault();
@@ -92,8 +93,8 @@ class History extends Component {
         let limit = 10;
         let current = this.state.currentPage;
         let offset = (current - 1) * limit;
-        let {history} = this.state;
-        if(history.length){
+        let { history } = this.state;
+        if (history.length) {
             history = history.slice(offset, limit + offset);
         }
         // console.log(this.state.history);
@@ -109,7 +110,7 @@ class History extends Component {
                                 </a>
                             </span>
                         </td>
-                        <td>{history.createAt}</td>
+                        <td>{moment(history.createAt).format('lll')}</td>
                         <td >
                             <span>
                                 <a onClick={(e) => this.txDetail(e, history.hash)} style={{ width: "300px" }} href=""  >
@@ -131,18 +132,18 @@ class History extends Component {
                                 {history.address}
                             </p>
                         </td>
-                        <td>{history.tx.params.amount} CEL</td>
+                        <td>{history.tx.params.amount } CEL</td>
                     </tr>
                 )
             })
         }
         let pagination = "";
-        if(this.state.countPage){
-            pagination =   this.state.countPage.map((page, index) => {
-                if(page == this.state.currentPage){
+        if (this.state.countPage && this.state.countPage.length > 1) {
+            pagination = this.state.countPage.map((page, index) => {
+                if (page == this.state.currentPage) {
                     return (<a onClick={this.onNothing} key={index} className="active" href="#">{page}</a>);
                 }
-                return  (<a onClick={(e) => this.onChangePage(e, page)} key={index} href="#">{page}</a>);
+                return (<a onClick={(e) => this.onChangePage(e, page)} key={index} href="#">{page}</a>);
             })
         }
 
@@ -177,17 +178,22 @@ class History extends Component {
                             </table>
                         </div>
                         <br />
+
                         <div className="pagination">
-                            <a onClick={this.onPreviuos} href="#">&laquo;</a>
-                        {pagination}
-                            
-                            {/* <a href="#">1</a>
-                            <a href="#" class="active">2</a>
-                            <a href="#">3</a>
-                            <a href="#">4</a>
-                            <a href="#">5</a>
-                            <a href="#">6</a> */}
-                            <a onClick={this.onNext} href="#">&raquo;</a>
+                            {this.state.countPage && this.state.countPage.length > 1
+                                ?
+                                <a onClick={this.onPreviuos} href="#">&laquo;</a>
+                                :
+                                ""
+                            }
+                            {pagination}
+                            {this.state.countPage && this.state.countPage.length > 1
+                                ?
+                                <a onClick={this.onNext} href="#">&raquo;</a>
+                                :
+                                ""
+                            }
+
                         </div>
                         <br />
                     </div>
