@@ -358,13 +358,16 @@ class MenuTop extends Component {
                         <div className="modal3 " id="myModal3" role="dialog" style={{ display: this.state.previewImage == '' ? 'none' : 'block' }} >
                             <div className="center-parent" style={{ zIndex: 1 }}>
                                 <button onClick={this.removeEditModal} style={{ color: "red", backgroundColor: "antiquewhite" }}>
-                                    <i className="fa fa-times-circle"></i>
+                                    <i className="fa fa-times-circle fa-lg"></i>
                                 </button>
                                 <div className="previewImage">
                                     <img src={this.state.previewImage} id="pre" />
                                 </div>
                             </div>
-                            <div style={{ marginRight: "450px", marginTop: "40px" }}>
+                            <br/>
+                            <br/>
+                         
+                            <div style={{ marginRight: "550px" }}>
                                 <button style={{ marginTop: '65px' }} onClick={this.saveChangesAvatar} type="button" className="btn btn-primary radius-button " data-dismiss="modal">
                                     Save Changes
                             </button >
