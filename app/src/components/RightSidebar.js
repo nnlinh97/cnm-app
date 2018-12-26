@@ -100,7 +100,7 @@ class RightSidebar extends Component {
                         <div className="pl-2 py-2 w-full" style={{textAlign:'center', marginLeft:'20%'}}>
                             <div className="flex justify-between" >
                             <button  className="bg-teal hover:bg-teal-dark text-white font-medium py-2 px-4 rounded-full" style={{textAlign:'center'}}>
-                                Loadmore
+                                Load more
                             </button>
                                 {/* <div>
                                     <a href="#" className="font-bold text-black" >Load more</a>

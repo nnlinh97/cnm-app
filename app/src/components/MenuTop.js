@@ -299,6 +299,8 @@ class MenuTop extends Component {
         const followingOfCurrentUser = count.followingOfCurrentUser;
         let index = -1;
         let btnFollow = '';
+        let btnFollow = 'Follow';
+        let colorbtn = 'bg-blue-lighter'
         index = _.findIndex(followingOfCurrentUser, (item) => {
             return item == this.props.match.params.id;
         });
@@ -306,6 +308,8 @@ class MenuTop extends Component {
             btnFollow = 'unfollow'
         } else {
             btnFollow = 'follow'
+            btnFollow = 'Unfollow';
+            colorbtn = 'bg-blue-light'
         }
         const { tab } = this.props;
         let tab1 = " hover:no-underline";
@@ -360,7 +364,7 @@ class MenuTop extends Component {
                                     <img src={this.state.previewImage} id="pre" />
                                 </div>
                             </div>
-                            <div style={{ marginRight: "530px", marginTop: "80px" }}>
+                            <div style={{ marginRight: "450px", marginTop: "40px" }}>
                                 <button style={{ marginTop: '65px' }} onClick={this.saveChangesAvatar} type="button" className="btn btn-primary radius-button " data-dismiss="modal">
                                     Save Changes
                             </button >
@@ -403,6 +407,7 @@ class MenuTop extends Component {
                         :
                         <div className="w-full lg:w-1/4 flex my-4 lg:my-0 lg:justify-end items-center">
                             <div className="mr-6">
+<<<<<<< HEAD
                                 {index !== -1
                                     ?
                                     <button onClick={this.onHandleFollow} className="bg-teal hover:bg-teal-dark text-white font-medium py-2 px-4 rounded-full">
@@ -414,6 +419,9 @@ class MenuTop extends Component {
                                     </button>
                                 }
 
+=======
+                                <button onClick={this.onHandleFollow} className={`${colorbtn} hover:bg-blue-dark text-white font-medium py-2 px-4 rounded-full`}>{btnFollow}</button>
+>>>>>>> cd7106873b4153694f077a6e74022830e0dc13d2
                             </div>
                         </div>
                     }
