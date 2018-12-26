@@ -21,16 +21,6 @@ class CreateAccount extends Component {
             this.props.history.push('/login');
             return;
         }
-        // const publicKey = Keypair.fromSecret(localStorage.getItem('PRIVATE_KEY')).publicKey();
-        // axios.get(`http://localhost:4200/users/get-user?idKey=${publicKey}`).then(res => {
-        //     if (res.data.status === 200) {
-        //         this.props.saveProfile(res.data.result);
-        //     } else {
-        //         this.setState({
-        //             error: 'Your private key is not registed!!!'
-        //         });
-        //     }
-        // });
     }
 
     onChangeKey = (e) => {
@@ -98,7 +88,6 @@ class CreateAccount extends Component {
                         const privateKey = localStorage.getItem('PRIVATE_KEY');
                         transaction.sign(tx, privateKey);
                         const txEncode = '0x' + transaction.encode(tx).toString('hex');
-                        // console.log('send request');
                         axios.post('http://localhost:4200/request', { tx: txEncode }).then((response) => {
                             if (response.status === 200) {
                                 this.setState({
@@ -144,23 +133,14 @@ class CreateAccount extends Component {
                                         <label htmlFor="" className="text-uppercase">Friend public key</label>
                                     </div>
                                     <div className="wrap-input100 validate-input m-b-16" data-validate="Please enter username">
-                                        <input onChange={this.onChangeKey} className="input100" type="text" name="publicKey" placeholder="Please enter friend public key" />
+                                        <input onChange={(e) => this.onChangeKey(e)} className="input100" type="text" name="publicKey" placeholder="Please enter friend public key" />
                                         <span className="focus-input100" />
                                     </div>
                                 </div>
                                 <br />
-                                {/* <div className="form-group">
-                                    <div className="label">
-                                        <label htmlFor="" className="text-uppercase">Your private key</label>
-                                    </div>
-                                    <div className="wrap-input100 validate-input m-b-16" data-validate="Please enter username">
-                                        <input onChange={this.onChangeKey} className="input100" type="text" name="yPrivateKey" placeholder="Please enter your private key" />
-                                        <span className="focus-input100" />
-                                    </div>
-                                </div> */}
 
                                 <div className="container-login100-form-btn">
-                                    <button onClick={this.onCreate} className="login100-form-btn">
+                                    <button onClick={(e) => this.onCreate(e)} className="login100-form-btn">
                                         Create
                                 </button>
                                 </div>
@@ -174,16 +154,4 @@ class CreateAccount extends Component {
         );
     }
 }
-
-const mapStateToProps = (state) => {
-    return {
-        profile: state.profile
-    }
-}
-
-const mapDispatchToProps = (dispatch) => {
-    return {
-        // saveProfile: (profile) => dispatch(actions.saveProfile(profile))
-    }
-}
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(CreateAccount));
+export default withRouter(CreateAccount);

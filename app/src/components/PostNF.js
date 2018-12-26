@@ -214,10 +214,11 @@ class PostNF extends Component {
 
     getPost = (post, e) => {
         e.preventDefault();
+        document.getElementById('html').style.overflow = 'hidden';
         this.setState({
             detail: true
         })
-        document.getElementById('body').style.overflow = 'hidden';
+       
     }
 
     updateLikePost = (post, e) => {
@@ -232,12 +233,13 @@ class PostNF extends Component {
         this.setState({
             detail: false
         })
-        document.getElementById('body').style.overflow = 'auto';
+        document.getElementById('html').style.overflow = 'auto';
     }
 
 
     componentWillUnmount() {
         document.removeEventListener('mousedown', this.handleClickOutside);
+        document.getElementById('html').style.overflow = 'auto';
     }
 
     setWrapperRef = (node) => {

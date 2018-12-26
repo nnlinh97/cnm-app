@@ -147,12 +147,14 @@ class Post extends Component {
     }
 
     getPost = (post, e) => {
-        e.preventDefault();
-        // console.log(this.state.comment);
+        // console.log(document.getElementById('body'))
+        document.getElementById('html').style.overflow = 'hidden';
+         e.preventDefault();
+        // // console.log(this.state.comment);
         this.setState({
             detail: true
         })
-        document.getElementById('body').style.overflow = 'hidden';
+        
     }
 
     updateLikePost = (post, e) => {
@@ -168,12 +170,13 @@ class Post extends Component {
             detail: false,
             reply: ''
         })
-        document.getElementById('body').style.overflow = 'auto';
+        document.getElementById('html').style.overflow = 'auto';
     }
 
 
     componentWillUnmount() {
         document.removeEventListener('mousedown', this.handleClickOutside);
+        document.getElementById('body').style.overflow = 'auto';
     }
 
     setWrapperRef = (node) => {
