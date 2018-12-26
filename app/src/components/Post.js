@@ -8,6 +8,7 @@ import axios from 'axios';
 import PostDetail from './PostDetail';
 import transaction from '../lib/tx/index';
 import { withRouter } from 'react-router-dom';
+import v1 from '../lib/tx/v1';
 import $ from 'jquery';
 
 class Post extends Component {
@@ -294,10 +295,10 @@ class Post extends Component {
                     <div className="flex justify-between">
                         <div>
                             <span className="font-bold">
-                                <a href="#" className="text-black">@{user ? user.displayName : ""}</a>
+                                <a href="#" className="text-black">{user ? (new Buffer(user.displayName, "base64")).toString('utf8')  : ""}</a>
                             </span>
                             {/* <span className="text-grey-dark">&nbsp;@{post.username}&nbsp;</span> */}
-                            <span className="text-grey-dark">·</span>
+                            <span className="text-grey-dark">&nbsp;</span>
                             <span className="text-grey-dark">&nbsp;{moment(post.createAt).format('ll')} </span>
                         </div>
 
@@ -319,7 +320,9 @@ class Post extends Component {
                                                 <div className="flex justify-between">
                                                     <div>
                                                         <span className="font-bold">
-                                                            <a href="#" className="text-black">{user && user.displayName !== '' ? user.displayName : (user ? user.idKey : "")}</a>
+                                                            <a href="#" className="text-black">
+                                                            {user && user.displayName !== '' ? (new Buffer(user.displayName, "base64")).toString('utf8') : (user ? user.idKey : "")}
+                                                            </a>
                                                         </span><br />
                                                         <span className="text-grey-dark">&nbsp;{moment(post.createAt).format('ll')}</span>
                                                     </div>
@@ -330,7 +333,9 @@ class Post extends Component {
                                                     </div>
                                                 </div>
                                                 <div className="mb-4">
-                                                    <p style={{ fontSize: '20px', fontWeight: "bold", whiteSpace: 'pre-wrap' }}>{post.content}</p>
+                                                    <p style={{ fontSize: '20px', fontWeight: "bold", whiteSpace: 'pre-wrap' }}>
+                                                        {v1.decodePost(new Buffer(post.content, "base64")).text}
+                                                    </p>
                                                     <br />
                                                 </div>
                                                 <hr className="line-hr" />
@@ -406,7 +411,7 @@ class Post extends Component {
                     <div>
                         <div className="mb-4">
                             <p className="mb-6">🎉 {user ? user.idKey : ''}</p>
-                            <p style={{ cursor: 'pointer', whiteSpace: 'pre-wrap' }} onClick={(e) => this.getPost(post, e)} className="mb-4">{post.content}</p>
+                            <p style={{ cursor: 'pointer', whiteSpace: 'pre-wrap' }} onClick={(e) => this.getPost(post, e)} className="mb-4">{v1.decodePost(new Buffer(post.content, "base64")).text}</p>
                             {/* <p>
                                 {post.image == "" ? "" :
                                     <a onClick={(e) => this.getPost(post, e)} href="#">

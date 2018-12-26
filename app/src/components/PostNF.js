@@ -91,7 +91,7 @@ class PostNF extends Component {
                                 this.setState({
                                     account: res.data.result,
                                     operation: 'updated name',
-                                    displayName: tx.displayName,
+                                    displayName: (new Buffer(tx.displayName, "base64")).toString('utf8'),
                                     createAt: tx.createAt
                                 })
                                 break;
@@ -148,7 +148,7 @@ class PostNF extends Component {
                         this.setState({
                             account: res.data.result,
                             operation: 'posted',
-                            content: tx.content,
+                            content: v1.decodePost(new Buffer(tx.content, "base64")).text,
                             createAt: tx.createAt
                         })
 
@@ -358,7 +358,7 @@ class PostNF extends Component {
         if (follow && follow.length) {
             listFollow = follow.map((item, index) => {
                 return (
-                    <strong key={index}>{item.displayName !== "" ? item.displayName : item.idKey}<br /></strong>
+                    <strong key={index}>{item.displayName !== "" ? (new Buffer(item.displayName, "base64")).toString('utf8') : item.idKey}<br /></strong>
                 )
             })
         }
@@ -427,13 +427,13 @@ class PostNF extends Component {
                     <div className="flex justify-between">
                         <div>
                             <span className="font-bold">
-                                <a onClick={this.toProfile} href="" className="text-black">{user && user.displayName !== '' ? user.displayName : (user ? user.idKey : "")}</a>
+                                <a onClick={this.toProfile} href="" className="text-black">{user && user.displayName !== '' ? (new Buffer(user.displayName, "base64")).toString('utf8') : (user ? user.idKey : "")}</a>
                             </span>
                             <span className="text-grey-dark">&nbsp;{this.state.createAt ? moment(this.state.createAt).format('ll') : ""}&nbsp;</span>
                             {/* <span className="text-grey-dark">·</span> */}
                             {/* <span className="text-grey-dark">&nbsp;{moment(post.createAt).format('ll')} </span> */}
-                            <br/>
-                            <span onClick={() => this.txDetail(this.props.tx.hash)} style={{cursor: 'pointer'}} className="text-grey-dark">Hash:&nbsp;{this.props.tx.hash} </span>
+                            <br />
+                            <span onClick={() => this.txDetail(this.props.tx.hash)} style={{ cursor: 'pointer' }} className="text-grey-dark">Hash:&nbsp;{this.props.tx.hash} </span>
                         </div>
 
                         {/* start post detail */}
@@ -454,7 +454,7 @@ class PostNF extends Component {
                                                 <div className="flex justify-between">
                                                     <div>
                                                         <span className="font-bold">
-                                                            <a href="#" className="text-black">{user && user.displayName !== '' ? user.displayName : (user ? user.idKey : "")}</a>
+                                                            <a href="#" className="text-black">{user && user.displayName !== '' ? (new Buffer(user.displayName, "base64")).toString('utf8') : (user ? user.idKey : "")}</a>
                                                         </span><br />
                                                         <span className="text-grey-dark">&nbsp;{this.state.createAt ? moment(this.state.createAt).format('ll') : ""}</span>
                                                     </div>
@@ -467,8 +467,8 @@ class PostNF extends Component {
                                                 <div className="mb-4">
                                                     {/* <p style={{ fontSize: '20px', fontWeight: "bold", whiteSpace: 'pre-wrap' }}>{post.content}</p> */}
                                                     <p className="mb-6"> {this.state.operation}</p>
-                                                    <p style={{whiteSpace: 'pre-wrap'}}>
-                                                        <strong>{address && address.displayName !== "" ? address.displayName : (address ? address.idKey : null)}</strong>
+                                                    <p style={{ whiteSpace: 'pre-wrap' }}>
+                                                        <strong>{address && address.displayName !== "" ? (new Buffer(address.displayName, "base64")).toString('utf8') : (address ? address.idKey : null)}</strong>
                                                         {this.state.amount ? `   ${this.state.amount} CEL` : null}
                                                         {listFollow !== "" ? listFollow : null}
                                                         {content ? content : null}
@@ -548,12 +548,12 @@ class PostNF extends Component {
 
                     </div>
                     <div>
-                        <div  onClick={(e) => this.getPost(post, e)} style={{cursor: 'pointer'}} className="mb-4">
+                        <div onClick={(e) => this.getPost(post, e)} style={{ cursor: 'pointer' }} className="mb-4">
                             <p className="mb-6"> {this.state.operation}</p>
                             {/* <p style={{ cursor: 'pointer', whiteSpace: 'pre-wrap' }} onClick={(e) => this.getPost(post, e)} className="mb-4">{post.content}</p> */}
                             {/* <img src={this.state.avatar} /> */}
                             <p style={{ cursor: 'pointer', whiteSpace: 'pre-wrap' }}>
-                                <strong>{address && address.displayName !== "" ? address.displayName : (address ? address.idKey : null)}</strong>
+                                <strong>{address && address.displayName !== "" ? (new Buffer(address.displayName, "base64")).toString('utf8') : (address ? address.idKey : null)}</strong>
                                 {this.state.amount ? `   ${this.state.amount} CEL` : null}
                                 {listFollow !== "" ? listFollow : null}
                                 {content ? content : null}

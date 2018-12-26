@@ -48,7 +48,7 @@ class Comment extends Component {
                             <div className="flex justify-between">
                                 <div>
                                     <span className="font-bold">
-                                        <a onClick={(e) => this.toProfile(e, idKey)} href="#" className="text-black">{account && account.displayName !== "" ? account.displayName : (account ? account.idKey : "")}</a>
+                                        <a onClick={(e) => this.toProfile(e, idKey)} href="#" className="text-black">{account && account.displayName !== "" ? (new Buffer(account.displayName, "base64")).toString('utf8')  : (account ? account.idKey : "")}</a>
                                     </span>
                                     <br/>
                                     <span className="text-grey-dark">&nbsp;{moment(comment.createAt).format('ll')}&nbsp;</span>

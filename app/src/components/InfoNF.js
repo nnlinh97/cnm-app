@@ -37,14 +37,14 @@ class InfoNF extends Component {
             if (account && follower && following && tweet) {
                 this.props.getProfileNF({
                     avatar: account.data.result ? account.data.result.avatar : '',
-                    displayName: account.data.result ? account.data.result.displayName : "",
+                    displayName: account.data.result ? (new Buffer(account.data.result.displayName, "base64")).toString('utf8')  : "",
                     followers: follower.data.count,
                     followings: following.data.count,
                     tweets: tweet.data.count
                 })
                 this.setState({
                     avatar: account.data.result ? account.data.result.avatar : '',
-                    displayName: account.data.result ? account.data.result.displayName : "",
+                    displayName: account.data.result ? (new Buffer(account.data.result.displayName, "base64")).toString('utf8') : "",
                     followers: follower.data.count,
                     followings: following.data.count,
                     tweets: tweet.data.count
