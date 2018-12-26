@@ -14,6 +14,7 @@ import Posts from '../components/Posts';
 import RightSidebar from '../components/RightSidebar';
 import Following from '../components/Following';
 import axios from 'axios';
+import _ from 'lodash';
 
 class History extends Component {
     constructor(props) {
@@ -38,6 +39,7 @@ class History extends Component {
                         history.push(item)
                     }
                 });
+                history = _.uniqBy(history, 'hash');
                 let countPage = Math.floor(history.length / 10);
                 if (history.length % 10 > 0) {
                     countPage += 1;

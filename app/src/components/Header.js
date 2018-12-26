@@ -10,6 +10,7 @@ import axios from 'axios';
 import transaction from '../lib/tx/index';
 import * as actions from '../actions/index'
 import v1 from '../lib/tx/v1';
+import { checkOXY } from '../utils/helper';
 var randomString = require('random-string');
 
 
@@ -102,6 +103,7 @@ class Header extends Component {
             return;
         }
         const publicKey = localStorage.getItem('PUBLIC_KEY');
+        let check = null;
         axios.get(`http://localhost:4200/users/get-user?idKey=${publicKey}`).then((user) => {
             if (user.data.status === 200) {
                 const info = user.data.result;
@@ -131,6 +133,11 @@ class Header extends Component {
                 const privateKey = localStorage.getItem('PRIVATE_KEY');
                 transaction.sign(tx, privateKey);
                 const txEncode = '0x' + transaction.encode(tx).toString('hex');
+                check = checkOXY(info, transaction.encode(tx).toString('base64'), new Date()) > +info.bandwidthLimit;
+                if (check) {
+                    alert("You don't have enough OXY to tweet!");
+                    return;
+                }
                 axios.post('http://localhost:4200/request', { tx: txEncode }).then((response) => {
                     if (response.status === 200) {
                         this.setState({
@@ -319,8 +326,8 @@ class Header extends Component {
                                 <div className="modal-dialog">
                                     <div ref={this.state.isModal ? this.setWrapperRef : ""} className="modal-content">
                                         <div className="modal-header text-center" style={{ height: '50px' }}>
-                                            <button onClick={this.removeModal} type="button" className="close" data-dismiss="modal">
-                                                <i className="fa fa-times-circle" style={{ marginTop: '5px' }}></i>
+                                            <button style={{ backgroundColor: '#fff' }} onClick={this.removeModal} type="button" className="close" data-dismiss="modal">
+                                                <i className="fa fa-times-circle" style={{ marginTop: '5px'}}></i>
                                             </button>
                                             <h4 className="modal-title" style={{ paddingTop: '11px' }}>Compose new Tweet</h4>
                                         </div>

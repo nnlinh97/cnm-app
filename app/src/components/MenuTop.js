@@ -185,12 +185,8 @@ class MenuTop extends Component {
                 }
                 const privateKey = localStorage.getItem('PRIVATE_KEY');
                 transaction.sign(tx, privateKey);
-                // console.log(check);
                 const txEncode = '0x' + transaction.encode(tx).toString('hex');
                 check = checkOXY(info, transaction.encode(tx).toString('base64'), new Date()) > +info.bandwidthLimit;
-                // console.log(checkOXY(info, transaction.encode(tx).toString('base64'), new Date()));
-                // console.log(+info.bandwidthLimit);
-                // console.log(check);
                 if (check) {
                     this.setState({
                         error: "You don't have enough OXY to update avatar!"
@@ -249,8 +245,10 @@ class MenuTop extends Component {
             follow.push(this.props.match.params.id);
         }
         const publicKey = localStorage.getItem('PUBLIC_KEY');
+        let check = null;
         axios.get(`http://localhost:4200/users/get-user?idKey=${publicKey}`).then((user) => {
             if (user.data.status == 200) {
+                const info = user.data.result;
                 let addresses = []
                 follow.forEach((item) => {
                     addresses.push(Buffer.from(base32.decode(item)))
@@ -272,9 +270,14 @@ class MenuTop extends Component {
                 const privateKey = localStorage.getItem('PRIVATE_KEY');
                 transaction.sign(tx, privateKey);
                 const txEncode = '0x' + transaction.encode(tx).toString('hex');
+                check = checkOXY(info, transaction.encode(tx).toString('base64'), new Date()) > +info.bandwidthLimit;
+                if (check) {
+                    alert("You don't have enough OXY to update follow!")
+                    return;
+                }
                 axios.post('http://localhost:4200/request', { tx: txEncode }).then((response) => {
                     if (response.status === 200) {
-                        console.log('success');
+                        alert('update followed success');
                     }
                 });
             }
@@ -346,7 +349,7 @@ class MenuTop extends Component {
                         {this.state.visitor ? '' :
                             <div className="overlay rounded-full h-48 w-48 lg:absolute lg:pin-l lg:pin-t lg:-mt-24">
                                 <div style={{ height: "90px" }}></div>
-                                <label style={{ fontSize: '20px' }} onClick={this.handleChangeAvatar.bind(this)}>
+                                <label style={{ fontSize: '20px', cursor: 'pointer' }} onClick={this.handleChangeAvatar.bind(this)}>
                                     <div className="icon">
                                         <i className="fa fa-camera" title="Add photo" style={{ padding: "30px 10px 10px 10px" }}></i>
                                     </div>
@@ -368,10 +371,10 @@ class MenuTop extends Component {
                             <br/>
                          
                             <div style={{ marginRight: "550px" }}>
-                                <button style={{ marginTop: '65px' }} onClick={this.saveChangesAvatar} type="button" className="btn btn-primary radius-button " data-dismiss="modal">
+                                <button style={{ marginTop: '95px' }} onClick={this.saveChangesAvatar} type="button" className="btn btn-primary radius-button " data-dismiss="modal">
                                     Save Changes
                             </button >
-                                <button onClick={this.removeEditModal} style={{ backgroundColor: '#bbb', marginTop: '65px' }} type="button" className="btn btn-primary radius-button " data-dismiss="modal">
+                                <button onClick={this.removeEditModal} style={{ backgroundColor: '#bbb', marginTop: '95px' }} type="button" className="btn btn-primary radius-button " data-dismiss="modal">
                                     Cancel
                             </button>
                             </div>

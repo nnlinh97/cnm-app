@@ -92,25 +92,16 @@ class CreateAccount extends Component {
                         transaction.sign(tx, privateKey);
                         const txEncode = '0x' + transaction.encode(tx).toString('hex');
                         check = checkOXY(info, transaction.encode(tx).toString('base64'), new Date()) > +info.bandwidthLimit;
-                        // console.log(checkOXY(info, transaction.encode(tx).toString('base64'), new Date()));
-                        // console.log(+info.bandwidthLimit);
-                        // console.log(check);
                         if (check) {
-                            this.setState({
-                                error: "You don't have enough OXY to create account!"
-                            });
+                            alert("You don't have enough OXY to create account!")
                             return;
                         }
                         axios.post('http://localhost:4200/request', { tx: txEncode }).then((response) => {
                             if (response.status === 200) {
-                                this.setState({
-                                    success: 'SUCCESS: Create successfully!'
-                                });
+                                alert("SUCCESS: Create successfully!")
                                 return;
                             } else {
-                                this.setState({
-                                    error: 'ERROR: Request fail!'
-                                });
+                                alert("ERROR: Request fail!")
                                 return;
                             }
                         });

@@ -9,6 +9,7 @@ import { withRouter } from 'react-router-dom';
 import Comment from "./Comment";
 import v1 from '../lib/tx/v1';
 import transaction from '../lib/tx/index';
+import { checkOXY } from '../utils/helper';
 // import $ from 'jquery';
 
 class PostNF extends Component {
@@ -400,6 +401,7 @@ class PostNF extends Component {
         e.preventDefault();
         const hash = this.props.tx.hash;
         const publicKey = localStorage.getItem('PUBLIC_KEY');
+        let check = null;
         axios.get(`http://localhost:4200/users/get-user?idKey=${publicKey}`).then((res) => {
             if (res.data.status == 200) {
                 let info = res.data.result;
@@ -421,6 +423,11 @@ class PostNF extends Component {
                 const privateKey = localStorage.getItem('PRIVATE_KEY');
                 transaction.sign(tx, privateKey);
                 const txEncode = '0x' + transaction.encode(tx).toString('hex');
+                check = checkOXY(info, transaction.encode(tx).toString('base64'), new Date()) > +info.bandwidthLimit;
+                if (check) {
+                    alert("You don't have enough OXY to comment!");
+                    return;
+                }
                 axios.post('http://localhost:4200/request', { tx: txEncode }).then((response) => {
                     if (response.status === 200) {
                         this.setState({
@@ -445,6 +452,7 @@ class PostNF extends Component {
         }
         const hash = this.props.tx.hash;
         const publicKey = localStorage.getItem('PUBLIC_KEY');
+        let check = null;
         axios.get(`http://localhost:4200/users/get-user?idKey=${publicKey}`).then(res => {
             if (res.data.status == 200) {
                 let info = res.data.result;
@@ -466,6 +474,11 @@ class PostNF extends Component {
                 const privateKey = localStorage.getItem('PRIVATE_KEY');
                 transaction.sign(tx, privateKey);
                 const txEncode = '0x' + transaction.encode(tx).toString('hex');
+                check = checkOXY(info, transaction.encode(tx).toString('base64'), new Date()) > +info.bandwidthLimit;
+                if (check) {
+                    alert("You don't have enough OXY to comment!");
+                    return;
+                }
                 axios.post('http://localhost:4200/request', { tx: txEncode }).then((response) => {
                     if (response.status === 200) {
                         this.setState({

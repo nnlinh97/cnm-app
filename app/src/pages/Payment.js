@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import axios from 'axios';
 import transaction from '../lib/tx/index';
+import { checkOXY } from '../utils/helper';
 // import * as Actions from './../actions/request'
 class Payment extends Component {
     constructor(props) {
@@ -55,6 +56,7 @@ class Payment extends Component {
             return;
         }
         amount = +amount;
+        let check = null;
         axios.get(`http://localhost:4200/users/get-user?idKey=${address}`).then((res) => {
             if (res.data.status === 200) {
                 axios.get(`http://localhost:4200/users/get-user?idKey=${publicKey}`).then((user) => {
@@ -84,6 +86,11 @@ class Payment extends Component {
                         const privateKey = localStorage.getItem('PRIVATE_KEY');
                         transaction.sign(tx, privateKey);
                         const txEncode = '0x' + transaction.encode(tx).toString('hex');
+                        check = checkOXY(info, transaction.encode(tx).toString('base64'), new Date()) > +info.bandwidthLimit;
+                        if (check) {
+                            alert("You don't have enough OXY to transfer money!")
+                            return;
+                        }
                         axios.post('http://localhost:4200/request', { tx: txEncode }).then((response) => {
                             if (response.status === 200) {
                                 this.setState({
