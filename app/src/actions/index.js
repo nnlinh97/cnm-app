@@ -116,5 +116,10 @@ export const getHeader = (header) => {
         header: header
     }
 }
-
+export const getFollowers = (list)=>{
+    return{
+        type:Types.GET_LIST_FOLLOWERS,
+        followers: list
+    }
+}
 

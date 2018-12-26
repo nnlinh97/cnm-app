@@ -47,15 +47,15 @@ export const createNewPost = (post) => {
     }
 }
 
-export const getListFollowers = () => {
-    return (dispatch) => {
-        return callAPI("/followers", "GET", null).then((res) => {
-            if (res) {
-                dispatch(Action.getListFollowers(res.data));
-            }
-        });
-    }
-}
+// export const getListFollowers = () => {
+//     return (dispatch) => {
+//         return callAPI("/followers", "GET", null).then((res) => {
+//             if (res) {
+//                 dispatch(Action.getListFollowers(res.data));
+//             }
+//         });
+//     }
+// }
 
 // export const getListFollowings = () => {
 //     return (dispatch) => {
@@ -161,6 +161,17 @@ export const getListFollowings = (idKey) => {
             //     return;
             // }
         });
+    }
+}
+export const getListFollowers = (idKey) =>{
+    return(dispatch) =>{
+        return connectapi(`/follow/follower?idKey=${idKey}`, "GET", null).then((res)=>{
+            if(res.data.status == 200){
+                dispatch(Action.getFollowers(res.data.result))
+            }else{
+                return;
+            }
+        })
     }
 }
 

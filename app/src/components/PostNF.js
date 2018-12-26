@@ -233,7 +233,7 @@ class PostNF extends Component {
         this.setState({
             detail: false
         })
-        document.getElementById('body').style.overflow = 'auto';
+        document.getElementById('html').style.overflow = 'auto';
     }
 
 
