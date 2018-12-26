@@ -28,7 +28,13 @@ class Post extends Component {
             angry: 0,
             flag: 0,
             comment: [],
-            reply: ''
+            reply: '',
+            listLike: null,
+            listLove: null,
+            listHaha: null,
+            listWow: null,
+            listSad: null,
+            listAngry: null,
         }
     }
 
@@ -49,6 +55,12 @@ class Post extends Component {
                 let wow = 0;
                 let sad = 0;
                 let angry = 0;
+                let listLike = [];
+                let listLove = [];
+                let listHaha = [];
+                let listWow = [];
+                let listSad = [];
+                let listAngry = [];
                 let flagReaction = 0;
                 let idKey = localStorage.getItem('PUBLIC_KEY');
                 listReaction.forEach(item => {
@@ -60,21 +72,27 @@ class Post extends Component {
                             break;
                         case 1:
                             like += 1;
+                            listLike.push(item.account)
                             break;
                         case 2:
                             love += 1;
+                            listLove.push(item.account)
                             break;
                         case 3:
                             haha += 1;
+                            listHaha.push(item.account)
                             break;
                         case 4:
                             wow += 1;
+                            listWow.push(item.account)
                             break;
                         case 5:
                             sad += 1;
+                            listSad.push(item.account)
                             break;
                         case 6:
                             angry += 1;
+                            listAngry.push(item.account)
                             break;
                     }
                 });
@@ -89,7 +107,123 @@ class Post extends Component {
                     user: rUser.data.result,
                     comment: rComment.data.result
                 });
+                this.getListLike(listLike);
+                this.getListLove(listLove);
+                this.getListHaha(listHaha);
+                this.getListWow(listWow);
+                this.getListSad(listSad);
+                this.getListAngry(listAngry);
             }
+        })
+    }
+
+    getListLike = (listLike) => {
+        if (listLike.length == 0) {
+            return;
+        }
+        let promise = [];
+        listLike.forEach(item => {
+            promise.push(axios.get(`http://localhost:4200/users/get-info?idKey=${item}`));
+        })
+        Promise.all(promise).then((result) => {
+            let listName = [];
+            result.forEach(item => {
+                listName.push(item.data.result.displayName !== "" ? (new Buffer(item.data.result.displayName, "base64")).toString('utf8') : item.data.result.idKey);
+            });
+            this.setState({
+                listLike: listName
+            })
+        })
+    }
+
+    getListLove = (listLike) => {
+        if (listLike.length == 0) {
+            return;
+        }
+        let promise = [];
+        listLike.forEach(item => {
+            promise.push(axios.get(`http://localhost:4200/users/get-info?idKey=${item}`));
+        })
+        Promise.all(promise).then((result) => {
+            let listName = [];
+            result.forEach(item => {
+                listName.push(item.data.result.displayName !== "" ? (new Buffer(item.data.result.displayName, "base64")).toString('utf8') : item.data.result.idKey);
+            });
+            this.setState({
+                listLove: listName
+            })
+        })
+    }
+    getListHaha = (listLike) => {
+        if (listLike.length == 0) {
+            return;
+        }
+        let promise = [];
+        listLike.forEach(item => {
+            promise.push(axios.get(`http://localhost:4200/users/get-info?idKey=${item}`));
+        })
+        Promise.all(promise).then((result) => {
+            let listName = [];
+            result.forEach(item => {
+                listName.push(item.data.result.displayName !== "" ? (new Buffer(item.data.result.displayName, "base64")).toString('utf8') : item.data.result.idKey);
+            });
+            this.setState({
+                listHaha: listName
+            })
+        })
+    }
+    getListWow = (listLike) => {
+        if (listLike.length == 0) {
+            return;
+        }
+        let promise = [];
+        listLike.forEach(item => {
+            promise.push(axios.get(`http://localhost:4200/users/get-info?idKey=${item}`));
+        })
+        Promise.all(promise).then((result) => {
+            let listName = [];
+            result.forEach(item => {
+                listName.push(item.data.result.displayName !== "" ? (new Buffer(item.data.result.displayName, "base64")).toString('utf8') : item.data.result.idKey);
+            });
+            this.setState({
+                listWow: listName
+            })
+        })
+    }
+    getListSad = (listLike) => {
+        if (listLike.length == 0) {
+            return;
+        }
+        let promise = [];
+        listLike.forEach(item => {
+            promise.push(axios.get(`http://localhost:4200/users/get-info?idKey=${item}`));
+        })
+        Promise.all(promise).then((result) => {
+            let listName = [];
+            result.forEach(item => {
+                listName.push(item.data.result.displayName !== "" ? (new Buffer(item.data.result.displayName, "base64")).toString('utf8') : item.data.result.idKey);
+            });
+            this.setState({
+                listSad: listName
+            })
+        })
+    }
+    getListAngry = (listLike) => {
+        if (listLike.length == 0) {
+            return;
+        }
+        let promise = [];
+        listLike.forEach(item => {
+            promise.push(axios.get(`http://localhost:4200/users/get-info?idKey=${item}`));
+        })
+        Promise.all(promise).then((result) => {
+            let listName = [];
+            result.forEach(item => {
+                listName.push(item.data.result.displayName !== "" ? (new Buffer(item.data.result.displayName, "base64")).toString('utf8') : item.data.result.idKey);
+            });
+            this.setState({
+                listAngry: listName
+            })
         })
     }
 
@@ -149,12 +283,12 @@ class Post extends Component {
     getPost = (post, e) => {
         // console.log(document.getElementById('body'))
         document.getElementById('html').style.overflow = 'hidden';
-         e.preventDefault();
+        e.preventDefault();
         // // console.log(this.state.comment);
         this.setState({
             detail: true
         })
-        
+
     }
 
     updateLikePost = (post, e) => {
@@ -298,7 +432,7 @@ class Post extends Component {
                     <div className="flex justify-between">
                         <div>
                             <span className="font-bold">
-                                <a href="#" className="text-black">{user ? (new Buffer(user.displayName, "base64")).toString('utf8')  : ""}</a>
+                                <a href="#" className="text-black">{user ? (new Buffer(user.displayName, "base64")).toString('utf8') : ""}</a>
                             </span>
                             {/* <span className="text-grey-dark">&nbsp;@{post.username}&nbsp;</span> */}
                             <span className="text-grey-dark">&nbsp;</span>
@@ -324,7 +458,7 @@ class Post extends Component {
                                                     <div>
                                                         <span className="font-bold">
                                                             <a href="#" className="text-black">
-                                                            {user && user.displayName !== '' ? (new Buffer(user.displayName, "base64")).toString('utf8') : (user ? user.idKey : "")}
+                                                                {user && user.displayName !== '' ? (new Buffer(user.displayName, "base64")).toString('utf8') : (user ? user.idKey : "")}
                                                             </a>
                                                         </span><br />
                                                         <span className="text-grey-dark">&nbsp;{moment(post.createAt).format('ll')}</span>
@@ -354,27 +488,27 @@ class Post extends Component {
                                                             <span className="like-btn">
                                                                 {!like ? ''
                                                                     :
-                                                                    <span className="like-btn-emo like-btn-like"></span>
+                                                                    <span title={this.state.listLike ? this.state.listLike.toString() : ""} className="like-btn-emo like-btn-like"></span>
                                                                 }
                                                                 {!love ? ''
                                                                     :
-                                                                    <span className="like-btn-emo like-btn-love"></span>
+                                                                    <span title={this.state.listLove ? this.state.listLove.toString() : ""} className="like-btn-emo like-btn-love"></span>
                                                                 }
                                                                 {!haha ? ''
                                                                     :
-                                                                    <span className="like-btn-emo like-btn-haha"></span>
+                                                                    <span title={this.state.listHaha ? this.state.listHaha.toString() : ""} className="like-btn-emo like-btn-haha"></span>
                                                                 }
                                                                 {!wow ? ''
                                                                     :
-                                                                    <span className="like-btn-emo like-btn-wow"></span>
+                                                                    <span title={this.state.listWow ? this.state.listWow.toString() : ""} className="like-btn-emo like-btn-wow"></span>
                                                                 }
                                                                 {!sad ? ''
                                                                     :
-                                                                    <span className="like-btn-emo like-btn-sad"></span>
+                                                                    <span title={this.state.listSad ? this.state.listSad.toString() : ""} className="like-btn-emo like-btn-sad"></span>
                                                                 }
                                                                 {!angry ? ''
                                                                     :
-                                                                    <span className="like-btn-emo like-btn-angry"></span>
+                                                                    <span title={this.state.listAngry ? this.state.listAngry.toString() : ""} className="like-btn-emo like-btn-angry"></span>
                                                                 }
 
                                                                 {!totalReaction ? ''
@@ -464,27 +598,27 @@ class Post extends Component {
                             <span className="like-btn">
                                 {!like ? ''
                                     :
-                                    <span className="like-btn-emo like-btn-like"></span>
+                                    <span title={this.state.listLike ? this.state.listLike.toString() : ""} className="like-btn-emo like-btn-like"></span>
                                 }
                                 {!love ? ''
                                     :
-                                    <span className="like-btn-emo like-btn-love"></span>
+                                    <span title={this.state.listLove ? this.state.listLove.toString() : ""} className="like-btn-emo like-btn-love"></span>
                                 }
                                 {!haha ? ''
                                     :
-                                    <span className="like-btn-emo like-btn-haha"></span>
+                                    <span title={this.state.listHaha ? this.state.listHaha.toString() : ""} className="like-btn-emo like-btn-haha"></span>
                                 }
                                 {!wow ? ''
                                     :
-                                    <span className="like-btn-emo like-btn-wow"></span>
+                                    <span title={this.state.listWow ? this.state.listWow.toString() : ""} className="like-btn-emo like-btn-wow"></span>
                                 }
                                 {!sad ? ''
                                     :
-                                    <span className="like-btn-emo like-btn-sad"></span>
+                                    <span title={this.state.listSad ? this.state.listSad.toString() : ""} className="like-btn-emo like-btn-sad"></span>
                                 }
                                 {!angry ? ''
                                     :
-                                    <span className="like-btn-emo like-btn-angry"></span>
+                                    <span title={this.state.listAngry ? this.state.listAngry.toString() : ""} className="like-btn-emo like-btn-angry"></span>
                                 }
 
                                 {!totalReaction ? ''
