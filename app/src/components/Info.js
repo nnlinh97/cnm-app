@@ -1,116 +1,297 @@
 import React, { Component } from 'react';
+import axios from 'axios';
 import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
+import transaction from '../lib/tx/index';
+import * as actions from '../actions/index';
 import moment from 'moment';
 
-class Info extends Component {
 
-    render() {
-        console.log(this.props.profile);
-        const { profile } = this.props;
-        let tag = '';
-        let joined = '';
-        let location = '';
-        let birthday = '';
-        if (profile) {
-            tag = '@' + profile.username;
-            joined = (
-                <div className="mb-4">
-                    <i className="fa fa-calendar fa-lg text-grey-darker mr-1" />
-                    <a href="#" className="text-teal no-underline hover:underline"> Joined {moment(profile.createAt).format('ll')}</a>
-                </div>
-            );
-            location = (
-                <div className="mb-4">
-                    &nbsp;<i className="fa fa-map-marker" />
-                    <a href="#" className="text-teal no-underline hover:underline">&nbsp;&nbsp;&nbsp;&nbsp;{ profile.location}</a>
-                </div>
-            );
-            birthday = (
-                <div className="mb-4">
-                    <i className="fa fa-birthday-cake" />
-                    <a href="#" className="text-teal no-underline hover:underline"> &nbsp;{moment(profile.birthday).format('ll').split(", ")[0]}</a>
-                </div>
-            )
-            
+const SIZE_LIMITED = 22020096;
+const BANDWIDTH_PERIOD = 86400;
+const MAX_CELLULOSE = 9007199254740991;
+const NETWORK_BANDWIDTH = BANDWIDTH_PERIOD * SIZE_LIMITED;
+
+
+
+class Info extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            modal: 'none',
+            content: '',
+            isModal: false,
+            editModal: 'none',
+            isEditModal: false,
+
+            publicKey: '',
+            displayName: '',
+            sequence: '',
+            balance: '',
+            bandwith: '',
+            bandwithTime: '',
+            bandwithLimit: '',
+            displayNameChange: '',
+            error: '',
+            success: '',
+            visitor: false
         }
+    }
+    componentWillReceiveProps(nextProps) {
+        const idKey = nextProps.match.params.id;
+        const publicKey = localStorage.getItem('PUBLIC_KEY');
+        axios.get(`http://localhost:4200/users/get-info?idKey=${idKey}`).then((info) => {
+            if (info.data.status === 200) {
+                let user = info.data.result;
+                // this.props.getInfoProfile({
+                //     displayName: user.displayName !== '' ? user.displayName : 'No Name',
+                //     sequence: user.sequence,
+                //     balance: user.balance,
+                //     bandwithTime: user.bandwithTime,
+                //     bandwithLimit: user.bandwithLimit,
+                //     publicKey: idKey,
+                //     visitor: publicKey == idKey ? false : true
+                // })
+                this.setState({
+                    displayName: user.displayName !== '' ? (new Buffer(user.displayName, "base64")).toString('utf8') : 'No Name',
+                    sequence: user.sequence,
+                    balance: user.balance,
+                    bandwidth: user.bandwidth,
+                    bandwidthTime: user.bandwidthTime,
+                    bandwidthLimit: user.bandwidthLimit,
+                    publicKey: idKey,
+                    visitor: publicKey == idKey ? false : true
+                });
+            }
+        })
+    }
+
+    componentDidMount() {
+        const idKey = this.props.match.params.id;
+        const publicKey = localStorage.getItem('PUBLIC_KEY');
+        axios.get(`http://localhost:4200/users/get-info?idKey=${idKey}`).then((info) => {
+            if (info.data.status === 200) {
+                let user = info.data.result;
+                // console.log(user);
+                // this.props.getInfoProfile({
+                //     displayName: user.displayName !== '' ? user.displayName : 'No Name',
+                //     sequence: user.sequence,
+                //     balance: user.balance,
+                //     bandwithTime: user.bandwithTime,
+                //     bandwithLimit: user.bandwithLimit,
+                //     publicKey: idKey,
+                //     visitor: publicKey == idKey ? false : true
+                // })
+                this.setState({
+                    displayName: user.displayName !== '' ? (new Buffer(user.displayName, "base64")).toString('utf8') : 'No Name',
+                    sequence: user.sequence,
+                    balance: user.balance,
+                    bandwidth: user.bandwidth,
+                    bandwidthTime: user.bandwidthTime,
+                    bandwidthLimit: user.bandwidthLimit,
+                    publicKey: idKey,
+                    visitor: publicKey == idKey ? false : true
+                });
+            }
+        })
+
+    }
+
+    onClickDisplayName = (e) => {
+        e.preventDefault();
+    }
+
+
+    toggleEditModal = () => {
+        // e.preventDefault();
+        this.setState({
+            editModal: 'block',
+            isEditModal: true,
+            error: '',
+            displayNameChange: this.state.displayName,
+            success: ''
+        })
+        document.getElementById('body').style.overflow = 'hidden';
+    }
+
+    removeEditModal = () => {
+        this.setState({
+            editModal: 'none',
+            displayNameChange: '',
+            error: '',
+            success: '',
+        })
+        document.getElementById('body').style.overflow = 'auto';
+    }
+
+    saveChanges = () => {
+        const { displayNameChange } = this.state;
+        if (displayNameChange == '') {
+            this.setState({
+                error: 'ERROR: Displayname is empty!'
+            });
+            return;
+        } else {
+            if (displayNameChange == this.state.displayName) {
+                this.removeEditModal();
+                return;
+            } else {
+                axios.get(`http://localhost:4200/users/get-user?idKey=${this.props.match.params.id}`).then((user) => {
+                    if (user.data.status === 200) {
+                        const info = user.data.result;
+                        let tx = {
+                            version: 1,
+                            sequence: +info.sequence + 1,
+                            memo: Buffer.alloc(0),
+                            account: info.idKey,
+                            operation: "update_account",
+                            params: {
+                                key: 'name',
+                                value: new Buffer(displayNameChange)
+                            },
+                            signature: new Buffer(64)
+                        }
+                        const privateKey = localStorage.getItem('PRIVATE_KEY');
+                        transaction.sign(tx, privateKey);
+                        const txEncode = '0x' + transaction.encode(tx).toString('hex');
+                        axios.post('http://localhost:4200/request', { tx: txEncode }).then((response) => {
+                            if (response.status === 200) {
+                                this.setState({
+                                    success: 'SUCCESS: Update displayname successfully!',
+                                    displayName: displayNameChange
+                                });
+                                this.removeEditModal();
+                                return;
+                            } else {
+                                this.setState({
+                                    error: 'ERROR: Request fail!'
+                                });
+                                return;
+                            }
+                        });
+                    } else {
+                        this.setState({
+                            error: 'ERROR: Get your info fail'
+                        });
+                        return;
+                    }
+                });
+            }
+        }
+    }
+
+    onChangeName = (e) => {
+        this.setState({
+            displayNameChange: e.target.value,
+            error: ''
+        });
+        // this.removeEditModal();
+    }
+    render() {
+        const info = this.state;
+
+        if (this.state.error !== '') {
+            alert(this.state.error)
+        }
+
+        if (this.state.success !== '') {
+            alert(this.state.success)
+        }
+
+        let now = moment();
+        let duration = moment.duration(now.diff(info.bandwidthTime));
+        let diff = duration.asSeconds();
+        // console.log(info.bandwidth);
+        let used = Math.ceil(Math.max(0, (BANDWIDTH_PERIOD - diff) / BANDWIDTH_PERIOD) * (+info.bandwidth))
+        let oxy = +info.bandwidthLimit - used;
         return (
-            <div style={{'marginTop': '0rem'}} className="w-full lg:w-1/4 pl-4 lg:pl-0 pr-6 mt-8 mb-4">
-                <h1>
-                    <a href="#" className="text-black font-bold no-underline hover:underline">{profile ? profile.username : ''}</a>
-                </h1>
+            <div style={{ 'marginTop': '1rem' }} className="w-full lg:w-1/4 pl-4 lg:pl-0 pr-6 mt-8 mb-4">
                 <div className="mb-4">
-                    <a href="#" className="text-grey-darker no-underline hover:underline">{tag}</a>
+                    <a onClick={this.onClickDisplayName}
+                        style={{ fontSize: "20px" }} href="" className="text-black font-bold no-underline hover:underline">
+                        {info.displayName} &nbsp;
+                    </a>
+                    {this.state.visitor ? ''
+                        :
+                        <i style={{ cursor: 'pointer' }} onClick={this.toggleEditModal} className="fa fa-pencil fa-lg text-grey-darker ml-1"></i>
+                    }
+                    {/* <i style={{ cursor: 'pointer' }} onClick={this.toggleEditModal} className="fa fa-pencil fa-lg text-grey-darker ml-1"></i> */}
+                    {/* UploadImage
+                    <a style={{ fontSize: "20px" }} href="" className="text-black font-bold no-underline hover:underline">huantd &nbsp;</a>
+                    <i onClick={(e) => this.toggleEditModal(profile, e)} class="fa fa-pencil fa-lg text-grey-darker ml-1"></i> */}
+
+                    {/* <a href="#" className="text-black font-bold no-underline hover:underline">{profile ? profile.username : ''}</a> */}
+                </div>
+                <div className="mb-4" style={{ display: this.state.editModal }} >
+                    <div className="w-full lg:w-1/4 pictureAva">
+
+                        <input
+                            style={{ fontSize: "20px" }}
+                            onChange={this.onChangeName}
+                            name="displayNameChange"
+                            value={this.state.displayNameChange}
+                            type="text"
+                            className='input-edit'
+                            placeholder="DisplayName"
+                        /><br />
+
+                    </div>
+                    <div className="mr-6">
+                        <button onClick={this.removeEditModal} style={{ backgroundColor: '#bbb' }} type="button" className="btn btn-primary radius-button " data-dismiss="modal">
+                            Cancel
+                        </button>
+                        <button onClick={this.saveChanges} type="button" className="btn btn-primary radius-button " data-dismiss="modal">
+                            Save Changes
+                         </button>
+
+                    </div>
+                </div>
+
+
+                <div className="modal3 " id="myModal3" role="dialog" style={{ display: 'none' }} >
+                    <div className="center-parent" style={{ zIndex: 1 }}>
+                        <button onClick={this.removeEditModal} style={{ color: "red" }}>
+                            <i className="fa fa-times fa-lg"></i>
+                        </button>
+                        <div className="previewImage">
+                            <img src="https://api.adorable.io/avatars/256/GCD6DHTSLKVMQWOXE4T4S72ZO3T2AMHXZ3DNKMQFSCFQNDYQ5A5VNHTM.png" id="pre" />
+                        </div>
+                    </div>
+                    <div style={{ marginRight: "450px", marginTop: "80px" }}>
+                        <button onClick={this.saveChanges} type="button" className="btn btn-primary radius-button " data-dismiss="modal">
+                            Save Changes
+                            </button>
+                        <button onClick={this.removeEditModal} style={{ backgroundColor: '#bbb' }} type="button" className="btn btn-primary radius-button " data-dismiss="modal">
+                            Cancel
+                            </button>
+
+                    </div>
+
+                </div>
+
+
+                <div className="mb-4">
+                    <p title={info.publicKey}
+                        style={{
+                            width: "200px",
+                            color: "#3273dc",
+                            whiteSpace: "pre-wrap",
+                            cursor: "pointer",
+                            overflow: "hidden",
+                            textOverflow: "ellipsis",
+                            wordBreak: 'break-all',
+                        }}>
+
+                        {info.publicKey}
+                    </p>
                 </div>
                 <div className="mb-4">
-                    {profile ? profile.desc : ''}
-                        {/* <a href="#" className="text-teal no-underline hover:underline">@adamwathan</a>,
-                        <a href="#" className="text-teal no-underline hover:underline">@reinink</a>,
-                        <a href="#" className="text-teal no-underline hover:underline">@davidhemphill</a>, and
-                        <a href="#" className="text-teal no-underline hover:underline">@steveschoger</a>. */}
+                    <p><strong>Sequence</strong>: {info.sequence}</p>
+                    <p><strong>Balance</strong>: {+info.balance / 100000000} TRE</p>
+                    <p><strong>Energy</strong>: {Math.floor(oxy)} OXY</p>
+                    <p><strong>Last</strong>: {moment(info.bandwidthTime).format('LLLL')}</p>
                 </div>
-                {location}
-                {joined}
-                {birthday}
-                {/* <div className="mb-4">
-                    <button className="bg-teal hover:bg-teal-dark text-white font-medium py-2 px-4 rounded-full w-full h-10">Tweet to Tailwind CSS</button>
-                </div> */}
-                {/* <div className="mb-4">
-                    <i className="fa fa-user fa-lg text-grey-dark mr-1" />
-                    <a href="#" className="text-teal no-underline hover:underline">27 Followers you know</a>
-                </div>
-                <div className="mb-4">
-                    <a href="#">
-                        <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/195612/tt_follower01.jpg" alt="avatar" className="rounded-full h-12 w-12" />
-                    </a>
-                    <a href="#">
-                        <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/195612/tt_follower02.jpg" alt="avatar" className="rounded-full h-12 w-12" />
-                    </a>
-                    <a href="#">
-                        <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/195612/tt_follower03.jpg" alt="avatar" className="rounded-full h-12 w-12" />
-                    </a>
-                    <a href="#">
-                        <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/195612/tt_follower04.jpg" alt="avatar" className="rounded-full h-12 w-12" />
-                    </a>
-                    <a href="#">
-                        <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/195612/tt_follower05.jpg" alt="avatar" className="rounded-full h-12 w-12" />
-                    </a>
-                    <a href="#">
-                        <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/195612/tt_follower06.jpg" alt="avatar" className="rounded-full h-12 w-12" />
-                    </a>
-                    <a href="#">
-                        <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/195612/tt_follower07.jpg" alt="avatar" className="rounded-full h-12 w-12" />
-                    </a>
-                    <a href="#">
-                        <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/195612/tt_follower08.jpg" alt="avatar" className="rounded-full h-12 w-12" />
-                    </a>
-                    <a href="#">
-                        <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/195612/tt_follower09.jpg" alt="avatar" className="rounded-full h-12 w-12" />
-                    </a>
-                    <a href="#">
-                        <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/195612/tt_follower10.jpg" alt="avatar" className="rounded-full h-12 w-12" />
-                    </a>
-                </div> */}
-                {/* <div className="mb-4">
-                    <i className="fa fa-picture-o fa-lg text-grey-dark mr-1" />
-                    <a href="#" className="text-teal">Photos and videos</a>
-                </div>
-                <div className="mb-4">
-                    <a href="#">
-                        <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/195612/tt_photo1.jpg" alt="photo" className="h-20 w-20 mr-1 mb-1" />
-                    </a>
-                    <a href="#">
-                        <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/195612/tt_photo2.jpg" alt="photo" className="h-20 w-20 mr-1 mb-1" />
-                    </a>
-                    <a href="#">
-                        <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/195612/tt_photo3.jpg" alt="photo" className="h-20 w-20 mr-1 mb-1" />
-                    </a>
-                    <a href="#">
-                        <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/195612/tt_photo4.jpg" alt="photo" className="h-20 w-20 mr-1 mb-1" />
-                    </a>
-                    <a href="#">
-                        <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/195612/tt_photo5.jpg" alt="photo" className="h-20 w-20 mr-1 mb-1" />
-                    </a>
-                </div> */}
+
             </div>
         );
     }
@@ -119,12 +300,14 @@ class Info extends Component {
 // export default Info;
 const mapStateToProps = (state) => {
     return {
-        profile: state.profile
+        profile: state.profile,
+        info: state.infoProfile
     }
 }
 
 const mapDispatchToProps = (dispatch, action) => {
     return {
+        getInfoProfile: (info) => dispatch(actions.getInfoProfile(info))
     }
 }
-export default connect(mapStateToProps, mapDispatchToProps)(Info);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Info));

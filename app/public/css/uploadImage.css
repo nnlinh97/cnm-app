@@ -1,0 +1,59 @@
+
+      
+.Image{
+  float: left;
+  
+}
+ 
+  
+  button {
+    float: right;
+    color: rgb(104, 153, 194);
+    font-size: 14px;
+    /* text-transform: lowercase; */
+    border: none;
+    cursor: pointer;
+    font-weight: bold;
+    background: #F2F5F8;
+    
+    
+  }
+  button:hover {
+    color: orange;
+  }
+  .modal3 {
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.4);
+
+}
+.previewImage{
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  
+}
+.center-parent {
+  position: relative;
+  /* height: 80%;
+  width:80%; */
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: antiquewhite;
+  width: 450px;
+  height: 450px;
+}
+
+.center-me {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}

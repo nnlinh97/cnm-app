@@ -1,13 +1,89 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
 import Post from './Post';
+import axios from 'axios';
 
 class Posts extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            posts: null,
+            page: 1
+            
+        }
+    }
+
+    componentWillReceiveProps(nextProps) {
+        const idPost = nextProps.match.params.id;
+        this.setState({
+            posts: null
+        })
+        axios.get(`http://localhost:4200/post/get-list-posts?idKey=${idPost}`).then((posts) => {
+            if (posts.data.result) {
+                let page = Math.floor(posts.data.result.length / 10);
+                if(posts.data.result.length % 10 > 0){
+                    page += 1;
+                }
+                this.setState({
+                    posts: posts.data.result,
+                    countPage: page
+                });
+            }
+        })
+    }
+
+
+    componentDidMount() {
+        window.addEventListener('scroll', this.onScroll);
+        const idPost = this.props.match.params.id;
+        this.setState({
+            posts: null
+        })
+        axios.get(`http://localhost:4200/post/get-list-posts?idKey=${idPost}`).then((posts) => {
+            if (posts.data.result) {
+                let page = Math.floor(posts.data.result.length / 10);
+                if(posts.data.result.length % 10 > 0){
+                    page += 1;
+                }
+                this.setState({
+                    posts: posts.data.result,
+                    countPage: page
+                });
+            }
+        })
+    }
+    componentWillUnmount() {
+        window.removeEventListener('scroll', this.onScroll);
+    }
+    onScroll = () => {
+        var scrollTop = (document.documentElement && document.documentElement.scrollTop) || document.body.scrollTop;
+        var scrollHeight = (document.documentElement && document.documentElement.scrollHeight) || document.body.scrollHeight;
+        var clientHeight = document.documentElement.clientHeight || window.innerHeight;
+        var scrolledToBottom = Math.ceil(scrollTop + clientHeight) >= scrollHeight;
+
+        if (scrolledToBottom) {
+            let page = this.state.page + 1;
+            if(page > this.state.countPage){
+                return;
+            } else {
+                this.setState({
+                    page: page
+                })
+            }
+        }
+    }
+
     render() {
-        console.log(this.props.posts);
-        const {posts} = this.props;
+        // console.log(this.props.posts);
+        let { posts } = this.state;
+        let limit = 10;
+        let offset = (this.state.page - 1) * limit;
         let listPosts = '';
-        if(posts.length > 0){
+        if (posts) {
+            posts = posts.slice(0, limit + offset);
+        }
+        if (posts) {
             listPosts = posts.map((post, index) => {
                 return (
                     <Post
@@ -309,4 +385,4 @@ const mapDispatchToProps = (dispatch, action) => {
     return {
     }
 }
-export default connect(mapStateToProps, mapDispatchToProps)(Posts);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Posts));
