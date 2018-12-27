@@ -51,18 +51,22 @@ class MenuTop extends Component {
         Promise.all([pAccount, pFollower, pFollowing, pTweet, pHistory, pFollowingCurrent]).then(([account, follower, following, tweet, history, currentFollowing]) => {
             if (account && follower && following && tweet && history && currentFollowing) {
                 let count = 0;
-                history.data.result.forEach(item => {
-                    if (item.tx.operation == 'payment') {
-                        count += 1;
-                    }
-                });
+                let listHistory = [];
+                if(history.data.status == 200){
+                    history.data.result.forEach(item => {
+                        if (item.tx.operation == 'payment') {
+                            listHistory.push(item)
+                        }
+                    });
+                }
+                listHistory = _.uniqBy(listHistory, 'hash');
                 this.setState({
                     displayName: account.data.status == 200 ? account.data.result.displayName : "",
                     avatar: account.data.status == 200 ? account.data.result.avatar : "",
                     followers: follower.data.count,
                     followings: following.data.count,
                     tweets: tweet.data.count,
-                    history: count,
+                    history: listHistory.length,
                     listFollowings: following.data.result,
                     followingOfCurrentUser: currentFollowing.data.result,
                     visitor: publicKey == current ? false : true
@@ -83,18 +87,29 @@ class MenuTop extends Component {
         Promise.all([pAccount, pFollower, pFollowing, pTweet, pHistory, pFollowingCurrent]).then(([account, follower, following, tweet, history, currentFollowing]) => {
             if (account && follower && following && tweet && history && currentFollowing) {
                 let count = 0;
-                history.data.result.forEach(item => {
-                    if (item.tx.operation == 'payment') {
-                        count += 1;
-                    }
-                });
+                // let history = history;
+                // history = _.uniqBy(history, 'hash');
+                // history.data.result.forEach(item => {
+                //     if (item.tx.operation == 'payment') {
+                //         count += 1;
+                //     }
+                // });
+                let listHistory = [];
+                if(history.data.status == 200){
+                    history.data.result.forEach(item => {
+                        if (item.tx.operation == 'payment') {
+                            listHistory.push(item)
+                        }
+                    });
+                }
+                listHistory = _.uniqBy(listHistory, 'hash');
                 this.setState({
                     displayName: account.data.status == 200 ? account.data.result.displayName : "",
                     avatar: account.data.status == 200 ? account.data.result.avatar : "",
                     followers: follower.data.count,
                     followings: following.data.count,
                     tweets: tweet.data.count,
-                    history: count,
+                    history: listHistory.length,
                     listFollowings: following.data.result,
                     followingOfCurrentUser: currentFollowing.data.result,
                     visitor: publicKey == current ? false : true
